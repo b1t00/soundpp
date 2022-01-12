@@ -1,7 +1,7 @@
 #include "databaseconnection.h"
 #include <QMessageBox>
 
-DataBaseConnection::DataBaseConnection()
+dbc::DataBaseConnection::DataBaseConnection()
 {
     this->sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = QCoreApplication::applicationDirPath() + "/dbstuff.db";
@@ -26,7 +26,7 @@ DataBaseConnection::DataBaseConnection()
 
 }
 
-QSqlQueryModel* DataBaseConnection::getQueryModel_all()
+QSqlQueryModel* dbc::DataBaseConnection::getQueryModel_all()
 {
     bool open_success;
 //    this->sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
