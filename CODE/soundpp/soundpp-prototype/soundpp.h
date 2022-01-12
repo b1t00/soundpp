@@ -7,6 +7,9 @@
 #include <QDebug>
 #include "databaseconnection.h"
 
+namespace spp {
+//class Soundpp;
+
 class Soundpp
 {
 public:
@@ -14,7 +17,8 @@ public:
     QSqlQueryModel* getQueryModel_all();
 
 private:
-    DataBaseConnection *dbconnection;
+    dbc::DataBaseConnection *dbconnection;
 };
+}
 
 #endif // SOUNDPP_H

@@ -8,6 +8,7 @@
 #include <QDebug>
 
 
+namespace dbc {
 
 class DataBaseConnection
 {
@@ -20,4 +21,5 @@ private:
     QSqlDatabase sqlitedb;
 };
 
+}
 #endif // DATABASECONNECTION_H

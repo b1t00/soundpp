@@ -1,11 +1,11 @@
 #include "soundpp.h"
 
-Soundpp::Soundpp()
+spp::Soundpp::Soundpp()
 {
-    this->dbconnection = new DataBaseConnection();
+    this->dbconnection = new dbc::DataBaseConnection();
 }
 
-QSqlQueryModel* Soundpp::getQueryModel_all()
+QSqlQueryModel* spp::Soundpp::getQueryModel_all()
 {
     return this->dbconnection->getQueryModel_all();
 }

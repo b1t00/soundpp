@@ -17,8 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_btn_play_clicked();
+
+    void on_btn_play_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
-    Soundpp *spp;
+    spp::Soundpp *spp;
 };
 #endif // MAINWINDOW_H
