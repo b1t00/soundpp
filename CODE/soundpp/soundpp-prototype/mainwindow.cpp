@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    setAcceptDrops(true);
 //    qDebug() << "erstelle soundpp";
     this->spp = new spp::Soundpp();
     QSqlQueryModel *qm = spp->getQueryModel_all();
@@ -20,17 +22,34 @@ MainWindow::MainWindow(QWidget *parent)
     this->mdp = new mp::MetaDataPlayer(this);
     this->mdp->setMedia(QUrl("C:/Users/Winny/Desktop/musiktest/1914 Frank Ocean Blonde 2016 320/CAPAJEBO (C) 1914/01 Nikes.mp3"));
 
-//    mdp->setMedia()
-//    this->mdp
 
-connect(mdp, &mp::MetaDataPlayer::mediaStatusChanged, this, &MainWindow::onMediaStatusChanged);
-//    connect(this->mdp, &mp::MetaDataPlayer::)
+
+
+    metadatareader = new QMediaPlayer(this);
+    connect(metadatareader,&QMediaPlayer::mediaStatusChanged,this, &MainWindow::readMetaData); // fail
+    connect(mdp, &QMediaPlayer::mediaStatusChanged, this, &MainWindow::onMediaStatusChanged); // fail
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::readMetaData()
+{
+
+
+    qDebug() << "------------------------";
+    QString trackName = metadatareader->metaData(QMediaMetaData::Title).toString();
+    QString albumName = metadatareader->metaData(QMediaMetaData::AlbumTitle).toString();
+    QString artistName = metadatareader->metaData(QMediaMetaData::AlbumArtist).toString();
+
+    qDebug() << "trackName :" << trackName;
+    qDebug() << "albumName :" << albumName;
+    qDebug() << "artistName :" << artistName;
+        }
+//    this->metadatareader->
+
 
 // musikplayer >
 void MainWindow::on_btn_play_clicked()
@@ -63,6 +82,32 @@ void MainWindow::onMediaStatusChanged(mp::MetaDataPlayer::MediaStatus status)
 {
         if (status == QMediaPlayer::LoadedMedia){
             qDebug() << "meta daten wurden geladen";
+            QString trackName = mdp->metaData(QMediaMetaData::Title).toString();
+            QString albumName = mdp->metaData(QMediaMetaData::AlbumTitle).toString();
+            QString artistName = mdp->metaData(QMediaMetaData::AlbumArtist).toString();
+
+            qDebug() << "trackName :" << trackName;
+            qDebug() << "albumName :" << albumName;
+            qDebug() << "artistName :" << artistName;
         }
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasUrls()) {
+        e->acceptProposedAction();
+    }
+
+}
+
+void MainWindow::dropEvent(QDropEvent *e)
+{
+
+    foreach (const QUrl &url, e->mimeData()->urls()) {
+        QString fileName = url.toLocalFile();
+        qDebug() << fileName << " dropped";
+        metadatareader->setMedia(QUrl(fileName));
+
+    }
 }
 // musikplayer <

@@ -37,15 +37,15 @@ private slots:
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
     void GetMetaData(QMediaPlayer *player);
 
-protected:
-    void dragEnterEvent(QDragEnterEvent *e);
-    void dropEvent(QDropEvent *e);
+//protected:
 
 private:
     Ui::Dialog *ui;
     QMediaPlayer* player;
     QMediaPlayer* m_player;
 
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dropEvent(QDropEvent *e);
 
     QString song_path;
 };
