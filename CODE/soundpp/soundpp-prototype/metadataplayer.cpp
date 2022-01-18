@@ -1,6 +1,6 @@
 #include "metadataplayer.h"
 
-mp::MetaDataPlayer::MetaDataPlayer()
+mp::MetaDataPlayer::MetaDataPlayer(QObject *parent): QMediaPlayer(parent)
 {
 
 }

@@ -7,6 +7,7 @@
 #include "soundpp.h"
 #include "musikplayer.h"
 #include "metadataplayer.h"
+#include <QUrl>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,6 +30,7 @@ private slots:
     void on_sldr_volume_sliderMoved(int volume);
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
+    void onMediaStatusChanged(mp::MetaDataPlayer::MediaStatus status);
     //musik player <
 
 private:
