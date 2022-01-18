@@ -134,6 +134,7 @@ void Dialog::on_lineEdit_textChanged(const QString &arg1)
 
 void Dialog::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
+    qDebug() <<" metadata available";
     if (status == QMediaPlayer::LoadedMedia)
         GetMetaData(m_player);
 }

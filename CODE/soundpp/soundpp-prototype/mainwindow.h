@@ -9,6 +9,12 @@
 #include "metadataplayer.h"
 #include <QUrl>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
+#include <QMediaMetaData>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,6 +26,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void readMetaData();
 
 private slots:
 
@@ -31,13 +38,19 @@ private slots:
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
     void onMediaStatusChanged(mp::MetaDataPlayer::MediaStatus status);
+
     //musik player <
+
 
 private:
     Ui::MainWindow *ui;
     spp::Soundpp *spp;
     mp::MusikPlayer *mpc;
     mp::MetaDataPlayer *mdp;
+    QMediaPlayer *metadatareader;
+
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dropEvent(QDropEvent *e);
 
 };
 #endif // MAINWINDOW_H
