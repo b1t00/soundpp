@@ -4,10 +4,10 @@
 
 namespace mp {
 
-class MetaDataPlayer : QMediaPlayer
+class MetaDataPlayer : public QMediaPlayer
 {
 public:
-    MetaDataPlayer();
+    MetaDataPlayer(QObject *parent);
 //public slots:
 //    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
 };

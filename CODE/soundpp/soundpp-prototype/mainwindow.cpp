@@ -12,14 +12,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableView->setModel(qm);
 
     this->mpc = new mp::MusikPlayer(this);
+    mpc->
 
     connect(this->mpc, &mp::MusikPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(this->mpc, &mp::MusikPlayer::positionChanged, this, &MainWindow::on_positionChanged);
 
-    this->mdp = new mp::MetaDataPlayer();
-//    this->mdp->setMedia()
+    this->mdp = new mp::MetaDataPlayer(this);
+    this->mdp->setMedia(QUrl("C:/Users/Winny/Desktop/musiktest/1914 Frank Ocean Blonde 2016 320/CAPAJEBO (C) 1914/01 Nikes.mp3"));
 
-//connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &Dialog::onMediaStatusChanged);
+//    mdp->setMedia()
+//    this->mdp
+
+connect(mdp, &mp::MetaDataPlayer::mediaStatusChanged, this, &MainWindow::onMediaStatusChanged);
 //    connect(this->mdp, &mp::MetaDataPlayer::)
 }
 
@@ -53,5 +57,12 @@ void MainWindow::on_positionChanged(qint64 position)
 void MainWindow::on_durationChanged(qint64 duration)
 {
     ui->sldr_progress->setMaximum(duration);
+}
+
+void MainWindow::onMediaStatusChanged(mp::MetaDataPlayer::MediaStatus status)
+{
+        if (status == QMediaPlayer::LoadedMedia){
+            qDebug() << "meta daten wurden geladen";
+        }
 }
 // musikplayer <
