@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,11 +12,15 @@ SOURCES += \
     databaseconnection.cpp \
     main.cpp \
     mainwindow.cpp \
+    metadataplayer.cpp \
+    musikplayer.cpp \
     soundpp.cpp
 
 HEADERS += \
     databaseconnection.h \
     mainwindow.h \
+    metadataplayer.h \
+    musikplayer.h \
     soundpp.h
 
 FORMS += \
