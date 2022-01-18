@@ -18,7 +18,8 @@ Dialog::Dialog(QWidget *parent)
     player = new QMediaPlayer(this);
     this->m_player = new QMediaPlayer(this);
 
-    connect(m_player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+//    connect(m_player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+    connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &Dialog::onMediaStatusChanged);
 
     bool pstate = QMediaPlayer::PausedState;
     qDebug() << "bool " << pstate;
