@@ -10,3 +10,8 @@ QSqlQueryModel* spp::Soundpp::getQueryModel_all()
     return this->dbconnection->getQueryModel_all();
 }
 
+void spp::Soundpp::insertQuery(QString queryString)
+{
+    dbconnection->insertQuery(queryString);
+}
+

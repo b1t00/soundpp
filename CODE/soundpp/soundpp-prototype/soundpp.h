@@ -15,6 +15,7 @@ class Soundpp
 public:
     Soundpp();
     QSqlQueryModel* getQueryModel_all();
+    void insertQuery(QString queryString);
 
 private:
     dbc::DataBaseConnection *dbconnection;
