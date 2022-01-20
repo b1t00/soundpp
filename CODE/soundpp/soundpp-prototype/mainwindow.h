@@ -29,7 +29,6 @@ public:
     void readMetaData();
 
 private slots:
-
     //musik player >
     void on_btn_play_clicked();
 //    void on_btn_play_toggled(bool checked);
@@ -38,7 +37,6 @@ private slots:
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
     void onMediaStatusChanged(mp::MetaDataPlayer::MediaStatus status);
-
     //musik player <
 
 
@@ -49,8 +47,12 @@ private:
     mp::MetaDataPlayer *mdp;
     QMediaPlayer *metadatareader;
 
+    // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
+
+    // dbconnection
+    void set_songs_tableView();
 
 };
 #endif // MAINWINDOW_H

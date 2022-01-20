@@ -9,25 +9,27 @@ MainWindow::MainWindow(QWidget *parent)
 
     setAcceptDrops(true);
 //    qDebug() << "erstelle soundpp";
+//    ui->tableView->setAcceptDrops(true);
     this->spp = new spp::Soundpp();
-    QSqlQueryModel *qm = spp->getQueryModel_all();
-    ui->tableView->setModel(qm);
 
     this->mpc = new mp::MusikPlayer(this);
-    mpc->
 
     connect(this->mpc, &mp::MusikPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(this->mpc, &mp::MusikPlayer::positionChanged, this, &MainWindow::on_positionChanged);
 
     this->mdp = new mp::MetaDataPlayer(this);
-    this->mdp->setMedia(QUrl("C:/Users/Winny/Desktop/musiktest/1914 Frank Ocean Blonde 2016 320/CAPAJEBO (C) 1914/01 Nikes.mp3"));
+//    this->mdp->setMedia(QUrl("C:/Users/Winny/Desktop/musiktest/1914 Frank Ocean Blonde 2016 320/CAPAJEBO (C) 1914/01 Nikes.mp3"));
 
 
 
-
+    // todo: MetaDataReader
     metadatareader = new QMediaPlayer(this);
     connect(metadatareader,&QMediaPlayer::mediaStatusChanged,this, &MainWindow::readMetaData); // fail
     connect(mdp, &QMediaPlayer::mediaStatusChanged, this, &MainWindow::onMediaStatusChanged); // fail
+
+    set_songs_tableView();
+
+
 }
 
 MainWindow::~MainWindow()
@@ -37,8 +39,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::readMetaData()
 {
-
-
     qDebug() << "------------------------";
     QString trackName = metadatareader->metaData(QMediaMetaData::Title).toString();
     QString albumName = metadatareader->metaData(QMediaMetaData::AlbumTitle).toString();
@@ -105,9 +105,21 @@ void MainWindow::dropEvent(QDropEvent *e)
 
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString fileName = url.toLocalFile();
+        QUrl filePath(fileName);
         qDebug() << fileName << " dropped";
-        metadatareader->setMedia(QUrl(fileName));
+//        QString queryStringInsert = "INSERT INTO songsTable (songPath) \
+//                                                    VALUES (" + filePath + "));";
+        QString queryStringInsert = "insert into songsTable (songPath) values ('"+filePath.toString()+"')";
+        spp->insertQuery(queryStringInsert);
+//        metadatareader->setMedia(QUrl(fileName));
 
     }
+    set_songs_tableView();
 }
+
 // musikplayer <
+void MainWindow::set_songs_tableView()
+{
+    QSqlQueryModel *qm = spp->getQueryModel_all();
+    ui->songs_tableView->setModel(qm);
+}

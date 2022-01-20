@@ -4,19 +4,26 @@
 dbc::DataBaseConnection::DataBaseConnection()
 {
     this->sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
-    QString dbPath = QCoreApplication::applicationDirPath() + "/dbstuff.db";
+    QString dbPath = QCoreApplication::applicationDirPath() + "/musicDataBase.db";
     sqlitedb.setDatabaseName(dbPath);
 
     if(sqlitedb.open()){
-//        QMessageBox::information(this,"Note connected", "Connected");
         QSqlQueryModel *qm = new QSqlQueryModel();
         qInfo() << "db connected";
-//        qm->setQuery("CREATE TABLE blaaa (bla TEXT, id TEXT);");
-        qm->setQuery("CREATE TABLE interpreten (id TEXT, name TEXT, album_id TEXT);");
-//        qm->setQuery("SELECT * FROM tabelle1");
-//        ui->tableView->setModel(qm);
+        qm->setQuery("CREATE TABLE songsTable ( \
+                        songPath	TEXT, \
+                        songName	TEXT, \
+                        artistName	TEXT, \
+                        albumName	TEXT, \
+                        labelName	TEXT, \
+                        labelNr     TEXT, \
+                        realeaseDate	INTEGER, \
+                        addedOn	INTEGER, \
+                        fileFormat	TEXT, \
+                        coverPath	TEXT, \
+                        playCount       INTEGER, \
+                        PRIMARY KEY(songPath) );");
         sqlitedb.close();
-//        std::cout << qm->rowCount() << std::endl;
 
     } else {
 //        QMessageBox::information(this,"Note connected", "Data Base Not Connected");
@@ -29,14 +36,35 @@ dbc::DataBaseConnection::DataBaseConnection()
 QSqlQueryModel* dbc::DataBaseConnection::getQueryModel_all()
 {
     bool open_success;
-//    this->sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
-//    QString dbPath = QCoreApplication::applicationDirPath() + "/dbstuff.db";
-//    sqlitedb.setDatabaseName(dbPath);
     open_success = sqlitedb.open();
     QSqlQueryModel *qm = new QSqlQueryModel();
-    qInfo() << "db get query connected " << open_success;
-    qm->setQuery("SELECT * FROM interpreten");
+    qInfo() << "db get query connected: " << open_success;
+    qm->setQuery("SELECT * FROM songsTable");
     sqlitedb.close();
     return qm;
-
 }
+
+void dbc::DataBaseConnection::insertQuery(QString queryString)
+{
+    this->sqlitedb.open();
+    QSqlQuery qry;
+//    qInfo() << (erster_wert == NULL);
+//    if(erster_wert == NULL){
+//        qry.prepare("insert into tabelle1 (name,album) values ('"+zweiter_wert+"','"+dritter_wert+"')");
+//        if(qry.exec()){
+//            qInfo() << "data id 0 is saved";
+//        }
+//    } else {
+
+//        qry.prepare("insert into tabelle1 (id,name,album) values ('"+erster_wert+"','"+zweiter_wert+"','"+dritter_wert+"')");
+        qry.prepare(queryString);
+        if(qry.exec()){
+            qInfo() << "data is saved";
+        }
+//    }
+    this->sqlitedb.close();
+}
+
+
+
+

@@ -2,6 +2,7 @@
 #include "ui_dialog.h"
 #include "QMediaMetaData"
 #include <QMediaObject>
+//#include <>
 #include <QAudioDecoder>
 #include <QAudio>
 #include <QVariant>
@@ -36,16 +37,23 @@ Dialog::Dialog(QWidget *parent)
 
 //    player->Meta
 
-    QFileInfo fi(song_path);
-    ui->lineEdit->setText(fi.fileName());
+    QFileInfo *fi = new QFileInfo(song_path);
+//    fi->metaObject()->className();
+//    ui->lineEdit->setText(fi.fileName());
+
+//   QMultiMedia au;
 
 //    QString artistName = player->metaData(QMediaMetaData::AlbumArtist).toString();
 //    qDebug() << "artistname:" << artistName;
 //    qDebug() << artist
 
 //    QString arti =  "nöa";
+    QVariant *qvj = new QVariant(QUrl(song_path));
+    qDebug() << " keine Ahnugn " << qvj->BitArray->toString();
 
 //    qDebug() << "album artist: " <<  qv.Line;
+
+    // ------------- meta test
 
 
     setAcceptDrops(true);

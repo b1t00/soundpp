@@ -15,6 +15,7 @@ class DataBaseConnection
 public:
     DataBaseConnection();
     QSqlQueryModel * getQueryModel_all();
+    void insertQuery(QString queryString);
 
 
 private:
