@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->mpc, &mp::MusikPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(this->mpc, &mp::MusikPlayer::positionChanged, this, &MainWindow::on_positionChanged);
 
+//    connect(this->MainWindow, &MainWindow::)
+
     this->mdp = new mp::MetaDataPlayer(this);
 //    this->mdp->setMedia(QUrl("C:/Users/Winny/Desktop/musiktest/1914 Frank Ocean Blonde 2016 320/CAPAJEBO (C) 1914/01 Nikes.mp3"));
 
@@ -47,7 +49,14 @@ void MainWindow::readMetaData()
     qDebug() << "trackName :" << trackName;
     qDebug() << "albumName :" << albumName;
     qDebug() << "artistName :" << artistName;
-        }
+}
+
+void MainWindow::updateGui()
+{
+
+}
+
+
 //    this->metadatareader->
 
 

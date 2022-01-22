@@ -29,6 +29,10 @@ public:
     void readMetaData();
 
 private slots:
+
+    void updateGui(); // :TODO
+    void set_songs_tableView();
+
     //musik player >
     void on_btn_play_clicked();
 //    void on_btn_play_toggled(bool checked);
@@ -52,7 +56,6 @@ private:
     void dropEvent(QDropEvent *e);
 
     // dbconnection
-    void set_songs_tableView();
 
 };
 #endif // MAINWINDOW_H
