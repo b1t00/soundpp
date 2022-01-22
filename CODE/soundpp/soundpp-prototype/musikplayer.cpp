@@ -3,7 +3,7 @@
 mp::MusikPlayer::MusikPlayer(QObject *parent) : QObject(parent)
 {
     this->qmp = new QMediaPlayer(this);
-    this->song_path = "C:/Users/Winny/Desktop/musiktest/1914 Frank Ocean Blonde 2016 320/CAPAJEBO (C) 1914/01 Nikes.mp3";
+    this->song_path = QCoreApplication::applicationDirPath() + "/../../testsongs/01 - Sultans Of Swing.mp3";
     this->qmp->setMedia(this->song_path);
     this->playing = false;
 
