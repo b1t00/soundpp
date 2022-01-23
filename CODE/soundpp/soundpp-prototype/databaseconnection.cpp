@@ -1,7 +1,7 @@
 #include "databaseconnection.h"
 #include <QMessageBox>
 
-dbc::DataBaseConnection::DataBaseConnection()
+Database::DataBaseConnection::DataBaseConnection()
 {
     this->sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = QCoreApplication::applicationDirPath() + "/musicDataBase.db";
@@ -33,7 +33,7 @@ dbc::DataBaseConnection::DataBaseConnection()
 
 }
 
-QSqlQueryModel* dbc::DataBaseConnection::getQueryModel_all()
+QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
 {
     bool open_success;
     open_success = sqlitedb.open();
@@ -44,7 +44,7 @@ QSqlQueryModel* dbc::DataBaseConnection::getQueryModel_all()
     return qm;
 }
 
-void dbc::DataBaseConnection::insertQuery(QString queryString)
+void Database::DataBaseConnection::insertQuery(QString queryString)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
