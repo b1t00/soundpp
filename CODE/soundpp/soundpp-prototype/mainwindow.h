@@ -1,12 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "soundppmanagement.h"
 #include <QMainWindow>
 #include <QDebug>
 #include <QSqlQueryModel>
-#include "soundpp.h"
-#include "musikplayer.h"
-#include "metadataplayer.h"
 #include <QUrl>
 
 #include <QDragEnterEvent>
@@ -26,30 +24,24 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void readMetaData();
 
 private slots:
 
     void updateGui(); // :TODO
     void set_songs_tableView();
 
-    //musik player >
+    //musik player
     void on_btn_play_clicked();
 //    void on_btn_play_toggled(bool checked);
     void on_sldr_progress_sliderMoved(int position);
     void on_sldr_volume_sliderMoved(int volume);
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
-    void onMediaStatusChanged(mp::MetaDataPlayer::MediaStatus status);
-    //musik player <
 
 
 private:
     Ui::MainWindow *ui;
-    spp::Soundpp *spp;
-    mp::MusikPlayer *mpc;
-    mp::MetaDataPlayer *mdp;
-    QMediaPlayer *metadatareader;
+    Management::SoundppManagement *sppm;
 
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);

@@ -12,16 +12,14 @@ SOURCES += \
     databaseconnection.cpp \
     main.cpp \
     mainwindow.cpp \
-    metadataplayer.cpp \
-    musikplayer.cpp \
-    soundpp.cpp
+    musikplayerqt.cpp \
+    soundppmanagement.cpp
 
 HEADERS += \
     databaseconnection.h \
     mainwindow.h \
-    metadataplayer.h \
-    musikplayer.h \
-    soundpp.h
+    musikplayerqt.h \
+    soundppmanagement.h
 
 FORMS += \
     mainwindow.ui

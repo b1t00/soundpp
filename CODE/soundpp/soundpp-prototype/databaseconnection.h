@@ -8,7 +8,7 @@
 #include <QDebug>
 
 
-namespace dbc {
+namespace Database {
 
 class DataBaseConnection
 {
