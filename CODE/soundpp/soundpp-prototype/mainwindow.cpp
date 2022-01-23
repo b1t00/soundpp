@@ -35,20 +35,20 @@ MainWindow::~MainWindow()
 //    qDebug() << "artistName :" << artistName;
 //}
 
-void MainWindow::updateGui()
+void MainWindow::updateGui() //TODO::
 {
 
 }
 
 
-//    this->metadatareader->
-
-
 // musikplayer >
 void MainWindow::on_btn_play_clicked()
 {
-    sppm->pressPlay();
+    bool isPlaying = sppm->pressPlay();
 //    QString sppm->songName(); //TODO::
+
+    isPlaying ? ui->statusbar->showMessage("playing song", 3000) : ui->statusbar->showMessage("pause song", 3000);
+
 }
 
 void MainWindow::on_sldr_progress_sliderMoved(int position)
