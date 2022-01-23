@@ -16,9 +16,9 @@ QSqlQueryModel *SoundppManagement::getQueryModel_all()
     return dbc->getQueryModel_all();
 }
 
-void SoundppManagement::pressPlay()
+bool SoundppManagement::pressPlay()
 {
-    mpqt->pressPlay();
+    return mpqt->pressPlay();
 }
 
 void SoundppManagement::setVolume(int volume)

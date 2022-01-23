@@ -20,7 +20,7 @@ public:
     explicit SoundppManagement(QObject *parent = nullptr);
 
     QSqlQueryModel *getQueryModel_all();
-    void pressPlay();
+    bool pressPlay();
     void setVolume(int volume);
     void setPosition(int position);
 
