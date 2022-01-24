@@ -1,18 +1,33 @@
 #include "metadatareader.h"
+#include<QFile>
+#include<QString>
+#include<cstring>
+
+//#include<>
+//#include <atlstr.h>
 
 namespace MetaData {
 
-MetaDataReader::MetaDataReader()
+MetaDataFromFile::MetaDataFromFile()
 {
-    TagLib::MPEG::File mpegFile("C:/Users/Winny/Music/Musik/Claudi Usb Stick/[1977] Lust For Life/05 - Tonight.mp3");
-    TagLib::ID3v2::Tag *idv3v2tag = mpegFile.ID3v2Tag();
-    qDebug()<< "title: " << idv3v2tag->title().toCString();
-    qDebug()<< "genre: " << idv3v2tag->genre().toCString();
-    qDebug()<< "albumNr: " << idv3v2tag->track();
-    qDebug()<< "album: " << idv3v2tag->album().toCString();
-    qDebug()<< "artist: " << idv3v2tag->artist().toCString();
-    qDebug() << "bla blub llibtag";
 }
 
+MetaData::MetaDataItem MetaDataFromFile::getMetaDataFromFilePath(QString filePath)
+{
+    TagLib::FileRef songRef((filePath.toStdString().c_str()));
+
+    QString songName = songRef.tag()->title().toCString();
+    int songNr = songRef.tag()->track();
+    QString artistName = songRef.tag()->artist().toCString();
+    QString albumName = songRef.tag()->album().toCString();
+
+    songName = (songName == NULL) ? "unknown": songName;
+    songNr = (songNr == NULL) ? 0 : songNr;
+    artistName = (artistName == NULL) ? "unknown": artistName;
+    albumName = (albumName == NULL) ? "unknown": albumName;
+
+    MetaData::MetaDataItem mi(filePath, songName, songNr, artistName, albumName);
+    return mi;
+}
 
 }

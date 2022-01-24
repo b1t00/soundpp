@@ -2,10 +2,13 @@
 #define SOUNDPPMANAGEMENT_H
 
 #include <QObject>
+#include <QUrl>
+#include <QString>
 
 #include "databaseconnection.h"
 #include "musikplayerqt.h"
 #include "metadatareader.h"
+#include "metadataitem.h"
 
 
 namespace Management {
@@ -16,12 +19,16 @@ class SoundppManagement : public QObject
 private:
     Database::DataBaseConnection *dbc;
     MusikPlayer::MusikPlayerQt *mpqt;
-    MetaData::MetaDataReader *mdr;
+    MetaData::MetaDataFromFile *mdr;
 
 public:
     explicit SoundppManagement(QObject *parent = nullptr);
-    // database
+    // database get
     QSqlQueryModel *getQueryModel_all();
+
+    //MetaData / database drop
+
+    bool droppedFile(QString filePath);
 
     //musikplayerqt
     bool pressPlay();
