@@ -72,11 +72,13 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 void MainWindow::dropEvent(QDropEvent *e)
 {
 
-    qDebug() <<  "Dropt " << e->mimeData()->urls().size() << " Files.";
+//    qDebug() <<  "Dropt " << e->mimeData()->urls().size() << " Files.";
+//    e->mimeData()->urls().size() == 1 ? ui->statusbar->showMessage("", 3000) : ui->statusbar->showMessage("pause song", 3000);
 
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString filePath (url.toLocalFile());
-        qDebug() << filePath << " dropped";
+        ui->statusbar->showMessage(filePath + " dropped", 3000);
+//        qDebug() << filePath << " dropped";
         sppm->droppedFile(filePath);
     }
     set_songs_tableView();
