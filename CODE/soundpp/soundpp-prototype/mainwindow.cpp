@@ -23,17 +23,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::readMetaData()
-//{
-//    qDebug() << "------------------------";
-////    QString trackName = metadatareader->metaData(QMediaMetaData::Title).toString();
-////    QString albumName = metadatareader->metaData(QMediaMetaData::AlbumTitle).toString();
-////    QString artistName = metadatareader->metaData(QMediaMetaData::AlbumArtist).toString();
-
-//    qDebug() << "trackName :" << trackName;
-//    qDebug() << "albumName :" << albumName;
-//    qDebug() << "artistName :" << artistName;
-//}
 
 void MainWindow::updateGui() //TODO::
 {
@@ -83,16 +72,12 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 void MainWindow::dropEvent(QDropEvent *e)
 {
 
+    qDebug() <<  "Dropt " << e->mimeData()->urls().size() << " Files.";
+
     foreach (const QUrl &url, e->mimeData()->urls()) {
-        QString fileName = url.toLocalFile();
-        QUrl filePath(fileName);
-        qDebug() << fileName << " dropped";
-//        QString queryStringInsert = "INSERT INTO songsTable (songPath) \
-//                                                    VALUES (" + filePath + "));";
-        QString queryStringInsert = "insert into songsTable (songPath) values ('"+filePath.toString()+"')";
-//        spp->insertQuery(queryStringInsert); //TODO
-
-
+        QString filePath (url.toLocalFile());
+        qDebug() << filePath << " dropped";
+        sppm->droppedFile(filePath);
     }
     set_songs_tableView();
 }

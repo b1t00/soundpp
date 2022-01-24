@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#include "metadataitem.h"
+
 
 namespace Database {
 
@@ -15,7 +17,8 @@ class DataBaseConnection
 public:
     DataBaseConnection();
     QSqlQueryModel * getQueryModel_all();
-    void insertQuery(QString queryString);
+    void insertQuery(QSqlQuery qry);
+    void insertMetaItem(MetaData::MetaDataItem mi);
 
 
 private:

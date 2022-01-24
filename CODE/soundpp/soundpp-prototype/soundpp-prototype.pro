@@ -12,6 +12,7 @@ SOURCES += \
     databaseconnection.cpp \
     main.cpp \
     mainwindow.cpp \
+    metadataitem.cpp \
     metadatareader.cpp \
     musikplayerqt.cpp \
     soundppmanagement.cpp
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     databaseconnection.h \
     mainwindow.h \
+    metadataitem.h \
     metadatareader.h \
     musikplayerqt.h \
     soundppmanagement.h

@@ -6,7 +6,7 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
 {
     dbc = new Database::DataBaseConnection();
     mpqt = new MusikPlayer::MusikPlayerQt();
-    mdr = new MetaData::MetaDataReader();
+    mdr = new MetaData::MetaDataFromFile();
 
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
@@ -16,6 +16,14 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
 QSqlQueryModel *SoundppManagement::getQueryModel_all()
 {
     return dbc->getQueryModel_all();
+}
+
+bool SoundppManagement::droppedFile(QString filePath)
+{
+//    QString queryString = mdr->getMetaDataFromFilePath(filePath);
+    MetaData::MetaDataItem mi = mdr->getMetaDataFromFilePath(filePath);
+//    qDebug() << queryString;
+    dbc->insertMetaItem(mi);
 }
 
 bool SoundppManagement::pressPlay()

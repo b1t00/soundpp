@@ -1,4 +1,5 @@
 #include "databaseconnection.h"
+#include <QList>
 #include <QMessageBox>
 
 Database::DataBaseConnection::DataBaseConnection()
@@ -13,6 +14,7 @@ Database::DataBaseConnection::DataBaseConnection()
         qm->setQuery("CREATE TABLE songsTable ( \
                         songPath	TEXT, \
                         songName	TEXT, \
+                        songNr      INTEGER, \
                         artistName	TEXT, \
                         albumName	TEXT, \
                         labelName	TEXT, \
@@ -44,7 +46,7 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
     return qm;
 }
 
-void Database::DataBaseConnection::insertQuery(QString queryString)
+void Database::DataBaseConnection::insertQuery(QSqlQuery blub)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
@@ -55,13 +57,42 @@ void Database::DataBaseConnection::insertQuery(QString queryString)
 //            qInfo() << "data id 0 is saved";
 //        }
 //    } else {
+    QString bla("testi224rewrew22");
+    QString bla2("testi2");
+    char numma = 41;
+    QString sqerystring = "insert into songsTable (songPath, songName, songNr) values ('"+bla+"','"+bla2+"','"+numma+"')";
+     QSqlQuery query;
+    query.prepare("INSERT INTO songsTable (songPath, songName, songNr) "
+                  "VALUES (:id, :name, :salary)");
 
-//        qry.prepare("insert into tabelle1 (id,name,album) values ('"+erster_wert+"','"+zweiter_wert+"','"+dritter_wert+"')");
-        qry.prepare(queryString);
-        if(qry.exec()){
+    query.bindValue(":id", 1001);
+    query.bindValue(":name", "Thad Beaumont");
+    query.bindValue(":salary", numma);
+//         qry.prepare(sqerystring);
+//        qry.prepare(queryString);
+        if(query.exec()){
             qInfo() << "data is saved";
         }
 //    }
+        this->sqlitedb.close();
+}
+
+void Database::DataBaseConnection::insertMetaItem(MetaData::MetaDataItem mi)
+{
+    this->sqlitedb.open();
+    QSqlQuery qry;
+
+    qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName) "
+                  "VALUES (:songPath, :songName, :songNr, :artistName, :albumName)");
+    qry.bindValue(":songPath", mi.songPath());
+    qry.bindValue(":songName", mi.songName());
+    qry.bindValue(":songNr", mi.songNr());
+    qry.bindValue(":artistName", mi.artistName());
+    qry.bindValue(":albumName", mi.albumName());
+
+    if(qry.exec()){
+        qInfo() << "data is saved";
+    }
     this->sqlitedb.close();
 }
 
