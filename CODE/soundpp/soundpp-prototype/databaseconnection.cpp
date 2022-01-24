@@ -19,11 +19,11 @@ Database::DataBaseConnection::DataBaseConnection()
                         albumName	TEXT, \
                         labelName	TEXT, \
                         labelNr     TEXT, \
-                        realeaseDate	INTEGER, \
-                        addedOn	INTEGER, \
+                        realeaseDate TEXT, \
+                        addedDate	TEXT, \
                         fileFormat	TEXT, \
                         coverPath	TEXT, \
-                        playCount       INTEGER, \
+                        playCount   INTEGER, \
                         PRIMARY KEY(songPath) );");
         sqlitedb.close();
 
@@ -50,13 +50,6 @@ void Database::DataBaseConnection::insertQuery(QSqlQuery blub)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
-//    qInfo() << (erster_wert == NULL);
-//    if(erster_wert == NULL){
-//        qry.prepare("insert into tabelle1 (name,album) values ('"+zweiter_wert+"','"+dritter_wert+"')");
-//        if(qry.exec()){
-//            qInfo() << "data id 0 is saved";
-//        }
-//    } else {
     QString bla("testi224rewrew22");
     QString bla2("testi2");
     char numma = 41;
@@ -82,13 +75,14 @@ void Database::DataBaseConnection::insertMetaItem(MetaData::MetaDataItem mi)
     this->sqlitedb.open();
     QSqlQuery qry;
 
-    qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName) "
-                  "VALUES (:songPath, :songName, :songNr, :artistName, :albumName)");
+    qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName, addedDate) "
+                  "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate)");
     qry.bindValue(":songPath", mi.songPath());
     qry.bindValue(":songName", mi.songName());
     qry.bindValue(":songNr", mi.songNr());
     qry.bindValue(":artistName", mi.artistName());
     qry.bindValue(":albumName", mi.albumName());
+    qry.bindValue(":addedDate", (QString::number(QDateTime::currentMSecsSinceEpoch()))); // Unix Epoche Time
 
     if(qry.exec()){
         qInfo() << "data is saved";
