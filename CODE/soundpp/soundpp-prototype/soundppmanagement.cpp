@@ -7,6 +7,7 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     dbc = new Database::DataBaseConnection();
     mpqt = new MusikPlayer::MusikPlayerQt();
 
+    //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }

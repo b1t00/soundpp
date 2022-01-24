@@ -18,8 +18,10 @@ private:
 
 public:
     explicit SoundppManagement(QObject *parent = nullptr);
-
+    // database
     QSqlQueryModel *getQueryModel_all();
+
+    //musikplayerqt
     bool pressPlay();
     void setVolume(int volume);
     void setPosition(int position);

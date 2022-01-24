@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include "soundppmanagement.h"
+
 #include <QMainWindow>
 #include <QDebug>
+
 #include <QSqlQueryModel>
 #include <QUrl>
 
@@ -11,7 +13,6 @@
 #include <QDropEvent>
 #include <QMimeData>
 
-#include <QMediaMetaData>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
