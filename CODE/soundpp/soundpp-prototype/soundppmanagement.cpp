@@ -6,6 +6,7 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
 {
     dbc = new Database::DataBaseConnection();
     mpqt = new MusikPlayer::MusikPlayerQt();
+    mdr = new MetaData::MetaDataReader();
 
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);

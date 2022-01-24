@@ -5,6 +5,7 @@
 
 #include "databaseconnection.h"
 #include "musikplayerqt.h"
+#include "metadatareader.h"
 
 
 namespace Management {
@@ -15,6 +16,7 @@ class SoundppManagement : public QObject
 private:
     Database::DataBaseConnection *dbc;
     MusikPlayer::MusikPlayerQt *mpqt;
+    MetaData::MetaDataReader *mdr;
 
 public:
     explicit SoundppManagement(QObject *parent = nullptr);

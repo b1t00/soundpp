@@ -12,17 +12,24 @@ SOURCES += \
     databaseconnection.cpp \
     main.cpp \
     mainwindow.cpp \
+    metadatareader.cpp \
     musikplayerqt.cpp \
     soundppmanagement.cpp
 
 HEADERS += \
     databaseconnection.h \
     mainwindow.h \
+    metadatareader.h \
     musikplayerqt.h \
     soundppmanagement.h
 
 FORMS += \
     mainwindow.ui
+
+#taglib library funktioniert mit dem minGW 64 compiler
+LIBS += -L$$PWD/libs/taglib/bin -ltag
+INCLUDEPATH += $$PWD/libs/taglib/include
+DEPENDPATH += $$PWD/libs/taglib/include/
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
