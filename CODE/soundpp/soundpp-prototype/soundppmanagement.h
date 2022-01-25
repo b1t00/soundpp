@@ -27,6 +27,7 @@ public:
     explicit SoundppManagement(QObject *parent = nullptr);
     // database get
     QSqlQueryModel *getQueryModel_all();
+    QSqlQueryModel get_all_artists();
 
     //MetaData / database drop
 

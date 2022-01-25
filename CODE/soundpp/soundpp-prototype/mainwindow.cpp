@@ -19,6 +19,20 @@ MainWindow::MainWindow(QWidget *parent)
     QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
     connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
+    //Icons
+
+    QPixmap logo (":img/logo.png");
+    ui->logo->setPixmap(logo);
+
+    QPixmap volume (":img/volume.png");
+    ui->volume->setPixmap(volume);
+
+    QPixmap lupe (":img/suche_lupe.png");
+    ui->lupe->setPixmap(lupe);
+
+//    QPixmap queue (":img/queue.png");
+//    ui->queue->setPixmap(queue);
+
 }
 
 MainWindow::~MainWindow()
