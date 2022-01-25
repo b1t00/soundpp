@@ -35,8 +35,13 @@ void MainWindow::on_btn_play_clicked()
 {
     bool isPlaying = sppm->pressPlay();
 //    QString sppm->songName(); //TODO::
+    sppm->incrementPlayCount();
+
 
     isPlaying ? ui->statusbar->showMessage("playing song", 3000) : ui->statusbar->showMessage("pause song", 3000);
+    set_songs_tableView();
+
+//    sppm->pressPlay();
 
 }
 

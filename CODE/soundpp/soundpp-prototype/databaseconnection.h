@@ -19,6 +19,7 @@ public:
     QSqlQueryModel * getQueryModel_all();
     void insertQuery(QSqlQuery qry);
     void insertMetaItem(MetaData::MetaDataItem mi);
+    void incrementPlayCount(QString filePath);
 
 
 private:

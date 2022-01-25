@@ -1,6 +1,7 @@
 #include "metadatareader.h"
 #include<QFile>
 #include<QString>
+#include <QUrl>
 #include<cstring>
 
 //#include<>
@@ -21,7 +22,7 @@ MetaData::MetaDataItem MetaDataFromFile::getMetaDataFromFilePath(QString filePat
     QString artistName = songRef.tag()->artist().toCString();
     QString albumName = songRef.tag()->album().toCString();
 
-    songName = (songName == NULL) ? "unknown": songName;
+    songName = (songName == NULL) ? QUrl(filePath).fileName() : songName;
     songNr = (songNr == NULL) ? 0 : songNr;
     artistName = (artistName == NULL) ? "unknown": artistName;
     albumName = (albumName == NULL) ? "unknown": albumName;

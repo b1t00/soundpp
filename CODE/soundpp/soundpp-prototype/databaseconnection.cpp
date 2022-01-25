@@ -46,28 +46,26 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
     return qm;
 }
 
-void Database::DataBaseConnection::insertQuery(QSqlQuery blub)
+void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currently no functionality
 {
-    this->sqlitedb.open();
-    QSqlQuery qry;
-    QString bla("testi224rewrew22");
-    QString bla2("testi2");
-    char numma = 41;
-    QString sqerystring = "insert into songsTable (songPath, songName, songNr) values ('"+bla+"','"+bla2+"','"+numma+"')";
-     QSqlQuery query;
-    query.prepare("INSERT INTO songsTable (songPath, songName, songNr) "
-                  "VALUES (:id, :name, :salary)");
+//    this->sqlitedb.open();
+//    QSqlQuery qry;
+//    QString bla("testi224rewrew22");
+//    QString bla2("testi2");
+//    char numma = 41;
+//    QString sqerystring = "insert into songsTable (songPath, songName, songNr) values ('"+bla+"','"+bla2+"','"+numma+"')";
+//     QSqlQuery query;
+//    query.prepare("INSERT INTO songsTable (songPath, songName, songNr) "
+//                  "VALUES (:id, :name, :salary)");
 
-    query.bindValue(":id", 1001);
-    query.bindValue(":name", "Thad Beaumont");
-    query.bindValue(":salary", numma);
-//         qry.prepare(sqerystring);
-//        qry.prepare(queryString);
-        if(query.exec()){
-            qInfo() << "data is saved";
-        }
-//    }
-        this->sqlitedb.close();
+//    query.bindValue(":id", 1001);
+//    query.bindValue(":name", "Thad Beaumont");
+//    query.bindValue(":salary", numma);
+//        if(query.exec()){
+//            qInfo() << "data is saved";
+//        }
+////    }
+//        this->sqlitedb.close();
 }
 
 void Database::DataBaseConnection::insertMetaItem(MetaData::MetaDataItem mi)
@@ -75,8 +73,8 @@ void Database::DataBaseConnection::insertMetaItem(MetaData::MetaDataItem mi)
     this->sqlitedb.open();
     QSqlQuery qry;
 
-    qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName, addedDate) "
-                  "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate)");
+    qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName, addedDate, playCount) "
+                  "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate, 0)");
     qry.bindValue(":songPath", mi.songPath());
     qry.bindValue(":songName", mi.songName());
     qry.bindValue(":songNr", mi.songNr());
@@ -87,6 +85,31 @@ void Database::DataBaseConnection::insertMetaItem(MetaData::MetaDataItem mi)
     if(qry.exec()){
         qInfo() << "data is saved";
     }
+    this->sqlitedb.close();
+}
+
+void Database::DataBaseConnection::incrementPlayCount(QString filePath)
+{
+    this->sqlitedb.open();
+    QSqlQuery qry;
+    qry.prepare("SELECT playCount FROM songsTable WHERE songPath = (:songPath)");
+    qry.bindValue(":songPath", filePath);
+    int playCount;
+    if (qry.exec()){
+       if (qry.next()){
+//           qDebug() << "qry value " << qry.value(0).toInt();
+           playCount = qry.value(0).toInt();
+       }
+    }
+//    playCount++;
+    qry.prepare("UPDATE songsTable SET playCount = (:playCount) WHERE songPath = (:songPath)");
+    qry.bindValue(":playCount", ++playCount);
+    qry.bindValue(":songPath", filePath);
+
+    if (!qry.exec()){
+        qDebug() << "NOT incemented playcound";
+    }
+
     this->sqlitedb.close();
 }
 

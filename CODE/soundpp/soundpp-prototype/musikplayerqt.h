@@ -11,6 +11,7 @@ class MusikPlayerQt : public QMediaPlayer
 {
 private:
     bool m_isPlayling;
+    bool m_playedOnce;
     QUrl m_songPath;
     QMediaPlaylist *m_playlist = nullptr;
 
@@ -26,6 +27,7 @@ public:
 
     bool pressPlay();
 
+    bool playedOnce() const;
 };
 
 }
