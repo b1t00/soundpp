@@ -9,8 +9,7 @@
 
 namespace MetaData {
 
-MetaDataFromFile::MetaDataFromFile()
-{
+MetaDataFromFile::MetaDataFromFile(){
 }
 
 MetaData::MetaDataItem MetaDataFromFile::getMetaDataFromFilePath(QString filePath)

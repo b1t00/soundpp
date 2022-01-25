@@ -1,4 +1,6 @@
 #include "databaseconnection.h"
+
+
 #include <QList>
 #include <QMessageBox>
 
@@ -40,9 +42,18 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
     bool open_success;
     open_success = sqlitedb.open();
     QSqlQueryModel *qm = new QSqlQueryModel();
+//    AllSongsSqlModel *qm = new AllSongsSqlModel();
+
     qInfo() << "db get query connected: " << open_success;
     qm->setQuery("SELECT * FROM songsTable");
     sqlitedb.close();
+
+    for(int i = 0; i < qm->rowCount(); i++){
+        if(qm->record(i).value("artistName") == "Iggy Pop"){
+//            qm->record(i).value("artistName");
+            qDebug() << qm->record(i).value("songName").toString();
+        }
+    }
     return qm;
 }
 
