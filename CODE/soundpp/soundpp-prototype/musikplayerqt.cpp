@@ -44,7 +44,7 @@ bool MusikPlayerQt::pressPlay()
         m_playedOnce = true;
 
     setIsPlayling(!isPlayling());
-    qDebug() << "playing" << isPlayling();
+//    qDebug() << "playing" << isPlayling();
     isPlayling() ? play() : pause();
     return m_isPlayling;
 }

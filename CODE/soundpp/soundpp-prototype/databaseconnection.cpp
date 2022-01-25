@@ -94,7 +94,7 @@ void Database::DataBaseConnection::incrementPlayCount(QString filePath)
     QSqlQuery qry;
     qry.prepare("SELECT playCount FROM songsTable WHERE songPath = (:songPath)");
     qry.bindValue(":songPath", filePath);
-    int playCount;
+    int playCount = -99;
     if (qry.exec()){
        if (qry.next()){
 //           qDebug() << "qry value " << qry.value(0).toInt();
@@ -102,14 +102,15 @@ void Database::DataBaseConnection::incrementPlayCount(QString filePath)
        }
     }
 //    playCount++;
-    qry.prepare("UPDATE songsTable SET playCount = (:playCount) WHERE songPath = (:songPath)");
-    qry.bindValue(":playCount", ++playCount);
-    qry.bindValue(":songPath", filePath);
+    if(playCount > -99){
+        qry.prepare("UPDATE songsTable SET playCount = (:playCount) WHERE songPath = (:songPath)");
+        qry.bindValue(":playCount", ++playCount);
+        qry.bindValue(":songPath", filePath);
 
-    if (!qry.exec()){
-        qDebug() << "NOT incemented playcound";
+        if (!qry.exec()){
+            qDebug() << "NOT incemented playcound";
+        }
     }
-
     this->sqlitedb.close();
 }
 
