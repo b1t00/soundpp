@@ -16,7 +16,8 @@ class DataBaseConnection
 {
 public:
     DataBaseConnection();
-    QSqlQueryModel * getQueryModel_all();
+    QSqlQueryModel* getQueryModel_all();
+    QSqlQueryModel* get_all_artists();
     void insertQuery(QSqlQuery qry);
     void insertMetaItem(MetaData::MetaDataItem mi);
     void incrementPlayCount(QString filePath);

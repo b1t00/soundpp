@@ -20,6 +20,10 @@ QSqlQueryModel *SoundppManagement::getQueryModel_all()
     return dbc->getQueryModel_all();
 }
 
+//QSqlQueryModel *SoundppManagement::get_all_artists(){
+//    return dbc->get_all_artists();
+//}
+
 bool SoundppManagement::droppedFile(QString filePath)
 {
     MetaData::MetaDataItem mi = mdr->getMetaDataFromFilePath(filePath);
