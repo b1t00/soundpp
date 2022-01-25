@@ -29,6 +29,7 @@ public:
     //MetaData / database drop
 
     bool droppedFile(QString filePath);
+    void incrementPlayCount();
 
     //musikplayerqt
     bool pressPlay();

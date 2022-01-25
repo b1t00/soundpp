@@ -1,5 +1,7 @@
 #include "soundppmanagement.h"
 
+#include <QUrl>
+
 namespace Management {
 
 SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
@@ -20,14 +22,24 @@ QSqlQueryModel *SoundppManagement::getQueryModel_all()
 
 bool SoundppManagement::droppedFile(QString filePath)
 {
-//    QString queryString = mdr->getMetaDataFromFilePath(filePath);
     MetaData::MetaDataItem mi = mdr->getMetaDataFromFilePath(filePath);
 //    qDebug() << queryString;
     dbc->insertMetaItem(mi);
 }
 
+void SoundppManagement::incrementPlayCount()
+{
+
+    QString songPath("C:/Users/Winny/Code_Local/Repositories/soundpp/CODE/soundpp/testsongs/01 - Sultans Of Swing.mp3");
+    if(!mpqt->playedOnce()){
+//        QString songPath = mpqt->songPath().toString();  // TODO::
+        dbc->incrementPlayCount(songPath);
+    }
+}
+
 bool SoundppManagement::pressPlay()
 {
+    incrementPlayCount();
     return mpqt->pressPlay();
 }
 

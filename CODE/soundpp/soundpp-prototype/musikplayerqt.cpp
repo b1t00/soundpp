@@ -15,6 +15,13 @@ MusikPlayer::MusikPlayerQt::MusikPlayerQt()
 
 namespace MusikPlayer {
 
+bool MusikPlayerQt::playedOnce() const
+{
+    return m_playedOnce;
+}
+
+
+
 QUrl MusikPlayerQt::songPath() const
 {
     return m_songPath;
@@ -22,6 +29,7 @@ QUrl MusikPlayerQt::songPath() const
 
 void MusikPlayerQt::setSongPath(const QUrl &songPath)
 {
+    m_playedOnce = false;
     m_songPath = songPath;
 }
 
@@ -32,6 +40,9 @@ void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
 
 bool MusikPlayerQt::pressPlay()
 {
+    if(!m_playedOnce)
+        m_playedOnce = true;
+
     setIsPlayling(!isPlayling());
     qDebug() << "playing" << isPlayling();
     isPlayling() ? play() : pause();
