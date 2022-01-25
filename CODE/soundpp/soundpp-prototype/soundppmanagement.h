@@ -10,6 +10,7 @@
 #include "metadatareader.h"
 #include "metadataitem.h"
 
+#include "datamanagement.h"
 
 namespace Management {
 
@@ -20,6 +21,7 @@ private:
     Database::DataBaseConnection *dbc;
     MusikPlayer::MusikPlayerQt *mpqt;
     MetaData::MetaDataFromFile *mdr;
+    Model::DataManagement *dm;
 
 public:
     explicit SoundppManagement(QObject *parent = nullptr);

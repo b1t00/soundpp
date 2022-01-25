@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     databaseconnection.cpp \
+    datamanagement.cpp \
     main.cpp \
     mainwindow.cpp \
     metadataitem.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 
 HEADERS += \
     databaseconnection.h \
+    datamanagement.h \
     mainwindow.h \
     metadataitem.h \
     metadatareader.h \
