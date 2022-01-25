@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
     setAcceptDrops(true);
     set_songs_tableView();
 
+    // shortcuts
+    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
+    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
 }
 
@@ -39,10 +42,7 @@ void MainWindow::on_btn_play_clicked()
 
 
     isPlaying ? ui->statusbar->showMessage("playing song", 3000) : ui->statusbar->showMessage("pause song", 3000);
-    set_songs_tableView();
-
-//    sppm->pressPlay();
-
+    set_songs_tableView(); // TODO:: Schlau direkt aus tableView zu holen
 }
 
 void MainWindow::on_sldr_progress_sliderMoved(int position)
