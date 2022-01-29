@@ -13,7 +13,12 @@
 #include <QDropEvent>
 #include <QMimeData>
 
+#include <QStandardItemModel>
+
 #include <QShortcut>
+#include "display_artist_model.h"
+#include "display_song_model.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -32,6 +37,10 @@ private slots:
 
     void updateGui(); // :TODO
     void set_songs_tableView();
+    void set_artists_tableView();
+    void print_out();
+    void yeah();
+    void display_tree();
 
     //musik player
     void on_btn_play_clicked();
@@ -42,6 +51,8 @@ private slots:
     void on_durationChanged(qint64 position);
 
 
+    void on_btn_play_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;
@@ -49,6 +60,10 @@ private:
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
+
+    //display stuff
+    display_artist_model* m_display_artist_model;
+    display_song_model* m_display_song_model;
 
     // dbconnection
 

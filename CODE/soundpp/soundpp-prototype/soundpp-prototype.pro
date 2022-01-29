@@ -9,22 +9,30 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    artist.cpp \
     databaseconnection.cpp \
     datamanagement.cpp \
+    display_artist_model.cpp \
+    display_song_model.cpp \
     main.cpp \
     mainwindow.cpp \
     metadataitem.cpp \
     metadatareader.cpp \
     musikplayerqt.cpp \
+    song.cpp \
     soundppmanagement.cpp
 
 HEADERS += \
+    artist.h \
     databaseconnection.h \
     datamanagement.h \
+    display_artist_model.h \
+    display_song_model.h \
     mainwindow.h \
     metadataitem.h \
     metadatareader.h \
     musikplayerqt.h \
+    song.h \
     soundppmanagement.h
 
 FORMS += \

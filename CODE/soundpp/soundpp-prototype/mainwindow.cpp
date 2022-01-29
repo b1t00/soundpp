@@ -13,11 +13,29 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
 
     setAcceptDrops(true);
-    set_songs_tableView();
+    //set_songs_tableView();
+    display_tree();
+    //set_artists_tableView();
+
+
+    m_display_artist_model = new display_artist_model(sppm->create_and_get_artists(), this);
+    ui->artists_tableView->setModel(m_display_artist_model);
+
+    m_display_song_model = new display_song_model(sppm->create_and_get_songs(), this);
+    ui->songs_tableView->setModel(m_display_song_model);
+
+    //yeah();
+
+
+
+
+
+    //print_out();
+
 
     // shortcuts
-    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
-    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
+   //QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
+   //connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
     //Icons
 
@@ -50,13 +68,30 @@ void MainWindow::updateGui() //TODO::
 // musikplayer >
 void MainWindow::on_btn_play_clicked()
 {
-    bool isPlaying = sppm->pressPlay();
+
+    bool isPlaying = false;
+
+
+
+    isPlaying = sppm->pressPlay();
 //    QString sppm->songName(); //TODO::
     sppm->incrementPlayCount();
 
 
+
+
     isPlaying ? ui->statusbar->showMessage("playing song", 3000) : ui->statusbar->showMessage("pause song", 3000);
-    set_songs_tableView(); // TODO:: Schlau direkt aus tableView zu holen
+    //set_songs_tableView(); // TODO:: Schlau direkt aus tableView zu holen
+
+    if (!isPlaying){
+        QPixmap play (":img/Play.png");
+        ui->btn_play->setIcon(play);
+    } else {
+        QPixmap pause (":img/pause.png");
+        ui->btn_play->setIcon(pause);
+    }
+
+
 }
 
 void MainWindow::on_sldr_progress_sliderMoved(int position)
@@ -107,4 +142,41 @@ void MainWindow::set_songs_tableView()
 {
     QSqlQueryModel *qm = sppm->getQueryModel_all();
     ui->songs_tableView->setModel(qm);
+}
+
+void MainWindow::set_artists_tableView() {
+    QSqlQueryModel *qm  = sppm->get_all_artists_direct_from_database();
+    ui->artists_tableView->setModel(qm);
+
+    qm->setHeaderData(0, Qt::Horizontal, tr("Artists"));
+    qm->setHeaderData(0, Qt::Vertical, tr("Artists"));
+
+}
+
+void MainWindow::print_out(){
+
+    qInfo() << sppm->get_all_Interprets();
+
+}
+
+void MainWindow::yeah(){
+    sppm->create_and_get_artists();
+}
+
+void MainWindow::display_tree(){
+
+
+    QStandardItemModel* playlist = new QStandardItemModel();
+
+    QStandardItem* item0 = new QStandardItem("1 first item");
+    QStandardItem* item1 = new QStandardItem("2 second item");
+    QStandardItem* item3 = new QStandardItem("3 third item");
+    QStandardItem* item4 = new QStandardItem("4 forth item");
+
+    playlist->appendRow(item0);
+    item0->appendRow(item3);
+    item0->appendRow(item4);
+    playlist->appendRow(item1);
+
+    ui->playlist_treeView->setModel(playlist);
 }

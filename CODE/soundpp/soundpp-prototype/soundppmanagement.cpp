@@ -16,11 +16,32 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }
 
+QSqlQueryModel *SoundppManagement::get_all_artists_direct_from_database(){
+
+
+    return dbc->get_all_artists();
+}
+
+QList<Model::Artist> SoundppManagement::create_and_get_artists(){
+    return dm->create_and_get_artists();
+}
+
+QList<Model::Song> SoundppManagement::create_and_get_songs(){
+    return dm->create_and_get_songs();
+}
+
+
 QSqlQueryModel *SoundppManagement::getQueryModel_all()
 {
-//    return dbc->getQueryModel_all();
-    dm->setAllSongs(dbc->getQueryModel_all()); //TODO:: update sql model from dbconnection
+//  return dbc->getQueryModel_all();
+    //dm->setAllSongs(dbc->getQueryModel_all()); //TODO:: update sql model from dbconnection
+    qInfo() << "Moin test hier";
     return dm->getAllSongs();
+
+}
+
+QStringList *SoundppManagement::get_all_Interprets(){
+    return dm->getAllInterprets();
 }
 
 //QSqlQueryModel *SoundppManagement::get_all_artists(){

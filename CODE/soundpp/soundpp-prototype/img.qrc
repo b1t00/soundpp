@@ -6,5 +6,6 @@
         <file>img/Play.png</file>
         <file>img/suche_lupe.png</file>
         <file>img/volume.png</file>
+        <file>img/pause.png</file>
     </qresource>
 </RCC>
