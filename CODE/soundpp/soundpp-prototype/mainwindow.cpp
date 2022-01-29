@@ -22,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->artists_tableView->setModel(m_display_artist_model);
 
     m_display_song_model = new display_song_model(sppm->create_and_get_songs(), this);
+    ui->songs_tableView->setShowGrid(false);
+    ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    contextMenu = new QMenu(ui->songs_tableView);
+    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist()));
+    contextMenu->addAction("play next", this, SLOT(addToQueue()));
+    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
     ui->songs_tableView->setModel(m_display_song_model);
 
     //yeah();
@@ -161,6 +167,20 @@ void MainWindow::print_out(){
 
 void MainWindow::yeah(){
     sppm->create_and_get_artists();
+}
+
+void MainWindow::onCustomContextMenu(const QPoint &point)
+{
+     contextMenu->exec(ui->songs_tableView->viewport()->mapToGlobal(point));
+
+}
+
+void MainWindow::addToPlaylist(){
+    qInfo() << "Geil geil Geil";
+}
+
+void MainWindow::addToQueue(){
+    qInfo() << "Noch geiler geiler geiler";
 }
 
 void MainWindow::display_tree(){
