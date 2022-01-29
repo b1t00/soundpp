@@ -19,6 +19,8 @@
 #include "display_artist_model.h"
 #include "display_song_model.h"
 
+#include <QContextMenuEvent>
+
 
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +40,9 @@ private slots:
     void updateGui(); // :TODO
     void set_songs_tableView();
     void set_artists_tableView();
+    void onCustomContextMenu(const QPoint &point);
+    void addToPlaylist();
+    void addToQueue();
     void print_out();
     void yeah();
     void display_tree();
@@ -64,6 +69,7 @@ private:
     //display stuff
     display_artist_model* m_display_artist_model;
     display_song_model* m_display_song_model;
+    QMenu* contextMenu;
 
     // dbconnection
 
