@@ -11,6 +11,7 @@
 #include "metadataitem.h"
 
 #include "datamanagement.h"
+#include "artist.h"
 
 namespace Management {
 
@@ -28,6 +29,10 @@ public:
     // database get
     QSqlQueryModel *getQueryModel_all();
     QSqlQueryModel get_all_artists();
+    QSqlQueryModel *get_all_artists_direct_from_database();
+    QStringList* get_all_Interprets();
+    QList<Model::Artist> create_and_get_artists();
+    QList<Model::Song> create_and_get_songs();
 
     //MetaData / database drop
 

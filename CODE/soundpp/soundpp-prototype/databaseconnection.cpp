@@ -38,10 +38,13 @@ Database::DataBaseConnection::DataBaseConnection()
 }
 
 QSqlQueryModel* Database::DataBaseConnection::get_all_artists(){
+
+
     bool open_success;
     open_success = sqlitedb.open();
     QSqlQueryModel *artists = new QSqlQueryModel();
     artists->setQuery("SELECT artistName FROM songsTable");
+    qInfo()<< "db läuft " << open_success;
     sqlitedb.close();
     return artists;
 
@@ -61,13 +64,15 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
     qm->setQuery("SELECT * FROM songsTable");
     sqlitedb.close();
 
-    for(int i = 0; i < qm->rowCount(); i++){
-        if(qm->record(i).value("artistName") == "Iggy Pop"){
-//            qm->record(i).value("artistName");
-            qDebug() << qm->record(i).value("songName").toString();
-        }
-    }
-    return qm;
+//   for(int i = 0; i < qm->rowCount(); i++){
+//       if(qm->record(i).value("artistName") == "Blumentopf"){
+//        qInfo() << qm->record(i).value("artistName");
+//           qDebug() << qm->record(i).value("songName").toString();
+//    }
+
+//   }
+        return qm;
+
 }
 
 void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currently no functionality

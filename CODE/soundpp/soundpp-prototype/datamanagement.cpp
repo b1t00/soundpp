@@ -1,6 +1,8 @@
 #include "datamanagement.h"
 
 #include <QDebug>
+#include <QStringList>
+#include <QDebug>
 
 namespace Model {
 
@@ -24,12 +26,54 @@ DataManagement::DataManagement(QSqlQueryModel  *allSongs,QObject *parent) : QObj
 
 }
 
-void DataManagement::getAllInterprets(QString interpret) // TODO::
+QStringList* DataManagement::getAllInterprets()  // TODO::
 {
+    QStringList *artists = new QStringList;
     for(int i = 0; i < m_allSongs->rowCount(); i++){
-        if(m_allSongs->record(i).value("artistName") == interpret){
-            qDebug() << m_allSongs->record(i).value("songName").toString();
+          artists->push_back(m_allSongs->record(i).value("artistName").toString());
         }
+    return artists;
+
     }
+
+QList<Artist> DataManagement::create_and_get_artists(){
+
+    QList<Artist> artists;
+
+    for(int i = 0; i < m_allSongs->rowCount(); i++){
+        Artist artist;
+        artist.setName(m_allSongs->record(i).value("artistName").toString());
+        artists.append(artist);
+        qInfo() << artist.getName();
+
+
+    }
+    qInfo() << artists.length();
+    return artists;
+
+  }
+
+
+QList<Song> DataManagement::create_and_get_songs(){
+
+    QList<Song> songs;
+
+    for(int i = 0; i < m_allSongs->rowCount(); i++){
+        Song song;
+        song.setTitle(m_allSongs->record(i).value("songName").toString());
+        songs.append(song);
+        qInfo() << song.getTitle();
+
+
+    }
+    qInfo() << songs.length();
+    return songs;
+
+  }
+
 }
-}
+
+
+
+
+
