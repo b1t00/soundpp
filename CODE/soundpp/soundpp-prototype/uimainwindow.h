@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef UIMAINWINDOW_H
+#define UIMAINWINDOW_H
 
 #include "soundppmanagement.h"
 
@@ -81,4 +81,4 @@ private:
     // dbconnection
 
 };
-#endif // MAINWINDOW_H
+#endif // UIMAINWINDOW_H
