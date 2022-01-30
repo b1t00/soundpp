@@ -1,6 +1,7 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -238,4 +239,14 @@ void MainWindow::tableSelectionChanged(const QItemSelection &selected)
     qDebug() << "any selected" <<selected.indexes().size();
     ui->actionRemove_Song->setEnabled(anySelected);
 //    ui->actionRemove_Song->setVisible(anySelected);
+}
+
+void MainWindow::on_actionEdit_Song_triggered()
+{
+    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
+    EditSongDialog editDialog(songName,this);
+    if(editDialog.exec() == QDialog::Accepted){
+        qDebug() << songName << " zu " << editDialog.songName();
+    }
+
 }

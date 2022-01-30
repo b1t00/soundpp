@@ -39,7 +39,7 @@ HEADERS += \
 
 FORMS += \
     editsongdialog.ui \
-    uimainwindow.ui
+    mainwindow.ui
 
 #taglib library funktioniert mit dem minGW 64 compiler
 LIBS += -L$$PWD/libs/taglib/bin -ltag
