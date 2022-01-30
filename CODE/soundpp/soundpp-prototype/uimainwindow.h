@@ -23,6 +23,8 @@
 
 #include <QItemSelection>
 
+#include "uieditsongdialog.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -63,6 +65,8 @@ private slots:
     void on_actionRemove_Song_triggered();
 
     void tableSelectionChanged(const QItemSelection &selected);
+
+    void on_actionEdit_Song_triggered();
 
 private:
     Ui::MainWindow *ui;
