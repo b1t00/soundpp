@@ -14,29 +14,32 @@ SOURCES += \
     display_artist_model.cpp \
     display_song_model.cpp \
     main.cpp \
-    mainwindow.cpp \
     metadataitem.cpp \
     metadatareader.cpp \
     modeldatamanagement.cpp \
     modelsong.cpp \
     musikplayerqt.cpp \
-    soundppmanagement.cpp
+    soundppmanagement.cpp \
+    uieditsongdialog.cpp \
+    uimainwindow.cpp
 
 HEADERS += \
     artist.h \
     databaseconnection.h \
     display_artist_model.h \
     display_song_model.h \
-    mainwindow.h \
     metadataitem.h \
     metadatareader.h \
     modeldatamanagement.h \
     modelsong.h \
     musikplayerqt.h \
-    soundppmanagement.h
+    soundppmanagement.h \
+    uieditsongdialog.h \
+    uimainwindow.h
 
 FORMS += \
-    mainwindow.ui
+    editsongdialog.ui \
+    uimainwindow.ui
 
 #taglib library funktioniert mit dem minGW 64 compiler
 LIBS += -L$$PWD/libs/taglib/bin -ltag

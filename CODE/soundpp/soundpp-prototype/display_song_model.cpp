@@ -49,7 +49,8 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
             case 3: {
                 qint64 epocheTime = song.getAddedTime().toLongLong();
                 QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
-            return displayTime.toString("MM dd yyyy");
+//            return displayTime.toString("MM dd yyyy");
+            return displayTime.toString("MMM dd yyyy");
             }
             case 4: return song.getPlayCount();
             }

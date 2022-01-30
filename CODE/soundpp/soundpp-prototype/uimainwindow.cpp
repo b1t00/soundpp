@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -96,10 +96,8 @@ void MainWindow::on_btn_play_clicked()
     if (!isPlaying){
         QPixmap play (":img/Play.png");
 //        ui->btn_play->setIcon(play);
-        ui->artists_tableView->hide();
     } else {
         QPixmap pause (":img/pause.png");
-        ui->artists_tableView->show();
 //        ui->btn_play->setIcon(pause);
     }
 
