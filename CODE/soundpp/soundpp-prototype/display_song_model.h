@@ -2,6 +2,7 @@
 #define DISPLAY_SONG_MODEL_H
 
 #include <QAbstractTableModel>
+#include <QDateTime>
 #include "modelsong.h"
 
 class display_song_model : public QAbstractTableModel
