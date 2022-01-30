@@ -31,6 +31,7 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
 {
     m_playedOnce = false;
     m_songPath = songPath;
+    setMedia(songPath);
 }
 
 void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)

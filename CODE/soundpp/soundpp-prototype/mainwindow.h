@@ -41,7 +41,7 @@ private slots:
     void set_songs_tableView();
     void set_artists_tableView();
     void onCustomContextMenu(const QPoint &point);
-    void addToPlaylist();
+    void addToPlaylist(const QModelIndex &index);
     void addToQueue();
     void print_out();
     void yeah();
@@ -49,14 +49,15 @@ private slots:
 
     //musik player
     void on_btn_play_clicked();
-//    void on_btn_play_toggled(bool checked);
     void on_sldr_progress_sliderMoved(int position);
     void on_sldr_volume_sliderMoved(int volume);
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
 
 
-    void on_btn_play_clicked(bool checked);
+//    void on_btn_play_clicked(bool checked);
+
+    void on_songs_tableView_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
@@ -70,6 +71,7 @@ private:
     display_artist_model* m_display_artist_model;
     display_song_model* m_display_song_model;
     QMenu* contextMenu;
+    QMenu* contextMenuHeader;
 
     // dbconnection
 

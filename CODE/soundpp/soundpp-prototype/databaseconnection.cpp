@@ -19,6 +19,7 @@ Database::DataBaseConnection::DataBaseConnection()
                         songNr      INTEGER, \
                         artistName	TEXT, \
                         albumName	TEXT, \
+                        genre       TEXT, \
                         labelName	TEXT, \
                         labelNr     TEXT, \
                         realeaseDate TEXT, \

@@ -2,7 +2,7 @@
 #define DISPLAY_SONG_MODEL_H
 
 #include <QAbstractTableModel>
-#include "song.h"
+#include "modelsong.h"
 
 class display_song_model : public QAbstractTableModel
 {
@@ -19,6 +19,9 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    QString getSongPath(const QModelIndex &parent = QModelIndex());
+
 
 private:
     QList<Model::Song> m_songs;

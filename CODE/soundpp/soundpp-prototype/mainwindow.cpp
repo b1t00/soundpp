@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
 
+//    connect(spp, &Management::SoundppManagement::songDoubleClicked, this, &MainWindow::on_songs_tableView_doubleClicked);
+
     setAcceptDrops(true);
     //set_songs_tableView();
     display_tree();
@@ -24,11 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
     m_display_song_model = new display_song_model(sppm->create_and_get_songs(), this);
     ui->songs_tableView->setShowGrid(false);
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu = new QMenu(ui->songs_tableView);
-    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist()));
+    contextMenuHeader = new QMenu(ui->songs_tableView->horizontalHeader());
+    contextMenuHeader->addAction("blub next", this, SLOT(addToQueue()));
+    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
     contextMenu->addAction("play next", this, SLOT(addToQueue()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+    connect(ui->songs_tableView->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+
     ui->songs_tableView->setModel(m_display_song_model);
+    ui->songs_tableView->setColumnHidden(1,true);
 
     //yeah();
 
@@ -78,7 +86,6 @@ void MainWindow::on_btn_play_clicked()
     bool isPlaying = false;
 
 
-
     isPlaying = sppm->pressPlay();
 //    QString sppm->songName(); //TODO::
     sppm->incrementPlayCount();
@@ -91,10 +98,12 @@ void MainWindow::on_btn_play_clicked()
 
     if (!isPlaying){
         QPixmap play (":img/Play.png");
-        ui->btn_play->setIcon(play);
+//        ui->btn_play->setIcon(play);
+        ui->artists_tableView->hide();
     } else {
         QPixmap pause (":img/pause.png");
-        ui->btn_play->setIcon(pause);
+        ui->artists_tableView->show();
+//        ui->btn_play->setIcon(pause);
     }
 
 
@@ -175,11 +184,15 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
 
 }
 
-void MainWindow::addToPlaylist(){
+void MainWindow::addToPlaylist(const QModelIndex &index){
+
+//    qInfo() << index.model()->index(0,0);
     qInfo() << "Geil geil Geil";
 }
 
 void MainWindow::addToQueue(){
+    int index = ui->songs_tableView->currentIndex().row();
+    qInfo() << ui->songs_tableView->model()->index(index,1).data().toString();
     qInfo() << "Noch geiler geiler geiler";
 }
 
@@ -199,4 +212,12 @@ void MainWindow::display_tree(){
     playlist->appendRow(item1);
 
     ui->playlist_treeView->setModel(playlist);
+}
+
+void MainWindow::on_songs_tableView_doubleClicked(const QModelIndex &index)
+{
+//    int index = ui->songs_tableView->currentIndex().row();
+    QString songPath = ui->songs_tableView->model()->index(index.row(),1).data().toString();
+//    qDebug() << song
+    sppm->doubleclickPlay(songPath);
 }

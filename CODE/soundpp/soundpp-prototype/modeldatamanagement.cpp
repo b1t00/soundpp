@@ -1,4 +1,4 @@
-#include "datamanagement.h"
+#include "modeldatamanagement.h"
 
 #include <QDebug>
 #include <QStringList>
@@ -61,6 +61,7 @@ QList<Song> DataManagement::create_and_get_songs(){
     for(int i = 0; i < m_allSongs->rowCount(); i++){
         Song song;
         song.setTitle(m_allSongs->record(i).value("songName").toString());
+        song.setSongPath(m_allSongs->record(i).value("songPath").toString());
         songs.append(song);
         qInfo() << song.getTitle();
 
