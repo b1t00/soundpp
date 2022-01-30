@@ -21,6 +21,8 @@
 
 #include <QContextMenuEvent>
 
+#include <QItemSelection>
+
 
 
 QT_BEGIN_NAMESPACE
@@ -58,6 +60,9 @@ private slots:
 //    void on_btn_play_clicked(bool checked);
 
     void on_songs_tableView_doubleClicked(const QModelIndex &index);
+    void on_actionRemove_Song_triggered();
+
+    void tableSelectionChanged(const QItemSelection &selected);
 
 private:
     Ui::MainWindow *ui;

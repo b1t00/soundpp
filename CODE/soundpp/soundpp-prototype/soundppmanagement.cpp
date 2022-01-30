@@ -64,6 +64,11 @@ void SoundppManagement::incrementPlayCount()
     }
 }
 
+void SoundppManagement::deleteSong(QString filePath)
+{
+    dbc->deleteSong(filePath);
+}
+
 bool SoundppManagement::pressPlay()
 {
     incrementPlayCount();

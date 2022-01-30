@@ -38,6 +38,7 @@ public:
 
     bool droppedFile(QString filePath);
     void incrementPlayCount();
+    void deleteSong(QString filePath);
 
     //musikplayerqt
     bool pressPlay();

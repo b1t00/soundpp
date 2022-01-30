@@ -21,6 +21,7 @@ public:
     void insertQuery(QSqlQuery qry);
     void insertMetaItem(MetaData::MetaDataItem mi);
     void incrementPlayCount(QString filePath);
+    void deleteSong(QString filePath);
 
 
 private:
