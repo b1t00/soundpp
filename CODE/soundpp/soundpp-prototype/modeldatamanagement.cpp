@@ -62,6 +62,9 @@ QList<Song> DataManagement::create_and_get_songs(){
         Song song;
         song.setTitle(m_allSongs->record(i).value("songName").toString());
         song.setSongPath(m_allSongs->record(i).value("songPath").toString());
+        song.setArtistName(m_allSongs->record(i).value("artistName").toString());
+        song.setAddedTime(m_allSongs->record(i).value("addedDate").toString());
+        song.setPlayCount(m_allSongs->record(i).value("playCount").toInt());
         songs.append(song);
         qInfo() << song.getTitle();
 

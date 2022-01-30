@@ -10,8 +10,11 @@ QVariant display_song_model::headerData(int section, Qt::Orientation orientation
     if(role == Qt::DisplayRole){
         if(orientation == Qt::Horizontal){
             switch(section){
-            case 0: return "Songs"; 
-//            case 1: return "path";
+            case 0: return "Title";
+            case 1: return "Song Path";
+            case 2: return "Artist";
+            case 3: return "Creation Date";
+            case 4: return "Playcount";
             }
 
         }
@@ -27,7 +30,7 @@ int display_song_model::rowCount(const QModelIndex &parent) const
 
 int display_song_model::columnCount(const QModelIndex &parent) const
 {
-  return 2;
+  return 4;
 }
 
 QVariant display_song_model::data(const QModelIndex &index, int role) const
@@ -40,6 +43,9 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
             switch(index.column()){
             case 0: return song.getTitle();
             case 1: return song.getSongPath();
+            case 2: return song.getArtistName();
+            case 3: return song.getAddedTime();
+            case 4: return song.getPlayCount();
             }
 
     }
@@ -53,4 +59,34 @@ QString display_song_model::getSongPath(const QModelIndex &parent)
     case 0: return song.getTitle();
     case 1:return song.getSongPath();
     }
+}
+
+bool display_song_model::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if(row >= rowCount() || row+count-1 >= rowCount()){
+        return false;
+    }
+
+    beginRemoveRows(parent, row, row+count-1);
+
+    for(int i = 0; i < count; i++){
+        m_songs.removeAt(row);
+    }
+
+    endRemoveRows();
+
+    return true;
+
+}
+
+void display_song_model::removeSong(Model::Song song)
+{
+
+}
+
+void display_song_model::updateItem(int row, Model::Song song)
+{
+    (m_songs)[row] = song;
+
+    emit dataChanged(createIndex(row, 0),createIndex(row, columnCount()-1));
 }

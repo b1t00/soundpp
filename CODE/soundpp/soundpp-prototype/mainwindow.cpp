@@ -11,9 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
-
-//    connect(spp, &Management::SoundppManagement::songDoubleClicked, this, &MainWindow::on_songs_tableView_doubleClicked);
-
     setAcceptDrops(true);
     //set_songs_tableView();
     display_tree();
@@ -32,24 +29,24 @@ MainWindow::MainWindow(QWidget *parent)
     contextMenuHeader->addAction("blub next", this, SLOT(addToQueue()));
     contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
     contextMenu->addAction("play next", this, SLOT(addToQueue()));
+    contextMenu->addAction("remove song", this, SLOT(on_actionRemove_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
     connect(ui->songs_tableView->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
     ui->songs_tableView->setModel(m_display_song_model);
     ui->songs_tableView->setColumnHidden(1,true);
 
+    ui->songs_tableView->clearSelection();
+    ui->actionRemove_Song->setEnabled(false);
+
     //yeah();
-
-
-
-
 
     //print_out();
 
 
     // shortcuts
-   //QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
-   //connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
+   QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
+   connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
     //Icons
 
@@ -64,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
-
+     connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
 }
 
 MainWindow::~MainWindow()
@@ -220,4 +217,27 @@ void MainWindow::on_songs_tableView_doubleClicked(const QModelIndex &index)
     QString songPath = ui->songs_tableView->model()->index(index.row(),1).data().toString();
 //    qDebug() << song
     sppm->doubleclickPlay(songPath);
+}
+
+void MainWindow::on_actionRemove_Song_triggered()
+{
+    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
+    QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
+    QModelIndex index = ui->songs_tableView->currentIndex();
+    if(index.row() >= 0 && index.row() < m_display_song_model->rowCount()){
+        if(QMessageBox::question(this, "Remove: "+ songName, "Do you really want to remove \"" + songName + "\" ?","Yes","No")== 0){
+            m_display_song_model->removeRow(index.row());
+            sppm->deleteSong(songPath);
+            ui->statusbar->showMessage("remove " + songName, 10000);
+        }
+    }
+}
+
+void MainWindow::tableSelectionChanged(const QItemSelection &selected)
+{
+    bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
+//    bool anySelected = selected.
+    qDebug() << "any selected" <<selected.indexes().size();
+    ui->actionRemove_Song->setEnabled(anySelected);
+//    ui->actionRemove_Song->setVisible(anySelected);
 }
