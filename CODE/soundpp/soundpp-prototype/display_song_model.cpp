@@ -1,5 +1,7 @@
 ﻿#include "display_song_model.h"
 
+#include <QDebug>
+
 display_song_model::display_song_model(QList<Model::Song> songs,QObject *parent)
     : QAbstractTableModel(parent), m_songs(songs)
 {
@@ -30,7 +32,7 @@ int display_song_model::rowCount(const QModelIndex &parent) const
 
 int display_song_model::columnCount(const QModelIndex &parent) const
 {
-  return 4;
+  return 5;
 }
 
 QVariant display_song_model::data(const QModelIndex &index, int role) const
@@ -44,7 +46,11 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
             case 0: return song.getTitle();
             case 1: return song.getSongPath();
             case 2: return song.getArtistName();
-            case 3: return song.getAddedTime();
+            case 3: {
+                qint64 epocheTime = song.getAddedTime().toLongLong();
+                QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
+            return displayTime.toString("MM dd yyyy");
+            }
             case 4: return song.getPlayCount();
             }
 
