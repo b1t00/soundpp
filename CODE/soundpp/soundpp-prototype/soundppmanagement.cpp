@@ -70,6 +70,13 @@ bool SoundppManagement::pressPlay()
     return mpqt->pressPlay();
 }
 
+void SoundppManagement::doubleclickPlay(QString songPath)
+{
+    mpqt->setSongPath(songPath);
+    pressPlay();
+}
+
+
 void SoundppManagement::setVolume(int volume)
 {
     mpqt->setVolume(volume);
@@ -78,6 +85,11 @@ void SoundppManagement::setVolume(int volume)
 void SoundppManagement::setPosition(int position)
 {
     mpqt->setPosition(position);
+
+}
+
+void SoundppManagement::on_songs_tableView_doubleClicked(const QModelIndex &index)
+{
 
 }
 

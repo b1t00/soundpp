@@ -11,28 +11,28 @@ CONFIG += c++11
 SOURCES += \
     artist.cpp \
     databaseconnection.cpp \
-    datamanagement.cpp \
     display_artist_model.cpp \
     display_song_model.cpp \
     main.cpp \
     mainwindow.cpp \
     metadataitem.cpp \
     metadatareader.cpp \
+    modeldatamanagement.cpp \
+    modelsong.cpp \
     musikplayerqt.cpp \
-    song.cpp \
     soundppmanagement.cpp
 
 HEADERS += \
     artist.h \
     databaseconnection.h \
-    datamanagement.h \
     display_artist_model.h \
     display_song_model.h \
     mainwindow.h \
     metadataitem.h \
     metadatareader.h \
+    modeldatamanagement.h \
+    modelsong.h \
     musikplayerqt.h \
-    song.h \
     soundppmanagement.h
 
 FORMS += \

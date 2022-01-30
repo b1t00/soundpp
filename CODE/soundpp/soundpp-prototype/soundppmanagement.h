@@ -10,7 +10,7 @@
 #include "metadatareader.h"
 #include "metadataitem.h"
 
-#include "datamanagement.h"
+#include "modeldatamanagement.h"
 #include "artist.h"
 
 namespace Management {
@@ -41,12 +41,15 @@ public:
 
     //musikplayerqt
     bool pressPlay();
+    void doubleclickPlay(QString songPath);
     void setVolume(int volume);
     void setPosition(int position);
+    void on_songs_tableView_doubleClicked(const QModelIndex &index);
 
 signals:
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
+//    void songDoubleClicked(const QModelIndex &index);
 
 };
 

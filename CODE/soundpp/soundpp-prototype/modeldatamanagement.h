@@ -1,11 +1,11 @@
-#ifndef DATAMANAGEMENT_H
-#define DATAMANAGEMENT_H
+#ifndef MODELDATAMANAGEMENT_H
+#define MODELDATAMANAGEMENT_H
 
 #include <QObject>
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include "artist.h"
-#include "song.h"
+#include "modelsong.h"
 
 namespace Model {
 
@@ -33,4 +33,4 @@ signals:
 };
 
 }
-#endif // DATAMANAGEMENT_H
+#endif // MODELDATAMANAGEMENT_H
