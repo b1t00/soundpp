@@ -16,6 +16,12 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }
 
+<<<<<<< HEAD
+QSqlQueryModel *SoundppManagement::get_all_artists_direct_from_database(){
+    return dbc->get_all_artists();
+}
+=======
+>>>>>>> 77fd198833b65b74b47acf3ea6301542881ccd0a
 
 QList<Model::Artist> SoundppManagement::create_and_get_artists(){
     return dm->create_and_get_artists();

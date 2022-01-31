@@ -54,8 +54,10 @@ Model::Song SoundppManagement::droppedFile(QString filePath)
     return song_to_add; // goes back to ui, for songs model
 }
 
-void SoundppManagement::incrementPlayCount(QString songPath)
+void SoundppManagement::incrementPlayCount()
 {
+
+    QString songPath("C:/Users/Winny/Code_Local/Repositories/soundpp/CODE/soundpp/testsongs/01 - Sultans Of Swing.mp3");
     if(!mpqt->playedOnce()){
 //        QString songPath = mpqt->songPath().toString();  // TODO::
         dbc->incrementPlayCount(songPath);
@@ -69,16 +71,14 @@ void SoundppManagement::deleteSong(QString filePath)
 
 bool SoundppManagement::pressPlay()
 {
-//    if(!mpqt->isAudioAvailable()) return false;
+    incrementPlayCount();
     return mpqt->pressPlay();
 }
 
 void SoundppManagement::doubleclickPlay(QString songPath)
 {
     mpqt->setSongPath(songPath);
-    mpqt->setIsPlayling(true);
-    mpqt->play();
-//    pressPlay();
+    pressPlay();
 }
 
 
@@ -93,9 +93,9 @@ void SoundppManagement::setPosition(int position)
 
 }
 
-bool SoundppManagement::isAudioAvailable() const
+void SoundppManagement::on_songs_tableView_doubleClicked(const QModelIndex &index)
 {
-    return mpqt->isAudioAvailable();
+
 }
 
 }
