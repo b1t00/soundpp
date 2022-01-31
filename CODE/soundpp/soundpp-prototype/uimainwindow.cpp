@@ -31,11 +31,14 @@ MainWindow::MainWindow(QWidget *parent)
     contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
     contextMenu->addAction("play next", this, SLOT(addToQueue()));
     contextMenu->addAction("remove song", this, SLOT(on_actionRemove_Song_triggered()));
+    contextMenu->addAction("edit song...", this, SLOT(on_actionEdit_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
     connect(ui->songs_tableView->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
     ui->songs_tableView->setModel(m_display_song_model);
-    ui->songs_tableView->setColumnHidden(1,true);
+    ui->songs_tableView->setColumnHidden(0,true); // hide path column
+    ui->songs_tableView->setColumnHidden(5,true);
+    ui->songs_tableView->setColumnHidden(6,true);
 
     ui->songs_tableView->clearSelection();
     ui->actionRemove_Song->setEnabled(false);
@@ -213,7 +216,7 @@ void MainWindow::display_tree(){
 void MainWindow::on_songs_tableView_doubleClicked(const QModelIndex &index)
 {
 //    int index = ui->songs_tableView->currentIndex().row();
-    QString songPath = ui->songs_tableView->model()->index(index.row(),1).data().toString();
+    QString songPath = ui->songs_tableView->model()->index(index.row(),0).data().toString();
 //    qDebug() << song
     sppm->doubleclickPlay(songPath);
 }
@@ -243,10 +246,19 @@ void MainWindow::tableSelectionChanged(const QItemSelection &selected)
 
 void MainWindow::on_actionEdit_Song_triggered()
 {
-    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
-    EditSongDialog editDialog(songName,this);
+    Model::Song song_to_edit;
+    song_to_edit.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
+    song_to_edit.setTitle(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
+    song_to_edit.setArtistName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString());
+    song_to_edit.setAlbumName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),3).data().toString());
+    song_to_edit.setAlbumNr(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),4).data().toInt());
+    song_to_edit.setLabelName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),5).data().toString());
+    song_to_edit.setLabelNr(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),6).data().toString());
+    song_to_edit.setAddedTime(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),7).data().toString());
+//    song_to_edit.se(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
+    EditSongDialog editDialog(song_to_edit,this);
     if(editDialog.exec() == QDialog::Accepted){
-        qDebug() << songName << " zu " << editDialog.songName();
+        qDebug() << song_to_edit.getTitle() << " zu " << editDialog.song().getTitle();
     }
 
 }

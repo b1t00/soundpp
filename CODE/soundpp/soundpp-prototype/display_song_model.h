@@ -21,9 +21,6 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    QString getSongPath(const QModelIndex &parent = QModelIndex());
-
-
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
     void removeSong(Model::Song song);

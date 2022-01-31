@@ -12,11 +12,15 @@ QVariant display_song_model::headerData(int section, Qt::Orientation orientation
     if(role == Qt::DisplayRole){
         if(orientation == Qt::Horizontal){
             switch(section){
-            case 0: return "Title";
-            case 1: return "Song Path";
+            case 0: return "Song path";
+            case 1: return "Song title";
             case 2: return "Artist";
-            case 3: return "Creation Date";
-            case 4: return "Playcount";
+            case 3: return "Album";
+            case 4: return "nr";
+            case 5: return "Label";
+            case 6: return "Katalog Nr";
+            case 7: return "Creation date";
+            case 8: return "Playcount";
             }
 
         }
@@ -32,7 +36,7 @@ int display_song_model::rowCount(const QModelIndex &parent) const
 
 int display_song_model::columnCount(const QModelIndex &parent) const
 {
-  return 5;
+  return 9;
 }
 
 QVariant display_song_model::data(const QModelIndex &index, int role) const
@@ -43,30 +47,26 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
     if(role == Qt::DisplayRole){
         const Model::Song song = m_songs.at(index.row());
             switch(index.column()){
-            case 0: return song.getTitle();
-            case 1: return song.getSongPath();
+            case 0: return song.getSongPath();
+            case 1: return song.getTitle();
             case 2: return song.getArtistName();
-            case 3: {
+            case 3: return song.getAlbumName();
+            case 4: return song.getAlbumNr();
+            case 5: return song.getLabelName();
+            case 6: return song.getLabelNr();
+            case 7: {
                 qint64 epocheTime = song.getAddedTime().toLongLong();
                 QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
 //            return displayTime.toString("MM dd yyyy");
             return displayTime.toString("MMM dd yyyy");
             }
-            case 4: return song.getPlayCount();
+            case 8: return song.getPlayCount();
             }
 
     }
     return QVariant();
 }
 
-QString display_song_model::getSongPath(const QModelIndex &parent)
-{
-    const Model::Song song = m_songs.at(parent.row());
-    switch(parent.column()){
-    case 0: return song.getTitle();
-    case 1:return song.getSongPath();
-    }
-}
 
 bool display_song_model::removeRows(int row, int count, const QModelIndex &parent)
 {
