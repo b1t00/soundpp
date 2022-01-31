@@ -38,21 +38,6 @@ Database::DataBaseConnection::DataBaseConnection()
 
 }
 
-QSqlQueryModel* Database::DataBaseConnection::get_all_artists(){
-
-
-    bool open_success;
-    open_success = sqlitedb.open();
-    QSqlQueryModel *artists = new QSqlQueryModel();
-    artists->setQuery("SELECT artistName FROM songsTable");
-    qInfo()<< "db läuft " << open_success;
-    sqlitedb.close();
-    return artists;
-
-
-}
-
-
 
 QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
 {

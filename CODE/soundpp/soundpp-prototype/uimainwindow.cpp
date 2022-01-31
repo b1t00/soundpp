@@ -13,21 +13,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
-    //set_songs_tableView();
+
+
     display_tree();
-    //set_artists_tableView();
 
 
-    m_display_artist_model = new display_artist_model(sppm->create_and_get_artists(), this);
-    ui->artists_tableView->setModel(m_display_artist_model);
+    //Display & Interact ArtistModel
 
+    show_songs();
+
+
+
+    //Display & Interact SongModel
     m_display_song_model = new display_song_model(sppm->create_and_get_songs(), this);
     ui->songs_tableView->setShowGrid(false);
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu = new QMenu(ui->songs_tableView);
     contextMenu->addAction("play next", this, SLOT(addToQueue()));
-    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
+    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist()));
     contextMenu->addAction("remove song", this, SLOT(on_actionRemove_Song_triggered()));
     contextMenu->addAction("edit song...", this, SLOT(on_actionEdit_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -45,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->songs_tableView->clearSelection();
     ui->actionRemove_Song->setEnabled(false);
+
+
+
 
     //yeah();
 
@@ -80,6 +87,11 @@ MainWindow::~MainWindow()
 void MainWindow::updateGui() //TODO::
 {
 
+}
+
+void MainWindow::show_songs(){
+    m_display_artist_model = new display_artist_model(sppm->create_and_get_artists(), this);
+    ui->artists_tableView->setModel(m_display_artist_model);
 }
 
 
@@ -157,30 +169,7 @@ void MainWindow::dropEvent(QDropEvent *e)
 //    set_songs_tableView();
 }
 
-void MainWindow::set_songs_tableView()
-{
-    QSqlQueryModel *qm = sppm->getQueryModel_all();
-    ui->songs_tableView->setModel(qm);
-}
 
-void MainWindow::set_artists_tableView() {
-    QSqlQueryModel *qm  = sppm->get_all_artists_direct_from_database();
-    ui->artists_tableView->setModel(qm);
-
-    qm->setHeaderData(0, Qt::Horizontal, tr("Artists"));
-    qm->setHeaderData(0, Qt::Vertical, tr("Artists"));
-
-}
-
-void MainWindow::print_out(){
-
-    qInfo() << sppm->get_all_Interprets();
-
-}
-
-void MainWindow::yeah(){
-    sppm->create_and_get_artists();
-}
 
 void MainWindow::onCustomContextMenu(const QPoint &point)
 {
@@ -188,7 +177,7 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
 
 }
 
-void MainWindow::addToPlaylist(const QModelIndex &index){
+void MainWindow::addToPlaylist(){
 
 //    qInfo() << index.model()->index(0,0);
     qInfo() << "Geil geil Geil";
@@ -277,3 +266,19 @@ void MainWindow::on_actionEdit_Song_triggered()
 
 }
 
+
+void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
+{
+    //inhalt wird per parameter übergeben und anhand dieses parameters wird dann die songs table vie aktualisiert
+
+   // qInfo() << sppm->filtered_songs_by_artist(index.data().toString());
+
+//    qInfo() << index.data();
+//    qInfo() << index.data().toString();
+//    sppm->filtered_songs_by_artist("Dendemann");
+
+    m_display_song_model = new display_song_model(sppm->filtered_songs_by_artist(index.data().toString()), this);
+    ui->songs_tableView->setModel(m_display_song_model);
+
+
+}
