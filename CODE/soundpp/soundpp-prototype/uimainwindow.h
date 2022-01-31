@@ -67,6 +67,8 @@ private slots:
     void on_actionEdit_Song_triggered();
     void on_actionPlay_triggered();
 
+    void on_actionPlay_Next_triggered();
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;

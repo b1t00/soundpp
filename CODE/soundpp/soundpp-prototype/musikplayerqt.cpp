@@ -6,10 +6,7 @@ MusikPlayer::MusikPlayerQt::MusikPlayerQt()
 {
     m_playlist = new QMediaPlaylist();
     this->setPlaylist(m_playlist);
-    setSongPath(QCoreApplication::applicationDirPath() + "/../../testsongs/01 - Sultans Of Swing.mp3");
-    setMedia(songPath());
     setIsPlayling(false);
-//    this->setMedia((/*QCoreApplication::applicationDirPath() + "/../../testsongs/01 - Sultans Of Swing.mp3"*/));
 }
 
 
@@ -19,8 +16,6 @@ bool MusikPlayerQt::playedOnce() const
 {
     return m_playedOnce;
 }
-
-
 
 QUrl MusikPlayerQt::songPath() const
 {
@@ -41,8 +36,7 @@ void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
 
 bool MusikPlayerQt::pressPlay()
 {
-    if(!m_playedOnce)
-        m_playedOnce = true;
+    if(!m_playedOnce) m_playedOnce = true;
 
     setIsPlayling(!isPlayling());
 //    qDebug() << "playing" << isPlayling();
