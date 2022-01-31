@@ -6,6 +6,15 @@
 
 namespace Model {
 
+DataManagement::DataManagement(QObject *parent)
+{
+
+}
+
+DataManagement::DataManagement(QSqlQueryModel  *allSongs,QObject *parent) : QObject(parent),m_allSongs(allSongs)
+{
+}
+
 QSqlQueryModel *DataManagement::getAllSongs() const
 {
     return m_allSongs;
@@ -14,16 +23,6 @@ QSqlQueryModel *DataManagement::getAllSongs() const
 void DataManagement::setAllSongs(QSqlQueryModel *allSongs)
 {
     m_allSongs = allSongs;
-}
-
-DataManagement::DataManagement(QObject *parent)
-{
-
-}
-
-DataManagement::DataManagement(QSqlQueryModel  *allSongs,QObject *parent) : QObject(parent),m_allSongs(allSongs)
-{
-
 }
 
 QStringList* DataManagement::getAllInterprets()  // TODO::
@@ -59,21 +58,23 @@ QList<Song> DataManagement::create_and_get_songs(){
     QList<Song> songs;
 
     for(int i = 0; i < m_allSongs->rowCount(); i++){
+//        if interpret
         Song song;
         song.setTitle(m_allSongs->record(i).value("songName").toString());
         song.setSongPath(m_allSongs->record(i).value("songPath").toString());
         song.setArtistName(m_allSongs->record(i).value("artistName").toString());
+        song.setAlbumName(m_allSongs->record(i).value("albumName").toString());
+        song.setAlbumNr(m_allSongs->record(i).value("songNr").toInt());
         song.setAddedTime(m_allSongs->record(i).value("addedDate").toString());
         song.setPlayCount(m_allSongs->record(i).value("playCount").toInt());
         songs.append(song);
-        qInfo() << song.getTitle();
-
-
+//        qInfo() << song.getTitle();
     }
-    qInfo() << songs.length();
+//    qInfo() << songs.length();
     return songs;
 
-  }
+}
+
 
 }
 

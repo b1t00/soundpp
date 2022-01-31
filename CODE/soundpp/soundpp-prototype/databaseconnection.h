@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#include "metadataitem.h"
+#include "modelsong.h"
 
 
 namespace Database {
@@ -19,13 +19,15 @@ public:
     QSqlQueryModel* getQueryModel_all();
     QSqlQueryModel* get_all_artists();
     void insertQuery(QSqlQuery qry);
-    void insertMetaItem(MetaData::MetaDataItem mi);
+    void insertSong(Model::Song song);
+    void updateAllSongsModel();
     void incrementPlayCount(QString filePath);
     void deleteSong(QString filePath);
 
 
 private:
     QSqlDatabase sqlitedb;
+    QSqlQueryModel *allSongsQueryModel;
 };
 
 }

@@ -8,11 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setAcceptDrops(true);
     this->sppm = new Management::SoundppManagement(this);
 
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
-    setAcceptDrops(true);
     //set_songs_tableView();
     display_tree();
     //set_artists_tableView();
@@ -150,9 +150,11 @@ void MainWindow::dropEvent(QDropEvent *e)
         QString filePath (url.toLocalFile());
         ui->statusbar->showMessage(filePath + " dropped", 3000);
 //        qDebug() << filePath << " dropped";
-        sppm->droppedFile(filePath);
+        Model::Song song_to_add = sppm->droppedFile(filePath);
+//        m_display_song_model->addSong(song_to_add);
     }
-    set_songs_tableView();
+//    ui->songs_tableView->setModel(sppm->getQueryModel_all());
+//    set_songs_tableView();
 }
 
 void MainWindow::set_songs_tableView()
@@ -230,11 +232,11 @@ void MainWindow::on_actionPlay_triggered() // TODO:: function redundante
 
 void MainWindow::on_actionRemove_Song_triggered()
 {
-    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
-    QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
+    QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
+    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
     QModelIndex index = ui->songs_tableView->currentIndex();
     if(index.row() >= 0 && index.row() < m_display_song_model->rowCount()){
-        if(QMessageBox::question(this, "Remove: "+ songName, "Do you really want to remove \"" + songName + "\" ?","Yes","No")== 0){
+        if(QMessageBox::question(this, "Remove: "+ songPath, "Do you really want to remove \"" + songName + "\" ?","Yes","No")== 0){
             m_display_song_model->removeRow(index.row());
             sppm->deleteSong(songPath);
             ui->statusbar->showMessage("remove " + songName, 10000);
@@ -246,7 +248,7 @@ void MainWindow::tableSelectionChanged(const QItemSelection &selected)
 {
     bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
 //    bool anySelected = selected.
-    qDebug() << "any selected" <<selected.indexes().size();
+//    qDebug() << "any selected" <<selected.indexes().size();
     ui->actionRemove_Song->setEnabled(anySelected);
 //    ui->actionRemove_Song->setVisible(anySelected);
 }
