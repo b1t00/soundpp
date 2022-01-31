@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QSqlQueryModel>
 #include <QSqlRecord>
+#include <QString>
 #include "artist.h"
 #include "modelsong.h"
 
@@ -30,6 +31,9 @@ public:
     QList<Song> create_and_get_songs();
     QList<Artist> artists();
     QList<Song> songs();
+    QList<Song> filtered_songs_by_artist(QString artist);
+
+
 
 
 signals:

@@ -16,11 +16,6 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }
 
-QSqlQueryModel *SoundppManagement::get_all_artists_direct_from_database(){
-
-
-    return dbc->get_all_artists();
-}
 
 QList<Model::Artist> SoundppManagement::create_and_get_artists(){
     return dm->create_and_get_artists();
@@ -30,6 +25,9 @@ QList<Model::Song> SoundppManagement::create_and_get_songs(){
     return dm->create_and_get_songs();
 }
 
+QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
+    return dm->filtered_songs_by_artist(artist);
+}
 
 QSqlQueryModel *SoundppManagement::getQueryModel_all()
 {
