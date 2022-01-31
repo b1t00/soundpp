@@ -61,12 +61,14 @@ private slots:
 
 //    void on_btn_play_clicked(bool checked);
 
-    void on_songs_tableView_doubleClicked(const QModelIndex &index);
+    void on_songs_tableView_doubleClicked();
     void on_actionRemove_Song_triggered();
 
     void tableSelectionChanged(const QItemSelection &selected);
 
     void on_actionEdit_Song_triggered();
+
+    void on_actionPlay_triggered();
 
 private:
     Ui::MainWindow *ui;
