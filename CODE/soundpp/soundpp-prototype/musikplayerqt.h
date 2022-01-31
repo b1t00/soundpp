@@ -26,8 +26,10 @@ public:
     void addToPlaylist(const QList<QUrl> &urls);
 
     bool pressPlay();
+//    void playSong();
 
     bool playedOnce() const;
+
 };
 
 }

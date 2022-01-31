@@ -312,9 +312,6 @@ min-height: 20px;
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -345,6 +342,9 @@ min-height: 20px;
   <action name="actionRemove_Song">
    <property name="text">
     <string>Remove Song</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

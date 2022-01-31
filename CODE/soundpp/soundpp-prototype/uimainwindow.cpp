@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu = new QMenu(ui->songs_tableView);
     contextMenu->addAction("play next", this, SLOT(addToQueue()));
-    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
+//    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
     contextMenu->addAction("remove song", this, SLOT(on_actionRemove_Song_triggered()));
     contextMenu->addAction("edit song...", this, SLOT(on_actionEdit_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -66,6 +66,9 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap lupe (":img/suche_lupe.png");
     ui->lupe->setPixmap(lupe);
 
+    QPixmap play (":img/Play.png");
+    ui->btn_play->setIcon(play);
+
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
      connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
@@ -86,26 +89,26 @@ void MainWindow::updateGui() //TODO::
 // musikplayer >
 void MainWindow::on_btn_play_clicked()
 {
+    if(sppm->isAudioAvailable()){
 
     bool isPlaying = false;
 
-
     isPlaying = sppm->pressPlay();
 //    QString sppm->songName(); //TODO::
-    sppm->incrementPlayCount();
-
-
-
+//    sppm->incrementPlayCount();
 
     isPlaying ? ui->statusbar->showMessage("playing song", 3000) : ui->statusbar->showMessage("pause song", 3000);
     //set_songs_tableView(); // TODO:: Schlau direkt aus tableView zu holen
 
-    if (!isPlaying){
-        QPixmap play (":img/Play.png");
-//        ui->btn_play->setIcon(play);
-    } else {
+    if (isPlaying){
         QPixmap pause (":img/pause.png");
-//        ui->btn_play->setIcon(pause);
+        ui->btn_play->setIcon(pause);
+    } else {
+        QPixmap play (":img/Play.png");
+        ui->btn_play->setIcon(play);
+    }
+    } else {
+         ui->statusbar->showMessage("No song selected", 50000);
     }
 
 
@@ -220,6 +223,8 @@ void MainWindow::display_tree(){
 
 void MainWindow::on_songs_tableView_doubleClicked()
 {
+    QPixmap pause (":img/pause.png");
+    ui->btn_play->setIcon(pause);
     QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
     sppm->doubleclickPlay(songPath);
 }
@@ -277,3 +282,8 @@ void MainWindow::on_actionEdit_Song_triggered()
 
 }
 
+
+void MainWindow::on_actionPlay_Next_triggered()
+{
+
+}

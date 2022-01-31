@@ -110,6 +110,7 @@ void Database::DataBaseConnection::insertSong(Model::Song song)
                   "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate, 0)");
     qry.bindValue(":songPath", song.getSongPath());
     qry.bindValue(":songName", song.getTitle());
+    qry.bindValue(":songNr", song.getAlbumNr());
     qry.bindValue(":albumName", song.getAlbumName());
     qry.bindValue(":artistName", song.getArtistName());
     qry.bindValue(":addedDate", song.getAddedTime());

@@ -36,7 +36,7 @@ public:
     //MetaData / database drop
 
     Model::Song droppedFile(QString filePath);
-    void incrementPlayCount();
+    void incrementPlayCount(QString songPath);
     void deleteSong(QString filePath);
 
     //musikplayerqt
@@ -44,7 +44,7 @@ public:
     void doubleclickPlay(QString songPath);
     void setVolume(int volume);
     void setPosition(int position);
-    void on_songs_tableView_doubleClicked(const QModelIndex &index);
+    bool isAudioAvailable() const;
 
 signals:
     void positionChanged(qint64 position);
