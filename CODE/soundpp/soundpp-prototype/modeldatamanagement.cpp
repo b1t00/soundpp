@@ -53,9 +53,9 @@ QList<Artist> DataManagement::create_and_get_artists(){
   }
 
 
-QList<Song> DataManagement::create_and_get_songs(){
+QList<Model::Song> DataManagement::create_and_get_songs(){
 
-    QList<Song> songs;
+    QList<Model::Song> songs;
 
     for(int i = 0; i < m_allSongs->rowCount(); i++){
 //        if interpret
@@ -73,6 +73,30 @@ QList<Song> DataManagement::create_and_get_songs(){
 //    qInfo() << songs.length();
     return songs;
 
+}
+
+QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
+
+
+    QList<Model::Song> filtered_songs;
+    QSqlQueryModel *all_songs = getAllSongs();
+
+    for(int i = 0; i < all_songs->rowCount(); i++){
+        if(all_songs->record(i).value("artistName") == artist){
+            Song song;
+            song.setTitle(m_allSongs->record(i).value("songName").toString());
+            song.setSongPath(m_allSongs->record(i).value("songPath").toString());
+            song.setArtistName(m_allSongs->record(i).value("artistName").toString());
+            song.setAlbumName(m_allSongs->record(i).value("albumName").toString());
+            song.setAlbumNr(m_allSongs->record(i).value("songNr").toInt());
+            song.setAddedTime(m_allSongs->record(i).value("addedDate").toString());
+            song.setPlayCount(m_allSongs->record(i).value("playCount").toInt());
+            filtered_songs.append(song);
+
+        }
+    }
+    qInfo() << filtered_songs.size();
+    return filtered_songs;
 }
 
 

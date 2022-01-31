@@ -99,6 +99,7 @@ void display_song_model::updateItem(int row, Model::Song song)
     emit dataChanged(createIndex(row, 0),createIndex(row, columnCount()-1));
 }
 
+
 void display_song_model::addSong(Model::Song song)
 {
     m_songs.append(song);
