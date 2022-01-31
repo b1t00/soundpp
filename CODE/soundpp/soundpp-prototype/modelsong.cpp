@@ -1,26 +1,24 @@
 #include "modelsong.h"
 
 namespace Model{
-Song::Song()
+
+Song::Song(){}
+
+Song::Song(QString songPath, QString title, QString artistName, QString labelName, QString labelNr, QString addedTime, int playCount):
+    m_songPath(songPath), m_title(title), m_artistName(artistName), m_labelName(labelName), m_labelNr(labelNr), m_addedTime(addedTime), m_playCount(playCount)
 {
 
-}
-
-Song::Song(QString title):
-
-    m_title(title)
-{
 }
 
 
 QString Song::getTitle() const
 {
-    return title;
+    return m_title;
 }
 
 void Song::setTitle(const QString &value)
 {
-    title = value;
+    m_title = value;
 }
 
 QString Song::getSongPath() const
@@ -72,4 +70,35 @@ void Song::setPlayCount(int playCount)
 {
     m_playCount = playCount;
 }
+
+QString Song::getAlbumName() const
+{
+    return m_albumName;
+}
+
+void Song::setAlbumName(const QString &albumName)
+{
+    m_albumName = albumName;
+}
+
+int Song::getAlbumNr() const
+{
+    return m_albumNr;
+}
+
+void Song::setAlbumNr(int albumNr)
+{
+    m_albumNr = albumNr;
+}
+
+QString Song::getLabelNr() const
+{
+    return m_labelNr;
+}
+
+void Song::setLabelNr(const QString &labelNr)
+{
+    m_labelNr = labelNr;
+}
+
 }

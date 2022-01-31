@@ -1,12 +1,18 @@
 #include "uieditsongdialog.h"
 #include "ui_editsongdialog.h"
 
-EditSongDialog::EditSongDialog(QString songName,QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::EditSongDialog)
+EditSongDialog::EditSongDialog(Model::Song song ,QWidget *parent)
+    :QDialog(parent),
+    ui(new Ui::EditSongDialog),
+    m_song(song)
 {
     ui->setupUi(this);
-    ui->lineEdit_songTitle->setText(songName);
+    m_song = song;
+
+    ui->lineEdit_songTitle->setText(m_song.getTitle());
+    ui->lineEdit_artistName->setText(m_song.getArtistName());
+    ui->lineEdit_albumName->setText(m_song.getAlbumName());
+    ui->lcd_songNr->setDigitCount(m_song.getAlbumNr());
 }
 
 EditSongDialog::~EditSongDialog()
@@ -16,10 +22,18 @@ EditSongDialog::~EditSongDialog()
 
 void EditSongDialog::on_buttonBox_accepted()
 {
-    m_songName = ui->lineEdit_songTitle->text();
+    m_song.setTitle(ui->lineEdit_songTitle->text());
+    m_song.setArtistName(ui->lineEdit_artistName->text());
+    m_song.setAlbumName(ui->lineEdit_albumName->text());
+    m_song.setAlbumNr(ui->lcd_songNr->value()); // TODO
 }
 
-QString EditSongDialog::songName() const
+Model::Song EditSongDialog::song() const
 {
-    return m_songName;
+    return m_song;
+}
+
+void EditSongDialog::setSong(const Model::Song &song)
+{
+    m_song = song;
 }

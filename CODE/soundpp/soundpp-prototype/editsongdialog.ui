@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>453</width>
-    <height>293</height>
+    <width>739</width>
+    <height>266</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>30</x>
      <y>31</y>
-     <width>378</width>
+     <width>681</width>
      <height>221</height>
     </rect>
    </property>
@@ -67,17 +67,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_songNr">
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="maxLength">
-           <number>199</number>
-          </property>
-         </widget>
+         <widget class="QLCDNumber" name="lcd_songNr"/>
         </item>
        </layout>
       </item>
