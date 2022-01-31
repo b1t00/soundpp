@@ -10,8 +10,8 @@ class Song
 {
 public:
     Song();
-    Song( QString songPath, QString title, QString artistName, QString labelName,
-          QString labelNr, QString addedTime, int m_playCount);
+    Song( QString songPath, QString title, QString artistName, QString album,
+          int labelNr, QString addedTime, int m_playCount);
 
     QString getSongPath() const;
     void setSongPath(const QString &songPath);

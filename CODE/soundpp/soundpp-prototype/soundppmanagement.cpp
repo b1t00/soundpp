@@ -48,10 +48,12 @@ QStringList *SoundppManagement::get_all_Interprets(){
 //    return dbc->get_all_artists();
 //}
 
-bool SoundppManagement::droppedFile(QString filePath)
+Model::Song SoundppManagement::droppedFile(QString filePath)
 {
-    MetaData::MetaDataItem mi = mdr->getMetaDataFromFilePath(filePath);
-    dbc->insertMetaItem(mi);
+    Model::Song song_to_add = mdr->getMetaDataFromFilePath(filePath);
+//    dm->addSong(song_to_add);
+    dbc->insertSong(song_to_add);
+    return song_to_add; // goes back to ui, for songs model
 }
 
 void SoundppManagement::incrementPlayCount()

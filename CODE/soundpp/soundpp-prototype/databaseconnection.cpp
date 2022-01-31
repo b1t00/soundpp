@@ -6,14 +6,14 @@
 
 Database::DataBaseConnection::DataBaseConnection()
 {
-    this->sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
+    sqlitedb = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = QCoreApplication::applicationDirPath() + "/musicDataBase.db";
     sqlitedb.setDatabaseName(dbPath);
-
+    allSongsQueryModel = new QSqlQueryModel();
     if(sqlitedb.open()){
-        QSqlQueryModel *qm = new QSqlQueryModel();
+//        QSqlQueryModel *qm = new QSqlQueryModel();
         qInfo() << "db connected";
-        qm->setQuery("CREATE TABLE songsTable ( \
+        allSongsQueryModel->setQuery("CREATE TABLE songsTable ( \
                         songPath	TEXT, \
                         songName	TEXT, \
                         songNr      INTEGER, \
@@ -58,11 +58,14 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
 {
     bool open_success;
     open_success = sqlitedb.open();
-    QSqlQueryModel *qm = new QSqlQueryModel();
+//    QSqlQueryModel *qm = new QSqlQueryModel();
 //    AllSongsSqlModel *qm = new AllSongsSqlModel();
 
     qInfo() << "db get query connected: " << open_success;
-    qm->setQuery("SELECT * FROM songsTable");
+    QSqlQuery qry;
+    qry.prepare("SELECT * FROM songsTable");
+    qry.exec();
+    allSongsQueryModel->setQuery(qry);
     sqlitedb.close();
 
 //   for(int i = 0; i < qm->rowCount(); i++){
@@ -72,7 +75,7 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
 //    }
 
 //   }
-        return qm;
+        return allSongsQueryModel;
 
 }
 
@@ -98,24 +101,36 @@ void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currentl
 //        this->sqlitedb.close();
 }
 
-void Database::DataBaseConnection::insertMetaItem(MetaData::MetaDataItem mi)
+void Database::DataBaseConnection::insertSong(Model::Song song)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
 
     qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName, addedDate, playCount) "
                   "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate, 0)");
-    qry.bindValue(":songPath", mi.songPath());
-    qry.bindValue(":songName", mi.songName());
-    qry.bindValue(":songNr", mi.songNr());
-    qry.bindValue(":artistName", mi.artistName());
-    qry.bindValue(":albumName", mi.albumName());
-    qry.bindValue(":addedDate", (QString::number(QDateTime::currentMSecsSinceEpoch()))); // Unix Epoche Time
+    qry.bindValue(":songPath", song.getSongPath());
+    qry.bindValue(":songName", song.getTitle());
+    qry.bindValue(":albumName", song.getAlbumName());
+    qry.bindValue(":artistName", song.getArtistName());
+    qry.bindValue(":addedDate", song.getAddedTime());
+    qry.bindValue(":playCount", song.getPlayCount());
+    qry.exec();
 
-    if(qry.exec()){
-        qInfo() << "data is saved";
-    }
+//    allSongsQueryModel->setQuery(qry);
+//    allSongsQueryModel->
+
+//    if(allSongsQueryModel.exec()){
+//        qInfo() << "data is saved";
+//    }
     this->sqlitedb.close();
+    updateAllSongsModel();
+}
+
+void Database::DataBaseConnection::updateAllSongsModel()
+{
+    sqlitedb.open();
+    allSongsQueryModel->setQuery("SELECT * FROM songsTable");
+    sqlitedb.close();
 }
 
 void Database::DataBaseConnection::incrementPlayCount(QString filePath)

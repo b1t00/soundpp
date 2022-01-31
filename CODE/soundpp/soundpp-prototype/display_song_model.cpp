@@ -55,6 +55,7 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
             case 5: return song.getLabelName();
             case 6: return song.getLabelNr();
             case 7: {
+//                        qDebug() << "albumName?? " << song.getAlbumName();
                 qint64 epocheTime = song.getAddedTime().toLongLong();
                 QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
 //            return displayTime.toString("MM dd yyyy");
@@ -70,9 +71,9 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
 
 bool display_song_model::removeRows(int row, int count, const QModelIndex &parent)
 {
-    if(row >= rowCount() || row+count-1 >= rowCount()){
-        return false;
-    }
+//    if(row >= rowCount() || row+count-1 >= rowCount()){
+//        return false;
+//    }
 
     beginRemoveRows(parent, row, row+count-1);
 
@@ -97,3 +98,13 @@ void display_song_model::updateItem(int row, Model::Song song)
 
     emit dataChanged(createIndex(row, 0),createIndex(row, columnCount()-1));
 }
+
+void display_song_model::addSong(Model::Song song)
+{
+    m_songs.append(song);
+//    (m_songs)[0] = song;
+//    qDebug() << "add song " << song.getAlbumName();
+//    emit dataChanged(createIndex(m_songs.size()-1, 0),createIndex(m_songs.size()-1, columnCount()-1));
+
+}
+

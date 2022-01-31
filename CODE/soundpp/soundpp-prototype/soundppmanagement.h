@@ -8,7 +8,6 @@
 #include "databaseconnection.h"
 #include "musikplayerqt.h"
 #include "metadatareader.h"
-#include "metadataitem.h"
 
 #include "modeldatamanagement.h"
 #include "artist.h"
@@ -36,7 +35,7 @@ public:
 
     //MetaData / database drop
 
-    bool droppedFile(QString filePath);
+    Model::Song droppedFile(QString filePath);
     void incrementPlayCount();
     void deleteSong(QString filePath);
 

@@ -16,7 +16,7 @@
 #include "taglib/fileref.h"
 //#include "taglib/fil"
 
-#include "metadataitem.h"
+#include "modelsong.h"
 
 namespace MetaData {
 
@@ -24,7 +24,7 @@ class MetaDataFromFile
 {
 public:
     MetaDataFromFile();
-    MetaData::MetaDataItem getMetaDataFromFilePath(QString filePath);
+    Model::Song getMetaDataFromFilePath(QString filePath);
 };
 
 }

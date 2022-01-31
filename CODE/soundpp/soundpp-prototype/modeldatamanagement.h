@@ -1,6 +1,7 @@
 #ifndef MODELDATAMANAGEMENT_H
 #define MODELDATAMANAGEMENT_H
 
+#include <QMap>
 #include <QObject>
 #include <QSqlQueryModel>
 #include <QSqlRecord>
@@ -13,10 +14,12 @@ class DataManagement : public QObject
 {
     Q_OBJECT
 private:
-    QSqlQueryModel  *m_allSongs;
+    QSqlQueryModel *m_allSongs;
     //QStringList artists;
     QList<Artist> m_artists();
-    QList<Song> m_songs();
+//    QList<Song> m_songs();
+//    QMap<Song> m_allSongs();
+//    QMap<Song> *m_all;
 public:
     explicit DataManagement(QObject *parent = nullptr);
     explicit DataManagement(QSqlQueryModel  *allSongs, QObject *parent = nullptr);
@@ -27,6 +30,7 @@ public:
     QList<Song> create_and_get_songs();
     QList<Artist> artists();
     QList<Song> songs();
+
 
 signals:
 

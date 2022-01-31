@@ -1,6 +1,7 @@
 #include "metadatareader.h"
 #include<QFile>
 #include<QString>
+#include <QTime>
 #include <QUrl>
 #include<cstring>
 
@@ -12,22 +13,23 @@ namespace MetaData {
 MetaDataFromFile::MetaDataFromFile(){
 }
 
-MetaData::MetaDataItem MetaDataFromFile::getMetaDataFromFilePath(QString filePath)
+Model::Song MetaDataFromFile::getMetaDataFromFilePath(QString filePath)
 {
     TagLib::FileRef songRef((filePath.toStdString().c_str()));
 
     QString songName = songRef.tag()->title().toCString();
-    int songNr = songRef.tag()->track();
     QString artistName = songRef.tag()->artist().toCString();
     QString albumName = songRef.tag()->album().toCString();
+    int songNr = songRef.tag()->track();
+    QString addedDate = (QString::number(QDateTime::currentMSecsSinceEpoch())); // Unix Epoche Time
 
     songName = (songName == NULL) ? QUrl(filePath).fileName() : songName;
     songNr = (songNr == NULL) ? 0 : songNr;
     artistName = (artistName == NULL) ? "unknown": artistName;
     albumName = (albumName == NULL) ? "unknown": albumName;
 
-    MetaData::MetaDataItem mi(filePath, songName, songNr, artistName, albumName);
-    return mi;
+    Model::Song song(filePath, songName,artistName,albumName, songNr,addedDate,0);
+    return song;
 }
 
 }

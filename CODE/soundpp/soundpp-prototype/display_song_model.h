@@ -24,7 +24,8 @@ public:
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
     void removeSong(Model::Song song);
-     void updateItem(int row, Model::Song song);
+    void updateItem(int row, Model::Song song);
+    void addSong(Model::Song song);
 
 private:
     QList<Model::Song> m_songs;

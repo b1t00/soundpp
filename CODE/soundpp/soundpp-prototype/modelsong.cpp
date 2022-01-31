@@ -4,8 +4,8 @@ namespace Model{
 
 Song::Song(){}
 
-Song::Song(QString songPath, QString title, QString artistName, QString labelName, QString labelNr, QString addedTime, int playCount):
-    m_songPath(songPath), m_title(title), m_artistName(artistName), m_labelName(labelName), m_labelNr(labelNr), m_addedTime(addedTime), m_playCount(playCount)
+Song::Song(QString songPath, QString title, QString artistName, QString albumName, int albumNr, QString addedTime, int playCount):
+    m_songPath(songPath), m_title(title), m_artistName(artistName), m_albumName(albumName), m_albumNr(albumNr), m_addedTime(addedTime), m_playCount(playCount)
 {
 
 }
