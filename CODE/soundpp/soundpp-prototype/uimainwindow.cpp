@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->logo->setPixmap(logo);
 
     QPixmap volume (":img/volume.png");
-    ui->volume->setPixmap(volume);
+    ui->btn_volume->setIcon(volume);
 
     QPixmap lupe (":img/suche_lupe.png");
     ui->lupe->setPixmap(lupe);
@@ -320,6 +320,21 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
     m_display_song_model = new display_song_model(sppm->filtered_songs_by_artist(index.data().toString()), this);
     ui->songs_tableView->setModel(m_display_song_model);
 }
+void MainWindow::on_btn_volume_clicked(bool checked)
+{
+
+
+    sppm->press_mute(checked);
+
+    if(checked){
+        QPixmap mute (":img/mute.png");
+        ui->btn_volume->setIcon(mute);
+    } else {
+        QPixmap volume (":img/volume.png");
+        ui->btn_volume->setIcon(volume);
+    }
+}
+
 
 
 void MainWindow::on_btn_for_clicked()

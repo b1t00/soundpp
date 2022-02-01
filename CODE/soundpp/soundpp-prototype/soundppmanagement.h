@@ -45,6 +45,7 @@ public:
     void setVolume(int volume);
     void setPosition(int position);
     bool isAudioAvailable() const;
+    void press_mute(bool mute);
 
 signals:
     void positionChanged(qint64 position);
