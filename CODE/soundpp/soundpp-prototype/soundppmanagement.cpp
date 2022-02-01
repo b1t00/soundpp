@@ -52,7 +52,7 @@ bool SoundppManagement::deleteSong(QString filePath)
 
 bool SoundppManagement::pressPlay()
 {
-//    if(!mpqt->isAudioAvailable()) return false;
+    if(!mpqt->isAudioAvailable()) return false;
     return mpqt->pressPlay();
 }
 

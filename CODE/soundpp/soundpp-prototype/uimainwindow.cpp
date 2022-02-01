@@ -114,7 +114,12 @@ void MainWindow::on_btn_play_clicked()
         ui->btn_play->setIcon(play);
     }
     } else {
-         ui->statusbar->showMessage("No song selected", 50000);
+//        if(ui->songs_tableView->selectionModel()->selectedRows())
+        if(ui->songs_tableView->selectionModel()->hasSelection()){
+            on_songs_tableView_doubleClicked();
+        } else {
+            ui->statusbar->showMessage("No song selected", 5000);
+        }
     }
 
 
@@ -211,6 +216,10 @@ void MainWindow::on_songs_tableView_doubleClicked()
     QPixmap pause (":img/pause.png");
     ui->btn_play->setIcon(pause);
     QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
+    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
+    QString artistName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString();
+    ui->current_song_label->setText(artistName + " - " + songName);
+    ui->statusbar->showMessage("playing: " + songName, 3000);
     sppm->doubleclickPlay(songPath);
 }
 
@@ -282,7 +291,7 @@ void MainWindow::on_actionEdit_Song_triggered()
 //    song_to_edit.se(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
     EditSongDialog editDialog(song_to_edit,this);
     if(editDialog.exec() == QDialog::Accepted){
-        m_display_song_model->updateItem(rowIndex,editDialog.song());
+        m_display_song_model->updateSong(rowIndex,editDialog.song());
         // TODO:: db connection
         if(song_to_edit.getTitle() != editDialog.song().getTitle()){ // TODO:: switchcase for changed atributs
             qDebug() << song_to_edit.getTitle() << " zu " << editDialog.song().getTitle();
