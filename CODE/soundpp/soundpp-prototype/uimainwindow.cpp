@@ -162,6 +162,8 @@ void MainWindow::dropEvent(QDropEvent *e)
         Model::Song song_to_add = sppm->droppedFile(filePath);
 //        m_display_song_model->addSong(song_to_add);
     }
+
+
 //    ui->songs_tableView->setModel(sppm->getQueryModel_all());
 //    set_songs_tableView();
 }
@@ -225,9 +227,13 @@ void MainWindow::on_actionRemove_Song_triggered()
     QModelIndex index = ui->songs_tableView->currentIndex();
     if(index.row() >= 0 && index.row() < m_display_song_model->rowCount()){
         if(QMessageBox::question(this, "Remove: "+ songPath, "Do you really want to remove \"" + songName + "\" ?","Yes","No")== 0){
-            m_display_song_model->removeRow(index.row());
-            sppm->deleteSong(songPath);
-            ui->statusbar->showMessage("remove " + songName, 10000);
+            bool removed = sppm->deleteSong(songPath);
+//            if(removed){
+                m_display_song_model->removeRow(index.row());
+                ui->statusbar->showMessage("remove " + songName, 10000);
+//            } else {
+//                ui->statusbar->showMessage("could not remove " + songName, 10000);
+//            }
         }
     }
 }
@@ -287,3 +293,8 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
     ui->songs_tableView->setModel(m_display_song_model);
 }
 
+
+void MainWindow::on_btn_for_clicked()
+{
+
+}

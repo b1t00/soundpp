@@ -30,8 +30,8 @@ QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
 Model::Song SoundppManagement::droppedFile(QString filePath)
 {
     Model::Song song_to_add = mdr->getMetaDataFromFilePath(filePath);
-//    dm->addSong(song_to_add);
     dbc->insertSong(song_to_add);
+    dm->insertSong(song_to_add);
     return song_to_add; // goes back to ui, for songs model
 }
 
@@ -43,9 +43,13 @@ void SoundppManagement::incrementPlayCount(QString songPath)
     }
 }
 
-void SoundppManagement::deleteSong(QString filePath)
+bool SoundppManagement::deleteSong(QString filePath)
 {
-    dbc->deleteSong(filePath);
+
+    bool deleted = dbc->deleteSong(filePath);
+    if(deleted){
+        dm->deleteSong(filePath);
+    }
 }
 
 bool SoundppManagement::pressPlay()

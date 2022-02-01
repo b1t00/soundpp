@@ -22,7 +22,7 @@ public:
     void insertSong(Model::Song song);
     void updateAllSongsModel();
     void incrementPlayCount(QString filePath);
-    void deleteSong(QString filePath);
+    bool deleteSong(QString filePath);
 
 
 private:
