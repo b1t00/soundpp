@@ -2,14 +2,14 @@
 #define DISPLAY_ARTIST_MODEL_H
 
 #include <QAbstractTableModel>
-#include "artist.h"
+#include "modelsong.h"
 
 class display_artist_model : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit display_artist_model(QList<Model::Artist> artists, QObject *parent = nullptr);
+    explicit display_artist_model(QList<Model::Song> all_songs, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -21,7 +21,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QList<Model::Artist> m_artists;
+    QList<Model::Song> m_songs;
 };
 
 #endif // DISPLAY_ARTIST_MODEL_H

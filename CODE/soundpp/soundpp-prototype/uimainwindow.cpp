@@ -19,13 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //Display & Interact ArtistModel
-
-    show_songs();
-
+    m_display_artist_model = new display_artist_model(sppm->get_all_songs(),this);
+    ui->artists_tableView->setModel(m_display_artist_model);
 
 
     //Display & Interact SongModel
-    m_display_song_model = new display_song_model(sppm->create_and_get_songs(), this);
+    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
     ui->songs_tableView->setShowGrid(false);
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -90,11 +89,6 @@ MainWindow::~MainWindow()
 void MainWindow::updateGui() //TODO::
 {
 
-}
-
-void MainWindow::show_songs(){
-    m_display_artist_model = new display_artist_model(sppm->create_and_get_artists(), this);
-    ui->artists_tableView->setModel(m_display_artist_model);
 }
 
 
