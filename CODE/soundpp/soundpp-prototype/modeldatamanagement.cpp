@@ -3,6 +3,9 @@
 #include <QDebug>
 #include <QStringList>
 #include <QDebug>
+#include <QSet>
+
+//#include <QSort>
 
 namespace Model {
 
@@ -38,15 +41,26 @@ QStringList* DataManagement::getAllInterprets()  // TODO::
 QList<Artist> DataManagement::create_and_get_artists(){
 
     QList<Artist> artists;
+    QList<QString> stringi;
+    QSet<QString> setti;
 
     for(int i = 0; i < m_allSongs->rowCount(); i++){
         Artist artist;
         artist.setName(m_allSongs->record(i).value("artistName").toString());
         artists.append(artist);
-        qInfo() << artist.getName();
+        stringi.append(artist.getName());
+        setti.insert(artist.getName());
+//        qInfo() << artist.getName();
 
 
     }
+
+    std::sort(stringi.begin(), stringi.end());
+    for(int i = 0; i < setti.size(); i++){
+        qDebug()<< setti.values().at(i);
+    }
+//    std::sort(setti.begin(), setti.end());
+//    qSort(artists.begin(), artists.end());
     qInfo() << artists.length();
     return artists;
 

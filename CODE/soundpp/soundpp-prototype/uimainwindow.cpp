@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->songs_tableView->setColumnHidden(6,true);
 
     ui->songs_tableView->clearSelection();
-    ui->actionRemove_Song->setEnabled(false);
+//    ui->actionRemove_Song->setEnabled(false);
 
 
 
@@ -243,7 +243,7 @@ void MainWindow::tableSelectionChanged(const QItemSelection &selected)
     bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
 //    bool anySelected = selected.
 //    qDebug() << "any selected" <<selected.indexes().size();
-    ui->actionRemove_Song->setEnabled(anySelected);
+//    ui->actionRemove_Song->setEnabled(anySelected);
 //    ui->actionRemove_Song->setVisible(anySelected);
 }
 
@@ -259,6 +259,7 @@ void MainWindow::on_actionEdit_Song_triggered()
     song_to_edit.setLabelName(ui->songs_tableView->model()->index(rowIndex,5).data().toString());
     song_to_edit.setLabelNr(ui->songs_tableView->model()->index(rowIndex,6).data().toString());
     song_to_edit.setAddedTime(ui->songs_tableView->model()->index(rowIndex,7).data().toString());
+    song_to_edit.setPlayCount(ui->songs_tableView->model()->index(rowIndex,8).data().toInt());
 //    song_to_edit.se(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
     EditSongDialog editDialog(song_to_edit,this);
     if(editDialog.exec() == QDialog::Accepted){
@@ -266,6 +267,7 @@ void MainWindow::on_actionEdit_Song_triggered()
         // TODO:: db connection
         if(song_to_edit.getTitle() != editDialog.song().getTitle()){ // TODO:: switchcase for changed atributs
             qDebug() << song_to_edit.getTitle() << " zu " << editDialog.song().getTitle();
+//            ui->statusbar->showMessage("remove " + songName, 10000);
         }
     }
 
