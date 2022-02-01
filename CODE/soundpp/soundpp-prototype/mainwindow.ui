@@ -359,7 +359,7 @@ min-height: 20px;
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Darkmode</string>
+    <string>Switch theme</string>
    </property>
   </action>
  </widget>

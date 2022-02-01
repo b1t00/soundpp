@@ -224,16 +224,20 @@ void MainWindow::on_actionRemove_Song_triggered()
 {
     QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
     QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
-    QModelIndex index = ui->songs_tableView->currentIndex();
-    if(index.row() >= 0 && index.row() < m_display_song_model->rowCount()){
+    int indexrow = ui->songs_tableView->currentIndex().row();
+    if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
         if(QMessageBox::question(this, "Remove: "+ songPath, "Do you really want to remove \"" + songName + "\" ?","Yes","No")== 0){
             bool removed = sppm->deleteSong(songPath);
-//            if(removed){
-                m_display_song_model->removeRow(index.row());
+            if(removed){
+                m_display_song_model->removeRow(indexrow);
                 ui->statusbar->showMessage("remove " + songName, 10000);
-//            } else {
-//                ui->statusbar->showMessage("could not remove " + songName, 10000);
-//            }
+            } else {
+                ui->statusbar->showMessage("could not remove " + songName, 10000);
+            }
+            if(m_display_song_model->rowCount() <= 0){
+                qDebug() << "keine songs mehr da";
+                //TODO::
+            }
         }
     }
 }
