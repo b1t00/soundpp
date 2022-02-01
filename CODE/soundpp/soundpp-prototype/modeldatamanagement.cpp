@@ -17,8 +17,6 @@ DataManagement::DataManagement(QObject *parent)
 DataManagement::DataManagement(QList<Model::Song> all_songs, QObject *parent) :
     QObject(parent), m_all_songs(all_songs)
 {
-
-
 }
 
 QList<Model::Song> DataManagement::get_all_songs() const

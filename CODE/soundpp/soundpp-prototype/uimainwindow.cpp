@@ -220,26 +220,41 @@ void MainWindow::on_actionPlay_triggered() // TODO:: function redundante
     on_songs_tableView_doubleClicked();
 }
 
+#include<algorithm>
 void MainWindow::on_actionRemove_Song_triggered()
 {
-    QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
-    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
-    int indexrow = ui->songs_tableView->currentIndex().row();
-    if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
-        if(QMessageBox::question(this, "Remove: "+ songPath, "Do you really want to remove \"" + songName + "\" ?","Yes","No")== 0){
-            bool removed = sppm->deleteSong(songPath);
-            if(removed){
-                m_display_song_model->removeRow(indexrow);
-                ui->statusbar->showMessage("remove " + songName, 10000);
-            } else {
-                ui->statusbar->showMessage("could not remove " + songName, 10000);
-            }
-            if(m_display_song_model->rowCount() <= 0){
-                qDebug() << "keine songs mehr da";
-                //TODO::
+    QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
+
+    QString deleteMessages = "Do you really want to remove?\n";
+    for(int i = 0 ; i < selection.size(); i++){
+        deleteMessages += ui->songs_tableView->model()->index(selection.at(i).row(),1).data().toString() + "\n";
+    }
+
+    std::sort(selection.begin(),selection.end()); // sort to compute right indices for removing
+
+    if(QMessageBox::question(this, "Remove song/songs", deleteMessages,"Yes","No")== 0){
+
+        ui->statusbar->showMessage("remove " + QString::number(selection.size()) + " songs.", 10000);
+
+        for(int i = 0 ; i < selection.size(); i++){
+            int indexrow = selection.at(i).row() - i;
+            QString songPath = ui->songs_tableView->model()->index(indexrow,0).data().toString();
+            QString songName = ui->songs_tableView->model()->index(indexrow,1).data().toString();
+//            qDebug() << "selection : " << selection.at(i).row();
+                if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
+                    bool removed = sppm->deleteSong(songPath);
+                    if(removed){
+                        m_display_song_model->removeRow(indexrow);
+                    } else {
+                        ui->statusbar->showMessage("could not remove " + songName, 10000);
+                    }
+                    if(m_display_song_model->rowCount() <= 0){
+                        qDebug() << "keine songs mehr da";
+                        //TODO::
+                    }
+                }
             }
         }
-    }
 }
 
 void MainWindow::tableSelectionChanged(const QItemSelection &selected)
