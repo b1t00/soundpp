@@ -45,11 +45,9 @@ void SoundppManagement::incrementPlayCount(QString songPath)
 
 bool SoundppManagement::deleteSong(QString filePath)
 {
-
-    bool deleted = dbc->deleteSong(filePath);
-    if(deleted){
-        dm->deleteSong(filePath);
-    }
+    bool deleted = dbc->deleteSong(filePath); // bool if song removed from db
+    if(deleted) deleted = dm->deleteSong(filePath);
+    return deleted;
 }
 
 bool SoundppManagement::pressPlay()
