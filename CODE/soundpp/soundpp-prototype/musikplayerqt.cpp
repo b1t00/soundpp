@@ -36,6 +36,7 @@ void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
 
 bool MusikPlayerQt::pressPlay()
 {
+
     if(!m_playedOnce) m_playedOnce = true;
 
     setIsPlayling(!isPlayling());

@@ -71,20 +71,15 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
 
 bool display_song_model::removeRows(int row, int count, const QModelIndex &parent)
 {
-//    if(row >= rowCount() || row+count-1 >= rowCount()){
-//        return false;
-//    }
+    if(row >= rowCount() || row+count-1 >= rowCount()) return false;
 
     beginRemoveRows(parent, row, row+count-1);
 
-    for(int i = 0; i < count; i++){
-        m_songs.removeAt(row);
-    }
+    for(int i = 0; i < count; i++) m_songs.removeAt(row);
 
     endRemoveRows();
 
     return true;
-
 }
 
 void display_song_model::removeSong(Model::Song song)
@@ -92,7 +87,7 @@ void display_song_model::removeSong(Model::Song song)
 
 }
 
-void display_song_model::updateItem(int row, Model::Song song)
+void display_song_model::updateSong(int row, Model::Song song)
 {
     (m_songs)[row] = song;
 
