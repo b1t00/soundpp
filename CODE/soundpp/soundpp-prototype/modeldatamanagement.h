@@ -15,20 +15,17 @@ class DataManagement : public QObject
 {
     Q_OBJECT
 private:
-    QSqlQueryModel *m_allSongs;
     //QStringList artists;
-    QList<Artist> m_artists();
+      QList<Model::Song> m_all_songs;
 //    QList<Song> m_songs();
 //    QMap<Song> m_allSongs();
 //    QMap<Song> *m_all;
 public:
     explicit DataManagement(QObject *parent = nullptr);
-    explicit DataManagement(QSqlQueryModel  *allSongs, QObject *parent = nullptr);
+    explicit DataManagement(QList<Model::Song> all_songs, QObject *parent = nullptr);
     QStringList* getAllInterprets();
-    QSqlQueryModel *getAllSongs() const;
-    void setAllSongs(QSqlQueryModel *allSongs);
-    QList<Artist> create_and_get_artists();
-    QList<Song> create_and_get_songs();
+    QList<Model::Song> get_all_songs() const;
+    void setAllSongs(QList<Model::Song> allSongs);
     QList<Artist> artists();
     QList<Song> songs();
     QList<Song> filtered_songs_by_artist(QString artist);

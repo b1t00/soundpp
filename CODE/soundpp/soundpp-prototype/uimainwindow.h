@@ -46,7 +46,6 @@ private slots:
     void addToPlaylist();
     void addToQueue();
     void display_tree();
-    void show_songs();
 
     //musik player
     void on_btn_play_clicked();
