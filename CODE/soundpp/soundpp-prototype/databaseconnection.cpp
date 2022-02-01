@@ -64,6 +64,40 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
 
 }
 
+QList<Model::Song> Database::DataBaseConnection::get_and_create_all_Songs(){
+    bool open_success;
+    open_success = sqlitedb.open();
+
+    QSqlQuery qry;
+    qInfo() << "db get query connected: " << open_success;
+    qry.prepare("SELECT * FROM songsTable");
+    qry.exec();
+    allSongsQueryModel->setQuery(qry);
+    sqlitedb.close();
+
+    QList<Model::Song> m_all_songs;
+
+
+    for(int i = 0; i < allSongsQueryModel->rowCount(); i++){
+        Model::Song song;
+        song.setTitle(allSongsQueryModel->record(i).value("songName").toString());
+        song.setSongPath(allSongsQueryModel->record(i).value("songPath").toString());
+        song.setArtistName(allSongsQueryModel->record(i).value("artistName").toString());
+        song.setAlbumName(allSongsQueryModel->record(i).value("albumName").toString());
+        song.setAlbumNr(allSongsQueryModel->record(i).value("songNr").toInt());
+        song.setAddedTime(allSongsQueryModel->record(i).value("addedDate").toString());
+        song.setPlayCount(allSongsQueryModel->record(i).value("playCount").toInt());
+        m_all_songs.append(song);
+    }
+
+
+
+    return m_all_songs;
+
+
+
+}
+
 void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currently no functionality
 {
 //    this->sqlitedb.open();

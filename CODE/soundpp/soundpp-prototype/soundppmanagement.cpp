@@ -9,42 +9,23 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     dbc = new Database::DataBaseConnection();
     mpqt = new MusikPlayer::MusikPlayerQt();
     mdr = new MetaData::MetaDataFromFile();
-    dm = new Model::DataManagement(dbc->getQueryModel_all());
+    dm = new Model::DataManagement(dbc->get_and_create_all_Songs());
 
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }
 
-
-QList<Model::Artist> SoundppManagement::create_and_get_artists(){
-    return dm->create_and_get_artists();
+QList<Model::Song> SoundppManagement::get_all_songs(){
+   return dm->get_all_songs();
 }
 
-QList<Model::Song> SoundppManagement::create_and_get_songs(){
-    return dm->create_and_get_songs();
-}
+
 
 QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
     return dm->filtered_songs_by_artist(artist);
 }
 
-QSqlQueryModel *SoundppManagement::getQueryModel_all()
-{
-//  return dbc->getQueryModel_all();
-    //dm->setAllSongs(dbc->getQueryModel_all()); //TODO:: update sql model from dbconnection
-    qInfo() << "Moin test hier";
-    return dm->getAllSongs();
-
-}
-
-QStringList *SoundppManagement::get_all_Interprets(){
-    return dm->getAllInterprets();
-}
-
-//QSqlQueryModel *SoundppManagement::get_all_artists(){
-//    return dbc->get_all_artists();
-//}
 
 Model::Song SoundppManagement::droppedFile(QString filePath)
 {
