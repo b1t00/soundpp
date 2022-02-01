@@ -186,7 +186,6 @@ bool Database::DataBaseConnection::deleteSong(QString filePath)
     qry.prepare("DELETE from songsTable WHERE songPath = (:songPath)");
     qry.bindValue(":songPath", filePath);
     if (qry.exec()){
-        qInfo() << "Deleted: " << filePath;
         return true;
     }
     return false;
