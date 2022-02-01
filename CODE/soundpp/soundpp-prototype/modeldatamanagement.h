@@ -29,6 +29,8 @@ public:
     QList<Artist> artists();
     QList<Song> songs();
     QList<Song> filtered_songs_by_artist(QString artist);
+    bool deleteSong(QString filePath);
+    bool insertSong(Model::Song song_to_add);
 
 
 

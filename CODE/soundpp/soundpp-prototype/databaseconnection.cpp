@@ -179,7 +179,7 @@ void Database::DataBaseConnection::incrementPlayCount(QString filePath)
     this->sqlitedb.close();
 }
 
-void Database::DataBaseConnection::deleteSong(QString filePath)
+bool Database::DataBaseConnection::deleteSong(QString filePath)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
@@ -187,7 +187,9 @@ void Database::DataBaseConnection::deleteSong(QString filePath)
     qry.bindValue(":songPath", filePath);
     if (qry.exec()){
         qInfo() << "Deleted: " << filePath;
+        return true;
     }
+    return false;
 }
 
 

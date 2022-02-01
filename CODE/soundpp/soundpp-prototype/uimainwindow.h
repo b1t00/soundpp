@@ -65,6 +65,8 @@ private slots:
     void on_actionPlay_Next_triggered();
     void on_artists_tableView_clicked(const QModelIndex &index);
 
+    void on_btn_for_clicked();
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;

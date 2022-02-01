@@ -48,6 +48,24 @@ QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
     return filtered_songs;
 }
 
+bool DataManagement::deleteSong(QString filePath)
+{
+    for(int i = 0; i < m_all_songs.size(); i++){
+        if(m_all_songs.at(i).getSongPath() == filePath){
+            qDebug() <<  m_all_songs.at(i).getAlbumName() << " wird removed";
+            m_all_songs.removeAt(i);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DataManagement::insertSong(Song song_to_add)
+{
+    m_all_songs.append(song_to_add);
+    return true;
+}
+
 
 }
 
