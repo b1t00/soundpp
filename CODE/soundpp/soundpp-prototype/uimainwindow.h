@@ -53,6 +53,7 @@ private slots:
     void on_sldr_volume_sliderMoved(int volume);
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
+    void on_btn_volume_clicked(bool checked);
 
 
 //    void on_btn_play_clicked(bool checked);

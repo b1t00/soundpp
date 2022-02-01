@@ -49,6 +49,9 @@ bool SoundppManagement::deleteSong(QString filePath)
     if(deleted) deleted = dm->deleteSong(filePath);
     return deleted;
 }
+void SoundppManagement::press_mute(bool mute){
+    mpqt->setMuted(mute);
+}
 
 bool SoundppManagement::pressPlay()
 {
