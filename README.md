@@ -6,6 +6,8 @@ Requirements:
 
 ubuntu:
 - qt multimedia has to be installed : sudo apt-get install qtmultimedia5-dev
+- sudo apt-get install libqt5multimedia5-plugins
+
 - sqlite3 : sudo apt install sqlite3
 
 Compiling:
