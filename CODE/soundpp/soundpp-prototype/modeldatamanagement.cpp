@@ -11,88 +11,34 @@ DataManagement::DataManagement(QObject *parent)
 
 }
 
-DataManagement::DataManagement(QSqlQueryModel  *allSongs,QObject *parent) : QObject(parent),m_allSongs(allSongs)
+DataManagement::DataManagement(QList<Model::Song> all_songs, QObject *parent) :
+    QObject(parent), m_all_songs(all_songs)
 {
+
+
 }
 
-QSqlQueryModel *DataManagement::getAllSongs() const
+QList<Model::Song> DataManagement::get_all_songs() const
 {
-    return m_allSongs;
+    return m_all_songs;
 }
 
-void DataManagement::setAllSongs(QSqlQueryModel *allSongs)
+void DataManagement::setAllSongs(QList<Model::Song> all_songs)
 {
-    m_allSongs = allSongs;
+    m_all_songs = all_songs;
 }
 
-QStringList* DataManagement::getAllInterprets()  // TODO::
-{
-    QStringList *artists = new QStringList;
-    for(int i = 0; i < m_allSongs->rowCount(); i++){
-          artists->push_back(m_allSongs->record(i).value("artistName").toString());
-        }
-    return artists;
 
-    }
-
-QList<Artist> DataManagement::create_and_get_artists(){
-
-    QList<Artist> artists;
-
-    for(int i = 0; i < m_allSongs->rowCount(); i++){
-        Artist artist;
-        artist.setName(m_allSongs->record(i).value("artistName").toString());
-        artists.append(artist);
-        qInfo() << artist.getName();
-
-
-    }
-    qInfo() << artists.length();
-    return artists;
-
-  }
-
-
-QList<Model::Song> DataManagement::create_and_get_songs(){
-
-    QList<Model::Song> songs;
-
-    for(int i = 0; i < m_allSongs->rowCount(); i++){
-//        if interpret
-        Song song;
-        song.setTitle(m_allSongs->record(i).value("songName").toString());
-        song.setSongPath(m_allSongs->record(i).value("songPath").toString());
-        song.setArtistName(m_allSongs->record(i).value("artistName").toString());
-        song.setAlbumName(m_allSongs->record(i).value("albumName").toString());
-        song.setAlbumNr(m_allSongs->record(i).value("songNr").toInt());
-        song.setAddedTime(m_allSongs->record(i).value("addedDate").toString());
-        song.setPlayCount(m_allSongs->record(i).value("playCount").toInt());
-        songs.append(song);
-//        qInfo() << song.getTitle();
-    }
-//    qInfo() << songs.length();
-    return songs;
-
-}
 
 QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
 
 
     QList<Model::Song> filtered_songs;
-    QSqlQueryModel *all_songs = getAllSongs();
 
-    for(int i = 0; i < all_songs->rowCount(); i++){
-        if(all_songs->record(i).value("artistName") == artist){
-            Song song;
-            song.setTitle(m_allSongs->record(i).value("songName").toString());
-            song.setSongPath(m_allSongs->record(i).value("songPath").toString());
-            song.setArtistName(m_allSongs->record(i).value("artistName").toString());
-            song.setAlbumName(m_allSongs->record(i).value("albumName").toString());
-            song.setAlbumNr(m_allSongs->record(i).value("songNr").toInt());
-            song.setAddedTime(m_allSongs->record(i).value("addedDate").toString());
-            song.setPlayCount(m_allSongs->record(i).value("playCount").toInt());
-            filtered_songs.append(song);
 
+    for(int i = 0; i < m_all_songs.size(); i++){
+     if(m_all_songs.at(i).getArtistName() == artist){
+            filtered_songs.append(m_all_songs.at(i));
         }
     }
     qInfo() << filtered_songs.size();

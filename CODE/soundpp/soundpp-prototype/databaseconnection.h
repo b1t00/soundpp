@@ -17,6 +17,7 @@ class DataBaseConnection
 public:
     DataBaseConnection();
     QSqlQueryModel* getQueryModel_all();
+    QList<Model::Song> get_and_create_all_Songs();
     void insertQuery(QSqlQuery qry);
     void insertSong(Model::Song song);
     void updateAllSongsModel();
@@ -27,6 +28,7 @@ public:
 private:
     QSqlDatabase sqlitedb;
     QSqlQueryModel *allSongsQueryModel;
+    QList<Model::Song> m_all_songs;
 };
 
 }
