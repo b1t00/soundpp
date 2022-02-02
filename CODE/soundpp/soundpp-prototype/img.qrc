@@ -7,5 +7,6 @@
         <file>img/suche_lupe.png</file>
         <file>img/volume.png</file>
         <file>img/pause.png</file>
+        <file>img/mute.png</file>
     </qresource>
 </RCC>
