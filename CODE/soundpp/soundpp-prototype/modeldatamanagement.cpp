@@ -46,6 +46,18 @@ QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
     return filtered_songs;
 }
 
+QList<Model::Song> DataManagement::search_result(QString search){
+    QList<Model::Song> search_result;
+
+    for(int i =0; i< m_all_songs.size(); i++) {
+        if(m_all_songs.at(i).getArtistName() == search || m_all_songs.at(i).getTitle() == search || m_all_songs.at(i).getAlbumName() == search)  {
+            search_result.append(m_all_songs.at(i));
+        }
+    }
+    return search_result;
+}
+
+
 bool DataManagement::deleteSong(QString filePath)
 {
     for(int i = 0; i < m_all_songs.size(); i++){
@@ -63,6 +75,8 @@ bool DataManagement::insertSong(Song song_to_add)
     m_all_songs.append(song_to_add);
     return true;
 }
+
+
 
 
 }

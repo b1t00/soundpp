@@ -32,6 +32,7 @@ public:
     QList<Model::Artist> create_and_get_artists();
     QList<Model::Song> create_and_get_songs();
     QList<Model::Song> filtered_songs_by_artist(QString artist);
+    QList<Model::Song> search_result(QString search);
 
     //MetaData / database drop
 

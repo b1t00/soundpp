@@ -26,9 +26,9 @@ public:
     QStringList* getAllInterprets();
     QList<Model::Song> get_all_songs() const;
     void setAllSongs(QList<Model::Song> allSongs);
-    QList<Artist> artists();
-    QList<Song> songs();
-    QList<Song> filtered_songs_by_artist(QString artist);
+    QList<Model::Song> songs();
+    QList<Model::Song> filtered_songs_by_artist(QString artist);
+    QList<Model::Song> search_result(QString search);
     bool deleteSong(QString filePath);
     bool insertSong(Model::Song song_to_add);
 

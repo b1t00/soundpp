@@ -26,6 +26,10 @@ QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
     return dm->filtered_songs_by_artist(artist);
 }
 
+QList<Model::Song> SoundppManagement::search_result(QString search){
+    return dm->search_result(search);
+}
+
 
 Model::Song SoundppManagement::droppedFile(QString filePath)
 {
