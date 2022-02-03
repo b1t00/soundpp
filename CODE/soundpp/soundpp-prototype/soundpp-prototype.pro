@@ -11,10 +11,10 @@ CONFIG += c++11
 SOURCES += \
     artist.cpp \
     databaseconnection.cpp \
-    display_artist_model.cpp \
     display_song_model.cpp \
     main.cpp \
     metadatareader.cpp \
+    modelartistsdisplay.cpp \
     modeldatamanagement.cpp \
     modelsong.cpp \
     musikplayerqt.cpp \
@@ -25,9 +25,9 @@ SOURCES += \
 HEADERS += \
     artist.h \
     databaseconnection.h \
-    display_artist_model.h \
     display_song_model.h \
     metadatareader.h \
+    modelartistsdisplay.h \
     modeldatamanagement.h \
     modelsong.h \
     musikplayerqt.h \

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -154,29 +156,40 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 
 }
 
+bool MainWindow::filterFilesByPrefix(const QUrl &url)
+{
+    QList<QString> splittingString = url.toString().split(".");
+    QString filePrefix = splittingString[splittingString.size()-1].toUpper();
+    if(!(filePrefix == "MP3" | filePrefix == "WAV") ){
+        ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
+        return false;
+    }
+    return true;
+}
+
 void MainWindow::dropEvent(QDropEvent *e)
 {
-
-//    qDebug() <<  "Dropt " << e->mimeData()->urls().size() << " Files.";
-//    e->mimeData()->urls().size() == 1 ? ui->statusbar->showMessage("", 3000) : ui->statusbar->showMessage("pause song", 3000);
     bool newArtist = false;
     foreach (const QUrl &url, e->mimeData()->urls()) {
-        QString filePath (url.toLocalFile());
-        ui->statusbar->showMessage(filePath + " dropped", 3000);
-//        qDebug() << filePath << " dropped";
-        Model::Song song_to_add = sppm->droppedFile(filePath);
+        if(filterFilesByPrefix(url)){
 
-        if(!m_display_artist_model->containsArtist(song_to_add.getArtistName())){
-            newArtist = true;
+            QString filePath (url.toLocalFile());
+            ui->statusbar->showMessage(filePath + " dropped", 3000);
+            Model::Song song_to_add = sppm->droppedFile(filePath);
+
+            if(!m_display_artist_model->containsArtist(song_to_add.getArtistName())){
+                newArtist = true;
+            }
+//            m_display_song_model->addSong(song_to_add); // TODO::
+            if(newArtist){
+            // if a new artist is in the dopped file, the table will reload completely because of the sorting
+                m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+                ui->artists_tableView->setModel(m_display_artist_model);
+            }
         }
-//        m_display_song_model->addSong(song_to_add);
-    }
-    if(newArtist){
-        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
-        ui->artists_tableView->setModel(m_display_artist_model);
-    }
 //    ui->songs_tableView->setModel(sppm->getQueryModel_all());
 //    set_songs_tableView();
+    }
 }
 
 
@@ -200,7 +213,6 @@ void MainWindow::addToQueue(){
 }
 
 void MainWindow::display_tree(){
-
 
     QStandardItemModel* playlist = new QStandardItemModel();
 
