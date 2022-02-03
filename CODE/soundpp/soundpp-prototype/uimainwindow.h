@@ -43,6 +43,9 @@ public:
         DisplayTitles = 0, DisplayArtists, DisplayAlbums
     };
 
+    ModelDisplay getDisplayState() const;
+    void setDisplayState(const ModelDisplay &value);
+
 private slots:
 
     void updateGui(); // :TODO
@@ -82,7 +85,9 @@ private:
     bool filterFilesByPrefix(const QUrl &url);
     void dropEvent(QDropEvent *e);
 
-    //display stuff
+
+    //displaying models
+    ModelDisplay m_displayModels;
     display_artist_model* m_display_artist_model;
     display_song_model* m_display_song_model;
     display_song_model* m_m_display_song_model;
