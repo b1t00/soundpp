@@ -16,7 +16,7 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }
 
-QList<Model::Song> SoundppManagement::get_all_songs(){
+QList<Model::Song> *SoundppManagement::get_all_songs(){
    return dm->get_all_songs();
 }
 
@@ -28,6 +28,11 @@ QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
 
 QList<Model::Song> SoundppManagement::search_result(QString search){
     return dm->search_result(search);
+}
+
+QList<QString> SoundppManagement::allArtists()
+{
+    return dm->allArtists();
 }
 
 

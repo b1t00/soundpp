@@ -35,6 +35,8 @@ Database::DataBaseConnection::DataBaseConnection()
         qDebug() << "not connted";
     }
 
+    m_all_songs = new QList<Model::Song>();
+
 
 }
 
@@ -64,7 +66,7 @@ QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
 
 }
 
-QList<Model::Song> Database::DataBaseConnection::get_and_create_all_Songs(){
+QList<Model::Song>* Database::DataBaseConnection::get_and_create_all_Songs(){
     bool open_success;
     open_success = sqlitedb.open();
 
@@ -74,8 +76,6 @@ QList<Model::Song> Database::DataBaseConnection::get_and_create_all_Songs(){
     qry.exec();
     allSongsQueryModel->setQuery(qry);
     sqlitedb.close();
-
-    QList<Model::Song> m_all_songs;
 
 
     for(int i = 0; i < allSongsQueryModel->rowCount(); i++){
@@ -87,14 +87,10 @@ QList<Model::Song> Database::DataBaseConnection::get_and_create_all_Songs(){
         song.setAlbumNr(allSongsQueryModel->record(i).value("songNr").toInt());
         song.setAddedTime(allSongsQueryModel->record(i).value("addedDate").toString());
         song.setPlayCount(allSongsQueryModel->record(i).value("playCount").toInt());
-        m_all_songs.append(song);
+        m_all_songs->append(song);
     }
 
-
-
     return m_all_songs;
-
-
 
 }
 

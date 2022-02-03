@@ -9,7 +9,7 @@ class display_artist_model : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit display_artist_model(QList<Model::Song> all_songs, QObject *parent = nullptr);
+    explicit display_artist_model(QList<QString> allArtistss, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -20,8 +20,11 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    void removeArtist(QString artist);
+    bool containsArtist(QString artist);
+
 private:
-    QList<Model::Song> m_songs;
+    QList<QString> m_allArtists;
 };
 
 #endif // DISPLAY_ARTIST_MODEL_H
