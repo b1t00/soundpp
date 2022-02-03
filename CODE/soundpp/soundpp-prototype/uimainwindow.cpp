@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
 
-
     display_tree();
 
+    m_displayModels = DisplayArtists;
 
     //Display & Interact ArtistModel
     m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
@@ -280,7 +280,13 @@ void MainWindow::on_actionRemove_Song_triggered()
                         qDebug() << "keine songs mehr da";
 //                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
 //                        ui->artists_tableView->setModel(m_display_artist_model);
-                        m_display_artist_model->removeArtist(artistName);
+                        if(m_displayModels == DisplayArtists) {
+                            qDebug() << "remove arti";
+                            m_display_artist_model->removeArtist(artistName);
+                        } else if(m_displayModels == DisplayAlbums){
+
+                        }
+
                     }
                 }
             }
