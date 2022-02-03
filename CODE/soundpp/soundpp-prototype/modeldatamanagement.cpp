@@ -42,20 +42,57 @@ QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
             filtered_songs.append(m_all_songs->at(i));
         }
     }
-    qInfo() << filtered_songs.size();
     return filtered_songs;
 }
 
+
+
+
 QList<Model::Song> DataManagement::search_result(QString search){
+
     QList<Model::Song> search_result;
 
-    for(int i =0; i< m_all_songs->size(); i++) {
-        if(m_all_songs->at(i).getArtistName() == search || m_all_songs->at(i).getTitle() == search || m_all_songs->at(i).getAlbumName() == search)  {
+    for(int i = 0; i < m_all_songs->size(); i ++){
+        if(m_all_songs->at(i).getArtistName().toUpper().contains(search.toUpper())
+        || m_all_songs->at(i).getTitle().toUpper().contains(search.toUpper())
+        || m_all_songs->at(i).getAlbumName().toUpper().contains(search.toUpper())){
+
             search_result.append(m_all_songs->at(i));
+
+
+            }
+
+
+
         }
-    }
     return search_result;
 }
+
+
+
+
+//    for(int i =0; i< m_all_songs.size(); ++i) {
+////        for(int j = 0; j < m_all_songs.at(i).getArtistName().size(); ++j){
+
+//             compare  = m_all_songs.at(i).getArtistName().at(search.length() - 1);
+
+//             deineMudda[i].append(compare);
+
+
+
+//             if(compare.toUpper() == search.toUpper()){
+//                 search_result.append(m_all_songs.at(i));
+//              }
+
+
+
+//           }
+
+////            if(m_all_songs.at(i).getArtistName() == search )  {
+////                search_result.append(m_all_songs.at(i));
+
+
+
 
 QList<QString> DataManagement::allArtists()
 {
@@ -68,7 +105,6 @@ QList<QString> DataManagement::allArtists()
     std::sort(allArtists.begin(), allArtists.end());
     return allArtists;
 }
-
 
 bool DataManagement::deleteSong(QString filePath)
 {
