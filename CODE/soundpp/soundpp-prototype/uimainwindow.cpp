@@ -19,12 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //Display & Interact ArtistModel
-    m_display_artist_model = new display_artist_model(sppm->get_all_songs(),this);
+    m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
 
 
     //Display & Interact SongModel
-    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
+//    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
     ui->songs_tableView->setShowGrid(false);
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    ui->songs_tableView->setModel(m_display_song_model);
+//    ui->songs_tableView->setModel(m_display_song_model);
     ui->songs_tableView->setColumnHidden(0,true); // hide path column
     ui->songs_tableView->setColumnHidden(5,true);
     ui->songs_tableView->setColumnHidden(6,true);
@@ -259,6 +259,9 @@ void MainWindow::on_actionRemove_Song_triggered()
                     }
                     if(m_display_song_model->rowCount() <= 0){
                         qDebug() << "keine songs mehr da";
+                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+                        ui->artists_tableView->setModel(m_display_artist_model);
+
                         //TODO::
                     }
                 }
@@ -345,16 +348,16 @@ void MainWindow::on_btn_for_clicked()
 
 
 
-void MainWindow::on_btn_search_clicked(QString search)
-{
-    qInfo() << "jhdkaue";
-    qInfo() << ui->insert_search->text();
+//void MainWindow::on_btn_search_clicked(QString search)
+//{
+//    qInfo() << "jhdkaue";
+//    qInfo() << ui->insert_search->text();
 
-    qInfo() << search;
+//    qInfo() << search;
 
-    m_display_song_model = new display_song_model(sppm->search_result(search), this);
-    ui->songs_tableView->setModel(m_display_song_model);
-}
+//    m_display_song_model = new display_song_model(sppm->search_result(search), this);
+//    ui->songs_tableView->setModel(m_display_song_model);
+//}
 
 void MainWindow::on_insert_search_textChanged(const QString &arg1)
 {
