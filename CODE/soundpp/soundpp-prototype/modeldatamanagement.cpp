@@ -52,18 +52,21 @@ QList<Model::Song> DataManagement::search_result(QString search){
 
     QList<Model::Song> search_result;
 
-    for(int i = 0; i < m_all_songs.size(); i ++){
-        if(m_all_songs.at(i).getArtistName().toUpper().contains(search.toUpper())
-        || m_all_songs.at(i).getTitle().toUpper().contains(search.toUpper())
-        || m_all_songs.at(i).getAlbumName().toUpper().contains(search.toUpper())){
+    for(int i = 0; i < m_all_songs->size(); i ++){
+        if(m_all_songs->at(i).getArtistName().toUpper().contains(search.toUpper())
+        || m_all_songs->at(i).getTitle().toUpper().contains(search.toUpper())
+        || m_all_songs->at(i).getAlbumName().toUpper().contains(search.toUpper())){
 
-            search_result.append(m_all_songs.at(i));
+            search_result.append(m_all_songs->at(i));
 
 
             }
 
 
 
+        }
+    return search_result;
+}
 
 
 
@@ -89,8 +92,7 @@ QList<Model::Song> DataManagement::search_result(QString search){
 ////                search_result.append(m_all_songs.at(i));
 
 
-    return search_result;
-}
+
 
 QList<QString> DataManagement::allArtists()
 {
