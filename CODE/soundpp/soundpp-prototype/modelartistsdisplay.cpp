@@ -1,4 +1,4 @@
-#include "display_artist_model.h"
+#include "modelartistsdisplay.h"
 
 display_artist_model::display_artist_model(QList<QString> allArtists,QObject *parent)
     : QAbstractTableModel(parent), m_allArtists(allArtists)
@@ -12,7 +12,6 @@ QVariant display_artist_model::headerData(int section, Qt::Orientation orientati
             switch(section){
             case 0: return "Artist";
             }
-
         }
     }
 
