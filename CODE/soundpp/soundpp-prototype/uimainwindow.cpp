@@ -344,20 +344,9 @@ void MainWindow::on_btn_for_clicked()
 
 
 
-
-void MainWindow::on_btn_search_clicked(QString search)
-{
-    qInfo() << "jhdkaue";
-    qInfo() << ui->insert_search->text();
-
-    qInfo() << search;
-
-    m_display_song_model = new display_song_model(sppm->search_result(search), this);
-    ui->songs_tableView->setModel(m_display_song_model);
-}
-
 void MainWindow::on_insert_search_textChanged(const QString &arg1)
 {
+
 
     m_display_song_model = new display_song_model(sppm->search_result(arg1), this);
     ui->songs_tableView->setModel(m_display_song_model);
