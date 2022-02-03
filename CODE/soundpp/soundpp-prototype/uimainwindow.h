@@ -16,7 +16,7 @@
 #include <QStandardItemModel>
 
 #include <QShortcut>
-#include "display_artist_model.h"
+#include "modelartistsdisplay.h"
 #include "display_song_model.h"
 
 #include <QContextMenuEvent>
@@ -39,6 +39,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    enum ModelDisplay{
+        DisplayTitles = 0, DisplayArtists, DisplayAlbums
+    };
+
 private slots:
 
     void updateGui(); // :TODO
@@ -54,7 +58,6 @@ private slots:
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
     void on_btn_volume_clicked(bool checked);
-
 
 //    void on_btn_play_clicked(bool checked);
     // actions
@@ -76,6 +79,7 @@ private:
 
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);
+    bool filterFilesByPrefix(const QUrl &url);
     void dropEvent(QDropEvent *e);
 
     //display stuff
