@@ -24,7 +24,7 @@ public:
     explicit DataManagement(QObject *parent = nullptr);
     explicit DataManagement(QList<Model::Song> *all_songs, QObject *parent = nullptr);
     QStringList* getAllInterprets();
-    QList<Model::Song> *get_all_songs() const;
+    QList<Model::Song> get_all_songs() const;
     void setAllSongs(QList<Model::Song> *allSongs);
     QList<Model::Song> songs();
     QList<Model::Song> filtered_songs_by_artist(QString artist);

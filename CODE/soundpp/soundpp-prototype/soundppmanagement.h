@@ -26,7 +26,7 @@ private:
 public:
     explicit SoundppManagement(QObject *parent = nullptr);
     // database get
-    QList<Model::Song> *get_all_songs();
+    QList<Model::Song> get_all_songs();
     QSqlQueryModel get_all_artists();
     QStringList* get_all_Interprets();
     QList<Model::Artist> create_and_get_artists();

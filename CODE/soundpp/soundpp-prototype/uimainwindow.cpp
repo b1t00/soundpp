@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     display_tree();
 
-    m_displayModels = DisplayArtists;
 
     //Display & Interact ArtistModel
     m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
@@ -26,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //Display & Interact SongModel
-//    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
     ui->songs_tableView->setShowGrid(false);
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -43,7 +41,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-//    ui->songs_tableView->setModel(m_display_song_model);
+    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
+    m_displayModels = DisplayArtists;
+    ui->songs_tableView->setModel(m_display_song_model);
     ui->songs_tableView->setColumnHidden(0,true); // hide path column
     ui->songs_tableView->setColumnHidden(5,true);
     ui->songs_tableView->setColumnHidden(6,true);
@@ -338,12 +338,6 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 {
     //inhalt wird per parameter übergeben und anhand dieses parameters wird dann die songs table vie aktualisiert
 
-   // qInfo() << sppm->filtered_songs_by_artist(index.data().toString());
-
-//    qInfo() << index.data();
-//    qInfo() << index.data().toString();
-//    sppm->filtered_songs_by_artist("Dendemann");
-
     m_display_song_model = new display_song_model(sppm->filtered_songs_by_artist(index.data().toString()), this);
     ui->songs_tableView->setModel(m_display_song_model);
 }
@@ -374,4 +368,36 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
     m_display_song_model = new display_song_model(sppm->search_result(arg1), this);
     ui->songs_tableView->setModel(m_display_song_model);
 
+}
+
+void MainWindow::on_btn_titles_clicked()
+{
+    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
+    ui->songs_tableView->setModel(m_display_song_model);
+    ui->artists_tableView->hide();
+    m_displayModels = DisplayTitles;
+}
+
+void MainWindow::on_btn_artists_clicked()
+{
+    if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
+        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+//        qDebug() << "current_selected_artist" << current_selected_artist;
+         m_display_song_model = new display_song_model(sppm->filtered_songs_by_artist(current_selected_artist), this);
+         ui->songs_tableView->setModel(m_display_song_model);
+    } else {
+//        ui->artists_tableView->selectRow(0);
+        m_display_song_model->clear();
+//        ui->songs_tableView->model()->clear();
+//        m_display_song_model->set
+    }
+    m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+    ui->artists_tableView->setModel(m_display_artist_model);
+    ui->artists_tableView->show();
+    m_displayModels = DisplayArtists;
+}
+
+void MainWindow::on_btn_albums_clicked()
+{
+    m_displayModels = DisplayArtists;
 }

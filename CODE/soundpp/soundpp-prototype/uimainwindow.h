@@ -76,6 +76,12 @@ private slots:
 
     void on_insert_search_textChanged(const QString &arg1);
 
+    void on_btn_titles_clicked();
+
+    void on_btn_artists_clicked();
+
+    void on_btn_albums_clicked();
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;

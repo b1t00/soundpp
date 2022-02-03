@@ -106,3 +106,9 @@ void display_song_model::addSong(Model::Song song)
 
 }
 
+void display_song_model::clear()
+{
+    m_songs.clear();
+    qDebug() << "blub blub clear";
+}
+
