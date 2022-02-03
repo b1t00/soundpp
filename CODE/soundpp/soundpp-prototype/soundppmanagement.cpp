@@ -16,7 +16,7 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
 }
 
-QList<Model::Song> *SoundppManagement::get_all_songs(){
+QList<Model::Song> SoundppManagement::get_all_songs(){
    return dm->get_all_songs();
 }
 

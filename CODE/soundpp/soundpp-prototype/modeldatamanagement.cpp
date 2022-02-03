@@ -19,9 +19,10 @@ DataManagement::DataManagement(QList<Model::Song> *all_songs, QObject *parent) :
 {
 }
 
-QList<Model::Song> *DataManagement::get_all_songs() const
+QList<Model::Song> DataManagement::get_all_songs() const
 {
-    return m_all_songs;
+    QList<Model::Song> all_songs_copy = *m_all_songs;
+    return all_songs_copy;
 }
 
 void DataManagement::setAllSongs(QList<Model::Song> *all_songs)
@@ -33,9 +34,7 @@ void DataManagement::setAllSongs(QList<Model::Song> *all_songs)
 
 QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
 
-
     QList<Model::Song> filtered_songs;
-
 
     for(int i = 0; i < m_all_songs->size(); i++){
      if(m_all_songs->at(i).getArtistName() == artist){

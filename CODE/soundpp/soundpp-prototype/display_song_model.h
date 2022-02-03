@@ -26,6 +26,7 @@ public:
     void removeSong(Model::Song song);
     void updateSong(int row, Model::Song song);
     void addSong(Model::Song song);
+    void clear();
 
 private:
     QList<Model::Song> m_songs;
