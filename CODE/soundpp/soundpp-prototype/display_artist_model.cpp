@@ -47,3 +47,18 @@ QVariant display_artist_model::data(const QModelIndex &index, int role) const
     // FIXME: Implement me!
     return QVariant();
 }
+
+void display_artist_model::removeArtist(QString artist_to_remove)
+{
+    for(int i = 0; i < m_allArtists.size(); i++){
+        if(m_allArtists.at(i) == artist_to_remove) {
+            m_allArtists.removeAt(i);
+            removeRow(i);
+        }
+    }
+}
+
+bool display_artist_model::containsArtist(QString artist)
+{
+    return (m_allArtists.contains(artist)) ? true : false;
+}

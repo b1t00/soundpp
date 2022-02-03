@@ -159,16 +159,22 @@ void MainWindow::dropEvent(QDropEvent *e)
 
 //    qDebug() <<  "Dropt " << e->mimeData()->urls().size() << " Files.";
 //    e->mimeData()->urls().size() == 1 ? ui->statusbar->showMessage("", 3000) : ui->statusbar->showMessage("pause song", 3000);
-
+    bool newArtist = false;
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString filePath (url.toLocalFile());
         ui->statusbar->showMessage(filePath + " dropped", 3000);
 //        qDebug() << filePath << " dropped";
         Model::Song song_to_add = sppm->droppedFile(filePath);
+
+        if(!m_display_artist_model->containsArtist(song_to_add.getArtistName())){
+            newArtist = true;
+        }
 //        m_display_song_model->addSong(song_to_add);
     }
-
-
+    if(newArtist){
+        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+        ui->artists_tableView->setModel(m_display_artist_model);
+    }
 //    ui->songs_tableView->setModel(sppm->getQueryModel_all());
 //    set_songs_tableView();
 }
@@ -249,6 +255,7 @@ void MainWindow::on_actionRemove_Song_triggered()
             int indexrow = selection.at(i).row() - i;
             QString songPath = ui->songs_tableView->model()->index(indexrow,0).data().toString();
             QString songName = ui->songs_tableView->model()->index(indexrow,1).data().toString();
+            QString artistName = ui->songs_tableView->model()->index(indexrow,2).data().toString();
 //            qDebug() << "selection : " << selection.at(i).row();
                 if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
                     bool removed = sppm->deleteSong(songPath);
@@ -259,10 +266,9 @@ void MainWindow::on_actionRemove_Song_triggered()
                     }
                     if(m_display_song_model->rowCount() <= 0){
                         qDebug() << "keine songs mehr da";
-                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
-                        ui->artists_tableView->setModel(m_display_artist_model);
-
-                        //TODO::
+//                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+//                        ui->artists_tableView->setModel(m_display_artist_model);
+                        m_display_artist_model->removeArtist(artistName);
                     }
                 }
             }
@@ -325,8 +331,6 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 }
 void MainWindow::on_btn_volume_clicked(bool checked)
 {
-
-
     sppm->press_mute(checked);
 
     if(checked){
