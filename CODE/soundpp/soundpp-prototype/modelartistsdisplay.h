@@ -1,5 +1,5 @@
-#ifndef DISPLAY_ARTIST_MODEL_H
-#define DISPLAY_ARTIST_MODEL_H
+#ifndef MODELARTISTSDISPLAY_H
+#define MODELARTISTSDISPLAY_H
 
 #include <QAbstractTableModel>
 #include "modelsong.h"
@@ -27,4 +27,4 @@ private:
     QList<QString> m_allArtists;
 };
 
-#endif // DISPLAY_ARTIST_MODEL_H
+#endif // MODELARTISTSDISPLAY_H
