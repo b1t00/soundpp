@@ -20,6 +20,9 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    void removeArtist(QString artist);
+    bool containsArtist(QString artist);
+
 private:
     QList<QString> m_allArtists;
 };
