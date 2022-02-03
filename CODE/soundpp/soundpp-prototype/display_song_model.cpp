@@ -97,7 +97,9 @@ void display_song_model::updateSong(int row, Model::Song song)
 
 void display_song_model::addSong(Model::Song song)
 {
+//        beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_songs.append(song);
+//        endInsertRows();s
 //    (m_songs)[0] = song;
 //    qDebug() << "add song " << song.getAlbumName();
 //    emit dataChanged(createIndex(m_songs.size()-1, 0),createIndex(m_songs.size()-1, columnCount()-1));
