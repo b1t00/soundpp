@@ -139,7 +139,7 @@ void Database::DataBaseConnection::insertSong(Model::Song song)
 //        qInfo() << "data is saved";
 //    }
     this->sqlitedb.close();
-    updateAllSongsModel();
+    updateAllSongsModel(); //?
 }
 
 Model::Song Database::DataBaseConnection::editSong(Model::Song edited_song)
