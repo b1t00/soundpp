@@ -296,13 +296,14 @@ void MainWindow::on_actionRemove_Song_triggered()
         }
 }
 
+// TODO:: selection check dont works
 void MainWindow::tableSelectionChanged(const QItemSelection &selected)
 {
     bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
 //    bool anySelected = selected.
-//    qDebug() << "any selected" <<selected.indexes().size();
-//    ui->actionRemove_Song->setEnabled(anySelected);
-//    ui->actionRemove_Song->setVisible(anySelected);
+    qDebug() << anySelected << "any selected : " <<selected.indexes().size();
+        ui->actionRemove_Song->setEnabled(anySelected);
+        ui->actionRemove_Song->setVisible(anySelected);
 }
 
 void MainWindow::on_actionEdit_Song_triggered()
@@ -339,9 +340,17 @@ void MainWindow::on_actionPlay_Next_triggered()
 
 void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 {
-    //inhalt wird per parameter übergeben und anhand dieses parameters wird dann die songs table vie aktualisiert
-
-    m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
+    switch(m_displayModels){
+    case DisplayArtists :
+        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
+        break;
+    case DisplayAlbums :
+        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
+        break;
+    default:
+        qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
+        break;
+    }
     ui->songs_tableView->setModel(m_display_song_model);
 }
 void MainWindow::on_btn_volume_clicked(bool checked)
@@ -381,19 +390,20 @@ void MainWindow::on_btn_titles_clicked()
     m_displayModels = DisplayTitles;
 }
 
+//TODO:: last artists and albums clicked memory variable
 void MainWindow::on_btn_artists_clicked()
 {
-    if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
-        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
-//        qDebug() << "current_selected_artist" << current_selected_artist;
-         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(current_selected_artist), this);
-         ui->songs_tableView->setModel(m_display_song_model);
-    } else {
-//        ui->artists_tableView->selectRow(0);
-        m_display_song_model->clear();
-//        ui->songs_tableView->model()->clear();
-//        m_display_song_model->set
-    }
+//    if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
+//        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+////        qDebug() << "current_selected_artist" << current_selected_artist;
+//         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(current_selected_artist), this);
+//         ui->songs_tableView->setModel(m_display_song_model);
+//    } else {
+////        ui->artists_tableView->selectRow(0);
+//        m_display_song_model->clear();
+////        ui->songs_tableView->model()->clear();
+////        m_display_song_model->set
+//    }
     m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
     ui->artists_tableView->show();
@@ -401,6 +411,17 @@ void MainWindow::on_btn_artists_clicked()
 }
 
 void MainWindow::on_btn_albums_clicked()
-{
-    m_displayModels = DisplayArtists;
+{    // very redundante to on_btn_artists_clicked(), but maybe can be adjusted to a proper albums view (covers etc)
+
+    if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
+        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(current_selected_artist), this);
+         ui->songs_tableView->setModel(m_display_song_model);
+    } else {
+        m_display_song_model->clear();
+    }
+    m_display_albums_model = new Model::DisplayAlbumsModel(sppm->allAlbums(),this);
+    ui->artists_tableView->setModel(m_display_albums_model);
+    ui->artists_tableView->show();
+    m_displayModels = DisplayAlbums;
 }

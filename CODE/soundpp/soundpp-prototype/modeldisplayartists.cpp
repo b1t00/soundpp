@@ -28,7 +28,6 @@ int DisplayArtistsModel::rowCount(const QModelIndex &parent) const
 
 int DisplayArtistsModel::columnCount(const QModelIndex &parent) const
 {
-
     return 1;
 }
 
@@ -45,7 +44,6 @@ QVariant DisplayArtistsModel::data(const QModelIndex &index, int role) const
 
     }
 
-    // FIXME: Implement me!
     return QVariant();
 }
 
