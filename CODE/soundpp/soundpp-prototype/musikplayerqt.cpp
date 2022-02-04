@@ -26,7 +26,9 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
 {
     m_playedOnce = false;
     m_songPath = songPath;
-    setMedia(songPath);
+    QUrl ubuntuPath =  "file://" + songPath.toString();
+    qDebug() << "songpath: " << ubuntuPath;
+    setMedia(ubuntuPath);
 }
 
 void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
