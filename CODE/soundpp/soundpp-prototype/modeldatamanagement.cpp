@@ -96,6 +96,8 @@ QList<Model::Song> DataManagement::search_result(QString search){
 QList<QString> DataManagement::allArtists()
 {
     QList<QString> allArtists;
+
+
     for(Model::Song s : *m_all_songs){
         if(!allArtists.contains(s.getArtistName())){
             allArtists.append(s.getArtistName());

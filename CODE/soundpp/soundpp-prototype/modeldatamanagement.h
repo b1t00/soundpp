@@ -6,7 +6,6 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QString>
-#include "artist.h"
 #include "modelsong.h"
 
 namespace Model {

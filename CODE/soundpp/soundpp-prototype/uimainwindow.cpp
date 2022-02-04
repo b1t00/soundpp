@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu = new QMenu(ui->songs_tableView);
     contextMenu->addAction("play next", this, SLOT(addToQueue()));
-//    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist(const QModelIndex &index)));
+    contextMenu->addAction("add to Playlist", this, SLOT(addToPlaylist()));
     contextMenu->addAction("remove song", this, SLOT(on_actionRemove_Song_triggered()));
     contextMenu->addAction("edit song...", this, SLOT(on_actionEdit_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -204,8 +204,9 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
 
 void MainWindow::addToPlaylist(){
 
-//    qInfo() << index.model()->index(0,0);
-    qInfo() << "Geil geil Geil";
+
+
+    qInfo() << ui->songs_tableView->currentIndex().row();
 }
 
 void MainWindow::addToQueue(){
@@ -228,7 +229,7 @@ void MainWindow::display_tree(){
     item0->appendRow(item4);
     playlist->appendRow(item1);
 
-    ui->playlist_treeView->setModel(playlist);
+   //ui->playlist_treeView->setModel(playlist);
 }
 
 void MainWindow::on_songs_tableView_doubleClicked()
