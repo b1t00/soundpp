@@ -65,9 +65,22 @@
          <widget class="QPushButton" name="btn_titles">
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>96</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#btn_titles{
+    background-color:	#C0C0C0;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: 10px;
+	font-family: Verdana;
+    max-width: 80px;
+    padding: 6px;
+}</string>
           </property>
           <property name="text">
            <string>Titles</string>
@@ -78,9 +91,22 @@
          <widget class="QPushButton" name="btn_artists">
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>96</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#btn_artists{
+    background-color:	#C0C0C0;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: 10px;
+	font-family:Verdana;
+    max-width: 80px;
+    padding: 6px;
+}</string>
           </property>
           <property name="text">
            <string>Artists</string>
@@ -91,9 +117,22 @@
          <widget class="QPushButton" name="btn_albums">
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>96</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#btn_albums{
+    background-color:	#C0C0C0;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: 10px;
+	font-family: Verdana;
+    max-width: 80px;
+    padding: 6px;
+}</string>
           </property>
           <property name="text">
            <string>Albums</string>
@@ -186,6 +225,11 @@
           <width>16777215</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#songs_tableView {
+border-bottom: 1px solid #ddd;
+}</string>
         </property>
         <property name="alternatingRowColors">
          <bool>false</bool>
@@ -395,6 +439,12 @@ min-height: 20px;
   </action>
   <action name="actionDarkmode">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="text">

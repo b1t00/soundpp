@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
     setAcceptDrops(true);
     this->sppm = new Management::SoundppManagement(this);
 
@@ -16,13 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
     display_tree();
 
 
+
+
     //Display & Interact ArtistModel
     m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
 
 
     //Display & Interact SongModel
-    ui->songs_tableView->setShowGrid(false);
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu = new QMenu(ui->songs_tableView);
@@ -32,6 +34,19 @@ MainWindow::MainWindow(QWidget *parent)
     contextMenu->addAction("edit song...", this, SLOT(on_actionEdit_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
+
+    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
+    m_displayState = DisplayTitles;
+    ui->artists_tableView->hide();
+    ui->songs_tableView->setModel(m_display_song_model);
+    ui->songs_tableView->setColumnHidden(0,true); // hide path column
+    ui->songs_tableView->setColumnHidden(5,true);
+    ui->songs_tableView->setColumnHidden(6,true);
+
+
+    //Display & Interact PlaylistModel
+    m_display_playlist_model = new Model::DisplayPlaylistModel(sppm->get_all_songs());
+    ui->playlist_tableView->setModel(m_display_playlist_model);
 
     ui->playlist_tableView->setShowGrid(false);
     ui->playlist_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -46,13 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
-    m_displayState = DisplayTitles;
-    ui->artists_tableView->hide();
-    ui->songs_tableView->setModel(m_display_song_model);
-    ui->songs_tableView->setColumnHidden(0,true); // hide path column
-    ui->songs_tableView->setColumnHidden(5,true);
-    ui->songs_tableView->setColumnHidden(6,true);
+
 
 
     ui->songs_tableView->clearSelection();
@@ -64,6 +73,8 @@ MainWindow::MainWindow(QWidget *parent)
     //yeah();
 
     //print_out();
+
+
 
 
     // shortcuts
@@ -83,6 +94,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     QPixmap play (":img/Play.png");
     ui->btn_play->setIcon(play);
+
+
+//   QPushButton#btn_artists {
+//        background-color: red;
+//        border-style: outset;
+//        border-width: 2px;
+//        border-radius: 10px;
+//        border-color: beige;
+//        font: bold 14px;
+//        min-width: 10em;
+//        padding: 6px;
+//    }
 
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
@@ -212,6 +235,17 @@ void MainWindow::onCustomContextMenu_2(const QPoint &point){
     contextMenu_2->exec(ui->playlist_tableView->viewport()->mapToGlobal(point));
 }
 
+//----------------------------------Playlist------------------------------------------//
+
+void MainWindow::createNewPlaylist(){
+
+    playlistdialog playlistdialog;
+    playlistdialog.exec();
+
+
+
+}
+
 void MainWindow::addToPlaylist(){
 
 
@@ -258,6 +292,19 @@ void MainWindow::on_songs_tableView_doubleClicked()
 void MainWindow::on_actionPlay_triggered() // TODO:: function redundante
 {
     on_songs_tableView_doubleClicked();
+}
+
+
+//----------Dark Mode --------------//
+void MainWindow::on_actionDarkmode_triggered(bool checked)
+{
+
+    if(checked){
+    this->setStyleSheet("background-color: grey;");
+    } else {
+    this->setStyleSheet("background-color: white");
+    }
+
 }
 
 #include<algorithm>

@@ -32,6 +32,8 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
 void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
 {
 
+
+
 }
 
 bool MusikPlayerQt::pressPlay()
