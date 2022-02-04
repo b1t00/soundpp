@@ -43,6 +43,7 @@ public:
     Model::Song droppedFile(QString filePath);
     void incrementPlayCount(QString songPath);
     bool deleteSong(QString filePath);
+    Model::Song editSong(Model::Song edited_song);
 
     //musikplayerqt
     bool pressPlay();

@@ -41,12 +41,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    enum ModelDisplay : unsigned char{
+    enum Displaystate : unsigned char{
         DisplayTitles = 0, DisplayArtists, DisplayAlbums
     };
 
-    ModelDisplay getDisplayState() const;
-    void setDisplayState(const ModelDisplay &value);
+    Displaystate getDisplayState() const;
+    void setDisplayState(const Displaystate &value);
 
 private slots:
 
@@ -92,7 +92,7 @@ private:
 
 
     //displaying models
-    ModelDisplay m_displayModels; // Enum for state of display
+    Displaystate m_displayState; // Enum for state of display
     Model::DisplaySongModel* m_display_song_model;
     Model::DisplayArtistsModel* m_display_artist_model;
     Model::DisplayAlbumsModel* m_display_albums_model;

@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
-    m_displayModels = DisplayTitles;
+    m_displayState = DisplayTitles;
     ui->artists_tableView->hide();
     ui->songs_tableView->setModel(m_display_song_model);
     ui->songs_tableView->setColumnHidden(0,true); // hide path column
@@ -283,10 +283,10 @@ void MainWindow::on_actionRemove_Song_triggered()
                         qDebug() << "keine songs mehr da";
 //                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
 //                        ui->artists_tableView->setModel(m_display_artist_model);
-                        if(m_displayModels == DisplayArtists) {
+                        if(m_displayState == DisplayArtists) {
                             qDebug() << "remove arti";
                             m_display_artist_model->removeArtist(artistName);
-                        } else if(m_displayModels == DisplayAlbums){
+                        } else if(m_displayState == DisplayAlbums){
 
                         }
 
@@ -322,12 +322,24 @@ void MainWindow::on_actionEdit_Song_triggered()
 //    song_to_edit.se(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
     EditSongDialog editDialog(song_to_edit,this);
     if(editDialog.exec() == QDialog::Accepted){
-        m_display_song_model->updateSong(rowIndex,editDialog.song());
-        // TODO:: db connection
-        if(song_to_edit.getTitle() != editDialog.song().getTitle()){ // TODO:: switchcase for changed atributs
-            qDebug() << song_to_edit.getTitle() << " zu " << editDialog.song().getTitle();
-//            ui->statusbar->showMessage("remove " + songName, 10000);
+        Model::Song song_from_db = sppm->editSong(editDialog.song());
+        m_display_song_model->updateSong(rowIndex,song_from_db);
+
+        // QUESTION: Wäre ein Switchcase hierfür geeigneter?
+        if(song_to_edit.getTitle() != song_from_db.getTitle())
+            ui->statusbar->showMessage("Changed song title: " + song_to_edit.getTitle() + " -> " + song_from_db.getTitle(), 10000);
+        if(song_to_edit.getAlbumName() != song_from_db.getAlbumName()){
+            ui->statusbar->showMessage("Changed album name: " + song_to_edit.getAlbumName() + " -> " + song_from_db.getAlbumName(), 10000);
+            if(m_displayState == DisplayAlbums){
+                //TODO:: Update albums
+                qDebug() << "update albums";
+//                 m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
+            }
         }
+        if(song_to_edit.getAlbumNr() != song_from_db.getAlbumNr())
+            ui->statusbar->showMessage("Changed song number: " + QString::number(song_to_edit.getAlbumNr()) + " -> " + song_from_db.getAlbumNr(), 10000);
+        if(song_to_edit.getArtistName() != song_from_db.getArtistName())
+            ui->statusbar->showMessage("Changed artist name: " + song_to_edit.getArtistName() + " -> " + song_from_db.getArtistName(), 10000);
     }
 
 }
@@ -340,7 +352,7 @@ void MainWindow::on_actionPlay_Next_triggered()
 
 void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 {
-    switch(m_displayModels){
+    switch(m_displayState){
     case DisplayArtists :
         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
         break;
@@ -387,7 +399,7 @@ void MainWindow::on_btn_titles_clicked()
     m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     ui->songs_tableView->setModel(m_display_song_model);
     ui->artists_tableView->hide();
-    m_displayModels = DisplayTitles;
+    m_displayState = DisplayTitles;
 }
 
 //TODO:: last artists and albums clicked memory variable
@@ -407,7 +419,7 @@ void MainWindow::on_btn_artists_clicked()
     m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
     ui->artists_tableView->show();
-    m_displayModels = DisplayArtists;
+    m_displayState = DisplayArtists;
 }
 
 void MainWindow::on_btn_albums_clicked()
@@ -423,5 +435,5 @@ void MainWindow::on_btn_albums_clicked()
     m_display_albums_model = new Model::DisplayAlbumsModel(sppm->allAlbums(),this);
     ui->artists_tableView->setModel(m_display_albums_model);
     ui->artists_tableView->show();
-    m_displayModels = DisplayAlbums;
+    m_displayState = DisplayAlbums;
 }

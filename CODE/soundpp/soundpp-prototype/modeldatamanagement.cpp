@@ -151,6 +151,17 @@ bool DataManagement::insertSong(Song song_to_add)
     return true;
 }
 
+bool DataManagement::editSong(Song song_from_db)
+{
+    for(int i = 0; i < m_all_songs->size(); i++){
+        if(m_all_songs->at(i).getSongPath() == song_from_db.getSongPath()){
+            m_all_songs->replace(i, song_from_db);
+            return true;
+        }
+    }
+    return false;
+}
+
 
 
 
