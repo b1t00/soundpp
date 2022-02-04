@@ -100,17 +100,10 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QTableView" name="playlist_tableView"/>
+        </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QTreeView" name="playlist_treeView">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
@@ -326,7 +319,7 @@ min-height: 20px;
      <x>0</x>
      <y>0</y>
      <width>762</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
