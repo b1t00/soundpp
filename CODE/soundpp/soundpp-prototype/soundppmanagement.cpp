@@ -26,6 +26,11 @@ QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
     return dm->filtered_songs_by_artist(artist);
 }
 
+QList<Model::Song> SoundppManagement::filtered_songs_by_album(QString album)
+{
+    return dm->filtered_songs_by_album(album);
+}
+
 QList<Model::Song> SoundppManagement::search_result(QString search){
     return dm->search_result(search);
 }
@@ -33,6 +38,11 @@ QList<Model::Song> SoundppManagement::search_result(QString search){
 QList<QString> SoundppManagement::allArtists()
 {
     return dm->allArtists();
+}
+
+QList<QString> SoundppManagement::allAlbums()
+{
+    return dm->allAlbums();
 }
 
 
@@ -58,6 +68,16 @@ bool SoundppManagement::deleteSong(QString filePath)
     if(deleted) deleted = dm->deleteSong(filePath);
     return deleted;
 }
+
+Model::Song SoundppManagement::editSong(Model::Song edited_song)
+{
+    if(dm->editSong(dbc->editSong(edited_song))){
+        return dbc->editSong(edited_song);
+    }
+    qWarning() << "dm konnte song nicht ersetzten";
+    return Model::Song();
+}
+
 void SoundppManagement::press_mute(bool mute){
     mpqt->setMuted(mute);
 }

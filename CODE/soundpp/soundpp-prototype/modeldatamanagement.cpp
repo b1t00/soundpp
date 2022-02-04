@@ -44,6 +44,18 @@ QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
     return filtered_songs;
 }
 
+QList<Song> DataManagement::filtered_songs_by_album(QString album)
+{
+    QList<Model::Song> filtered_songs;
+
+    for(int i = 0; i < m_all_songs->size(); i++){
+     if(m_all_songs->at(i).getAlbumName() == album){
+            filtered_songs.append(m_all_songs->at(i));
+        }
+    }
+    return filtered_songs;
+}
+
 
 
 
@@ -65,6 +77,20 @@ QList<Model::Song> DataManagement::search_result(QString search){
 
         }
     return search_result;
+}
+
+QList<QString> DataManagement::allAlbums()
+{
+    QList<QString> allAlbums;
+
+    for(auto s : *m_all_songs){
+        if(!allAlbums.contains(s.getAlbumName())){
+            allAlbums.append(s.getAlbumName());
+        };
+    }
+    std::sort(allAlbums.begin(), allAlbums.end());
+    return allAlbums;
+
 }
 
 
@@ -123,6 +149,17 @@ bool DataManagement::insertSong(Song song_to_add)
 {
     m_all_songs->append(song_to_add);
     return true;
+}
+
+bool DataManagement::editSong(Song song_from_db)
+{
+    for(int i = 0; i < m_all_songs->size(); i++){
+        if(m_all_songs->at(i).getSongPath() == song_from_db.getSongPath()){
+            m_all_songs->replace(i, song_from_db);
+            return true;
+        }
+    }
+    return false;
 }
 
 

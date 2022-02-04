@@ -20,6 +20,7 @@ public:
     QList<Model::Song> *get_and_create_all_Songs();
     void insertQuery(QSqlQuery qry);
     void insertSong(Model::Song song);
+    Model::Song editSong(Model::Song edited_song);
     void updateAllSongsModel();
     void incrementPlayCount(QString filePath);
     bool deleteSong(QString filePath);

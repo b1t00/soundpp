@@ -27,10 +27,13 @@ public:
     void setAllSongs(QList<Model::Song> *allSongs);
     QList<Model::Song> songs();
     QList<Model::Song> filtered_songs_by_artist(QString artist);
+    QList<Model::Song> filtered_songs_by_album(QString album);
     QList<Model::Song> search_result(QString search);
+    QList<QString> allAlbums();
     QList<QString> allArtists();
     bool deleteSong(QString filePath);
     bool insertSong(Model::Song song_to_add);
+    bool editSong(Model::Song song_from_db);
 
 
 
