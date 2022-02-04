@@ -35,6 +35,14 @@ MainWindow::MainWindow(QWidget *parent)
     contextMenu->addAction("edit song...", this, SLOT(on_actionEdit_Song_triggered()));
     connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
+
+    ui->playlist_tableView->setShowGrid(false);
+    ui->playlist_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->playlist_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    contextMenu_2 = new QMenu(ui->playlist_tableView);
+    contextMenu_2->addAction("new Playlist..", this, SLOT(createNewPlaylist()));
+    connect(ui->playlist_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu_2(const QPoint &)));
+
     contextMenuHeader = new QMenu(ui->songs_tableView->horizontalHeader());
     contextMenuHeader->addAction("blub next", this, SLOT(addToQueue()));
     // TODO:: connect(ui->songs_tableView->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -200,6 +208,11 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
 {
      contextMenu->exec(ui->songs_tableView->viewport()->mapToGlobal(point));
 
+}
+
+void MainWindow::onCustomContextMenu_2(const QPoint &point){
+
+    contextMenu_2->exec(ui->playlist_tableView->viewport()->mapToGlobal(point));
 }
 
 void MainWindow::addToPlaylist(){
