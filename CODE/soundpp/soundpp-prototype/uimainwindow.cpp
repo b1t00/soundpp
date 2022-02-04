@@ -1,9 +1,6 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
-
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -331,15 +328,19 @@ void MainWindow::on_actionEdit_Song_triggered()
         if(song_to_edit.getAlbumName() != song_from_db.getAlbumName()){
             ui->statusbar->showMessage("Changed album name: " + song_to_edit.getAlbumName() + " -> " + song_from_db.getAlbumName(), 10000);
             if(m_displayState == DisplayAlbums){
-                //TODO:: Update albums
-                qDebug() << "update albums";
-//                 m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
+                 m_display_albums_model = new Model::DisplayAlbumsModel(sppm->allAlbums(), this);
+                 ui->artists_tableView->setModel(m_display_albums_model);
             }
         }
         if(song_to_edit.getAlbumNr() != song_from_db.getAlbumNr())
             ui->statusbar->showMessage("Changed song number: " + QString::number(song_to_edit.getAlbumNr()) + " -> " + song_from_db.getAlbumNr(), 10000);
-        if(song_to_edit.getArtistName() != song_from_db.getArtistName())
+        if(song_to_edit.getArtistName() != song_from_db.getArtistName()){
             ui->statusbar->showMessage("Changed artist name: " + song_to_edit.getArtistName() + " -> " + song_from_db.getArtistName(), 10000);
+            if(m_displayState == DisplayArtists){
+                 m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(), this);
+                 ui->artists_tableView->setModel(m_display_artist_model);
+            }
+        }
     }
 
 }
@@ -405,17 +406,20 @@ void MainWindow::on_btn_titles_clicked()
 //TODO:: last artists and albums clicked memory variable
 void MainWindow::on_btn_artists_clicked()
 {
-//    if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
-//        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
-////        qDebug() << "current_selected_artist" << current_selected_artist;
-//         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(current_selected_artist), this);
-//         ui->songs_tableView->setModel(m_display_song_model);
-//    } else {
-////        ui->artists_tableView->selectRow(0);
-//        m_display_song_model->clear();
-////        ui->songs_tableView->model()->clear();
-////        m_display_song_model->set
-//    }
+    // TODO: REIN ODER RAUS?= ----->>>
+    if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
+        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+//        qDebug() << "current_selected_artist" << current_selected_artist;
+         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(current_selected_artist), this);
+         ui->songs_tableView->setModel(m_display_song_model);
+    } else {
+//        ui->artists_tableView->selectRow(0);
+        m_display_song_model->clear();
+//        ui->songs_tableView->model()->clear();
+//        m_display_song_model->set
+    }
+
+    // TODO: REIN ODER RAUS?= <...
     m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
     ui->artists_tableView->show();
