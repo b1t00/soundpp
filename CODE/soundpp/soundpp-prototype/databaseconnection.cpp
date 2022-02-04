@@ -142,6 +142,44 @@ void Database::DataBaseConnection::insertSong(Model::Song song)
     updateAllSongsModel();
 }
 
+Model::Song Database::DataBaseConnection::editSong(Model::Song edited_song)
+{
+    this->sqlitedb.open();
+    QSqlQuery qry;
+    qry.prepare("UPDATE songsTable SET songName = :songName, artistName = :artistName, albumName = :albumName, songNr = :songNr  WHERE songPath = :songPath ");
+    qDebug() << edited_song.getSongPath();
+    qry.bindValue(":songName", edited_song.getTitle());
+    qry.bindValue(":artistName", edited_song.getArtistName());
+    qry.bindValue(":albumName", edited_song.getAlbumName());
+    qry.bindValue(":songNr", edited_song.getAlbumNr());
+    qry.bindValue(":songPath", edited_song.getSongPath());
+//    qry.bindValue(":addedDate", edited_song.getAddedTime());
+    if(!qry.exec()){
+        qDebug("Warning!! No Song Editing");
+        return edited_song;
+    };
+    qry.clear();
+    qry.prepare("SELECT * FROM songsTable WHERE songPath = (:songPath)");
+    qry.bindValue(":songPath", edited_song.getSongPath());
+    if(!qry.exec()){
+        qDebug("Warning!! No Song Editing 2");
+        return edited_song;
+    };
+    allSongsQueryModel->setQuery(qry);
+//    allSongsQueryModel->exe
+    Model::Song song_from_db;
+    song_from_db.setSongPath(allSongsQueryModel->record(0).value("songPath").toString());
+    song_from_db.setTitle(allSongsQueryModel->record(0).value("songName").toString());
+    song_from_db.setArtistName(allSongsQueryModel->record(0).value("artistName").toString());
+    song_from_db.setAlbumName(allSongsQueryModel->record(0).value("albumName").toString());
+    song_from_db.setAlbumNr(allSongsQueryModel->record(0).value("songNr").toInt());
+    song_from_db.setAddedTime(allSongsQueryModel->record(0).value("addedDate").toString());
+    song_from_db.setPlayCount(allSongsQueryModel->record(0).value("playCount").toInt());
+    qDebug() << "db title " << song_from_db.getTitle();
+    this->sqlitedb.close();
+    return song_from_db;
+}
+
 void Database::DataBaseConnection::updateAllSongsModel()
 {
     sqlitedb.open();

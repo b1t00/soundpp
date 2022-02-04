@@ -1,13 +1,15 @@
-﻿#include "display_song_model.h"
+﻿#include "modeldisplaysongs.h"
 
 #include <QDebug>
 
-display_song_model::display_song_model(QList<Model::Song> songs,QObject *parent)
+namespace Model {
+
+DisplaySongModel::DisplaySongModel(QList<Model::Song> songs,QObject *parent)
     : QAbstractTableModel(parent), m_songs(songs)
 {
 }
 
-QVariant display_song_model::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(role == Qt::DisplayRole){
         if(orientation == Qt::Horizontal){
@@ -29,17 +31,17 @@ QVariant display_song_model::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
-int display_song_model::rowCount(const QModelIndex &parent) const
+int DisplaySongModel::rowCount(const QModelIndex &parent) const
 {
    return m_songs.size();
 }
 
-int display_song_model::columnCount(const QModelIndex &parent) const
+int DisplaySongModel::columnCount(const QModelIndex &parent) const
 {
   return 9;
 }
 
-QVariant display_song_model::data(const QModelIndex &index, int role) const
+QVariant DisplaySongModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -69,7 +71,7 @@ QVariant display_song_model::data(const QModelIndex &index, int role) const
 }
 
 
-bool display_song_model::removeRows(int row, int count, const QModelIndex &parent)
+bool DisplaySongModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     if(row >= rowCount() || row+count-1 >= rowCount()) return false;
 
@@ -82,12 +84,12 @@ bool display_song_model::removeRows(int row, int count, const QModelIndex &paren
     return true;
 }
 
-void display_song_model::removeSong(Model::Song song)
+void DisplaySongModel::removeSong(Model::Song song)
 {
 
 }
 
-void display_song_model::updateSong(int row, Model::Song song)
+void DisplaySongModel::updateSong(int row, Model::Song song)
 {
     (m_songs)[row] = song;
 
@@ -95,7 +97,7 @@ void display_song_model::updateSong(int row, Model::Song song)
 }
 
 
-void display_song_model::addSong(Model::Song song)
+void DisplaySongModel::addSong(Model::Song song)
 {
 //        beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_songs.append(song);
@@ -106,9 +108,10 @@ void display_song_model::addSong(Model::Song song)
 
 }
 
-void display_song_model::clear()
+void DisplaySongModel::clear()
 {
     m_songs.clear();
     qDebug() << "blub blub clear";
 }
 
+}
