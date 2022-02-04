@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //Display & Interact ArtistModel
-    m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+    m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
 
 
@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
+    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     m_displayModels = DisplayTitles;
     ui->artists_tableView->hide();
     ui->songs_tableView->setModel(m_display_song_model);
@@ -185,7 +185,7 @@ void MainWindow::dropEvent(QDropEvent *e)
 //            m_display_song_model->addSong(song_to_add); // TODO::
             if(newArtist){
             // if a new artist is in the dopped file, the table will reload completely because of the sorting
-                m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+                m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
                 ui->artists_tableView->setModel(m_display_artist_model);
             }
         }
@@ -341,7 +341,7 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 {
     //inhalt wird per parameter übergeben und anhand dieses parameters wird dann die songs table vie aktualisiert
 
-    m_display_song_model = new display_song_model(sppm->filtered_songs_by_artist(index.data().toString()), this);
+    m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
     ui->songs_tableView->setModel(m_display_song_model);
 }
 void MainWindow::on_btn_volume_clicked(bool checked)
@@ -368,14 +368,14 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
 {
 
 
-    m_display_song_model = new display_song_model(sppm->search_result(arg1), this);
+    m_display_song_model = new Model::DisplaySongModel(sppm->search_result(arg1), this);
     ui->songs_tableView->setModel(m_display_song_model);
 
 }
 
 void MainWindow::on_btn_titles_clicked()
 {
-    m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
+    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     ui->songs_tableView->setModel(m_display_song_model);
     ui->artists_tableView->hide();
     m_displayModels = DisplayTitles;
@@ -386,7 +386,7 @@ void MainWindow::on_btn_artists_clicked()
     if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
         QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
 //        qDebug() << "current_selected_artist" << current_selected_artist;
-         m_display_song_model = new display_song_model(sppm->filtered_songs_by_artist(current_selected_artist), this);
+         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(current_selected_artist), this);
          ui->songs_tableView->setModel(m_display_song_model);
     } else {
 //        ui->artists_tableView->selectRow(0);
@@ -394,7 +394,7 @@ void MainWindow::on_btn_artists_clicked()
 //        ui->songs_tableView->model()->clear();
 //        m_display_song_model->set
     }
-    m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
+    m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
     ui->artists_tableView->show();
     m_displayModels = DisplayArtists;

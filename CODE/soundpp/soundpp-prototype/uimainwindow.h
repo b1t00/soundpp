@@ -16,8 +16,8 @@
 #include <QStandardItemModel>
 
 #include <QShortcut>
-#include "modelartistsdisplay.h"
-#include "display_song_model.h"
+#include "modeldisplayartists.h"
+#include "modeldisplaysongs.h"
 
 #include <QContextMenuEvent>
 
@@ -93,10 +93,10 @@ private:
 
 
     //displaying models
-    ModelDisplay m_displayModels;
-    display_artist_model* m_display_artist_model;
-    display_song_model* m_display_song_model;
-    display_song_model* m_m_display_song_model;
+    ModelDisplay m_displayModels; // Enum for state of display
+    Model::DisplayArtistsModel* m_display_artist_model;
+    Model::DisplaySongModel* m_display_song_model;
+
     QMenu* contextMenu;
     QMenu* contextMenuHeader;
 
