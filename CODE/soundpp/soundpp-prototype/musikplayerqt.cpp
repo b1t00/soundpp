@@ -25,10 +25,19 @@ QUrl MusikPlayerQt::songPath() const
 void MusikPlayerQt::setSongPath(const QUrl &songPath)
 {
     m_playedOnce = false;
-    m_songPath = songPath;
-    QUrl ubuntuPath =  "file://" + songPath.toString();
-    qDebug() << "songpath: " << ubuntuPath;
-    setMedia(ubuntuPath);
+    QString crossPlatformFile;
+    #ifdef WIN32
+    crossPlatformFile = songPath.toString();
+    qDebug() << "Windows filepath:" << crossPlatformFile;
+    #elif LINUX
+    crossPlatformFile = "file://" + songPath.toString();
+    qDebug() << "Ubuntu filepath:" << crossPlatformFile;
+    #else
+    #error "We don't support your system or version yet, sorry..."
+    #endif
+    m_songPath = crossPlatformFile;
+    qDebug() << "songpath: " << crossPlatformFile;
+    setMedia(QUrl(crossPlatformFile));
 }
 
 void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
