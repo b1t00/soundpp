@@ -50,6 +50,7 @@ private slots:
 
     void updateGui(); // :TODO
     void onCustomContextMenu(const QPoint &point);
+    void onCustomContextMenu_2(const QPoint &point);
     void addToPlaylist();
     void addToQueue();
     void display_tree();
@@ -98,6 +99,7 @@ private:
     display_song_model* m_display_song_model;
     display_song_model* m_m_display_song_model;
     QMenu* contextMenu;
+    QMenu* contextMenu_2;
     QMenu* contextMenuHeader;
 
     // dbconnection
