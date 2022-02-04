@@ -42,11 +42,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     m_display_song_model = new display_song_model(sppm->get_all_songs(), this);
-    m_displayModels = DisplayArtists;
+    m_displayModels = DisplayTitles;
+    ui->artists_tableView->hide();
     ui->songs_tableView->setModel(m_display_song_model);
     ui->songs_tableView->setColumnHidden(0,true); // hide path column
     ui->songs_tableView->setColumnHidden(5,true);
     ui->songs_tableView->setColumnHidden(6,true);
+
 
     ui->songs_tableView->clearSelection();
 //    ui->actionRemove_Song->setEnabled(false);
