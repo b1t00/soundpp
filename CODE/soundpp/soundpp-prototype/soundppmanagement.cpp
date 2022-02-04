@@ -68,6 +68,16 @@ bool SoundppManagement::deleteSong(QString filePath)
     if(deleted) deleted = dm->deleteSong(filePath);
     return deleted;
 }
+
+Model::Song SoundppManagement::editSong(Model::Song edited_song)
+{
+    if(dm->editSong(dbc->editSong(edited_song))){
+        return dbc->editSong(edited_song);
+    }
+    qWarning() << "dm konnte song nicht ersetzten";
+    return Model::Song();
+}
+
 void SoundppManagement::press_mute(bool mute){
     mpqt->setMuted(mute);
 }

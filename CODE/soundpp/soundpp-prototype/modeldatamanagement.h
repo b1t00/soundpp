@@ -33,6 +33,7 @@ public:
     QList<QString> allArtists();
     bool deleteSong(QString filePath);
     bool insertSong(Model::Song song_to_add);
+    bool editSong(Model::Song song_from_db);
 
 
 
