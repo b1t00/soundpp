@@ -13,6 +13,7 @@ SOURCES += \
     main.cpp \
     metadatareader.cpp \
     modeldatamanagement.cpp \
+    modeldisplayalbums.cpp \
     modeldisplayartists.cpp \
     modeldisplaysongs.cpp \
     modelsong.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     databaseconnection.h \
     metadatareader.h \
     modeldatamanagement.h \
+    modeldisplayalbums.h \
     modeldisplayartists.h \
     modeldisplaysongs.h \
     modelsong.h \

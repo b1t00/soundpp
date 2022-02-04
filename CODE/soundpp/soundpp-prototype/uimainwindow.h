@@ -16,8 +16,9 @@
 #include <QStandardItemModel>
 
 #include <QShortcut>
-#include "modeldisplayartists.h"
 #include "modeldisplaysongs.h"
+#include "modeldisplayartists.h"
+#include "modeldisplayalbums.h"
 
 #include <QContextMenuEvent>
 
@@ -25,6 +26,7 @@
 
 #include "uieditsongdialog.h"
 
+//TODO:: unused paramaters (was hat Last da nochmal gemacht?)
 
 
 QT_BEGIN_NAMESPACE
@@ -39,7 +41,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    enum ModelDisplay{
+    enum ModelDisplay : unsigned char{
         DisplayTitles = 0, DisplayArtists, DisplayAlbums
     };
 
@@ -62,7 +64,6 @@ private slots:
     void on_durationChanged(qint64 position);
     void on_btn_volume_clicked(bool checked);
 
-//    void on_btn_play_clicked(bool checked);
     // actions
     void on_songs_tableView_doubleClicked();
     void on_actionRemove_Song_triggered();
@@ -77,9 +78,7 @@ private slots:
     void on_insert_search_textChanged(const QString &arg1);
 
     void on_btn_titles_clicked();
-
     void on_btn_artists_clicked();
-
     void on_btn_albums_clicked();
 
 private:
@@ -94,8 +93,9 @@ private:
 
     //displaying models
     ModelDisplay m_displayModels; // Enum for state of display
-    Model::DisplayArtistsModel* m_display_artist_model;
     Model::DisplaySongModel* m_display_song_model;
+    Model::DisplayArtistsModel* m_display_artist_model;
+    Model::DisplayAlbumsModel* m_display_albums_model;
 
     QMenu* contextMenu;
     QMenu* contextMenuHeader;
