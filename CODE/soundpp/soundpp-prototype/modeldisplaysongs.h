@@ -1,16 +1,18 @@
-#ifndef DISPLAY_SONG_MODEL_H
-#define DISPLAY_SONG_MODEL_H
+#ifndef MODELDISPLAYSONGS_H
+#define MODELDISPLAYSONGS_H
 
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include "modelsong.h"
 
-class display_song_model : public QAbstractTableModel
+namespace Model {
+
+class DisplaySongModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit display_song_model(QList<Model::Song> songs, QObject *parent = nullptr);
+    explicit DisplaySongModel(QList<Model::Song> songs, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -32,4 +34,5 @@ private:
     QList<Model::Song> m_songs;
 };
 
-#endif // DISPLAY_SONG_MODEL_H
+}
+#endif // MODELDISPLAYSONGS_H
