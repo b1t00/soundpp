@@ -6,301 +6,67 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>762</width>
-    <height>501</height>
+    <width>871</width>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" rowspan="4">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="lupe">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="insert_search"/>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout_8">
-      <item>
-       <widget class="QLabel" name="current_song_label">
-        <property name="text">
-         <string>no song selected</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <item>
-       <widget class="QLabel" name="logo">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QPushButton" name="btn_titles">
-          <property name="maximumSize">
-           <size>
-            <width>96</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">#btn_titles{
-    background-color:	#C0C0C0;
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: 10px;
-	font-family: Verdana;
-    max-width: 80px;
-    padding: 6px;
-}</string>
-          </property>
+         <widget class="QLabel" name="lupe">
           <property name="text">
-           <string>Titles</string>
+           <string>TextLabel</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_artists">
-          <property name="maximumSize">
-           <size>
-            <width>96</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">#btn_artists{
-    background-color:	#C0C0C0;
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: 10px;
-	font-family:Verdana;
-    max-width: 80px;
-    padding: 6px;
-}</string>
-          </property>
-          <property name="text">
-           <string>Artists</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btn_albums">
-          <property name="maximumSize">
-           <size>
-            <width>96</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">#btn_albums{
-    background-color:	#C0C0C0;
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: 10px;
-	font-family: Verdana;
-    max-width: 80px;
-    padding: 6px;
-}</string>
-          </property>
-          <property name="text">
-           <string>Albums</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableView" name="playlist_tableView">
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="insert_search"/>
         </item>
        </layout>
       </item>
-     </layout>
-    </item>
-    <item row="3" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <widget class="QSlider" name="sldr_progress">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="1" colspan="3">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QTableView" name="artists_tableView">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>250</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::DragDrop</enum>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>false</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <property name="showGrid">
-         <bool>true</bool>
-        </property>
-        <property name="gridStyle">
-         <enum>Qt::DashLine</enum>
-        </property>
-        <property name="sortingEnabled">
-         <bool>true</bool>
-        </property>
-        <attribute name="horizontalHeaderCascadingSectionResizes">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="horizontalHeaderStretchLastSection">
-         <bool>true</bool>
-        </attribute>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableView" name="songs_tableView">
-        <property name="minimumSize">
-         <size>
-          <width>400</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">#songs_tableView {
-border-bottom: 1px solid #ddd;
-}</string>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>false</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::ExtendedSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <property name="gridStyle">
-         <enum>Qt::DashLine</enum>
-        </property>
-        <attribute name="horizontalHeaderCascadingSectionResizes">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="horizontalHeaderStretchLastSection">
-         <bool>true</bool>
-        </attribute>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="3" rowspan="3">
-     <layout class="QHBoxLayout" name="horizontalLayout_9">
-      <item>
-       <widget class="QPushButton" name="btn_volume">
-        <property name="styleSheet">
-         <string notr="true">#btn_volume{
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: no-repeat;
-max-width: 20px;
-max-height: 20px;
-min-width: 20px;
-min-height: 20px;
-}</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="sldr_volume">
-        <property name="maximumSize">
-         <size>
-          <width>16777</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="value">
-         <number>99</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="2" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
-      <item>
-       <widget class="QPushButton" name="btn_back">
-        <property name="styleSheet">
-         <string notr="true">#btn_back {
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="logo">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QLabel" name="current_song_label">
+            <property name="text">
+             <string>no song selected</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="btn_back">
+            <property name="styleSheet">
+             <string notr="true">#btn_back {
 background-color: transparent;
 image: url(:img/backwards.png);
 background: none;
@@ -311,16 +77,16 @@ max-height: 20px;
 min-width: 20px;
 min-height: 20px;
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_play">
-        <property name="styleSheet">
-         <string notr="true">#btn_play{
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_play">
+            <property name="styleSheet">
+             <string notr="true">#btn_play{
 background-color: transparent;
 /*image: url(:img/Play.png);*/
 background: none;
@@ -331,16 +97,16 @@ max-height: 20px;
 min-width: 20px;
 min-height: 20px;
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_for">
-        <property name="styleSheet">
-         <string notr="true">#btn_for{
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_for">
+            <property name="styleSheet">
+             <string notr="true">#btn_for{
 background-color: transparent;
 image: url(:img/forwards.png);
 background: none;
@@ -351,16 +117,269 @@ max-height: 20px;
 min-width: 20px;
 min-height: 20px;
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QSlider" name="sldr_progress">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QPushButton" name="btn_volume">
+          <property name="styleSheet">
+           <string notr="true">#btn_volume{
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: no-repeat;
+max-width: 20px;
+max-height: 20px;
+min-width: 20px;
+min-height: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sldr_volume">
+          <property name="maximumSize">
+           <size>
+            <width>16777</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="value">
+           <number>99</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
-    <item row="3" column="3">
-     <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QPushButton" name="btn_titles">
+            <property name="maximumSize">
+             <size>
+              <width>96</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#btn_titles{
+    background-color:	#C0C0C0;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: 10px;
+	font-family: Verdana;
+    max-width: 80px;
+    padding: 6px;
+}</string>
+            </property>
+            <property name="text">
+             <string>Titles</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_artists">
+            <property name="maximumSize">
+             <size>
+              <width>96</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#btn_artists{
+    background-color:	#C0C0C0;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: 10px;
+	font-family:Verdana;
+    max-width: 80px;
+    padding: 6px;
+}</string>
+            </property>
+            <property name="text">
+             <string>Artists</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_albums">
+            <property name="maximumSize">
+             <size>
+              <width>96</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#btn_albums{
+    background-color:	#C0C0C0;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: 10px;
+	font-family: Verdana;
+    max-width: 80px;
+    padding: 6px;
+}</string>
+            </property>
+            <property name="text">
+             <string>Albums</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableView" name="playlist_tableView">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QTableView" name="artists_tableView">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::DragDrop</enum>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>false</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="showGrid">
+           <bool>true</bool>
+          </property>
+          <property name="gridStyle">
+           <enum>Qt::DashLine</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="songs_tableView">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#songs_tableView {
+border-bottom: 1px solid #ddd;
+}</string>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>false</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="gridStyle">
+           <enum>Qt::DashLine</enum>
+          </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="song_queue">
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -369,7 +388,7 @@ min-height: 20px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>762</width>
+     <width>871</width>
      <height>20</height>
     </rect>
    </property>
