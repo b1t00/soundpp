@@ -19,6 +19,7 @@ SOURCES += \
     modeldisplaysongs.cpp \
     modelsong.cpp \
     musikplayerqt.cpp \
+    playlist.cpp \
     playlistdialog.cpp \
     soundppmanagement.cpp \
     uieditsongdialog.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     modeldisplaysongs.h \
     modelsong.h \
     musikplayerqt.h \
+    playlist.h \
     playlistdialog.h \
     soundppmanagement.h \
     uieditsongdialog.h \

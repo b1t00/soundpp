@@ -10,6 +10,7 @@ Database::DataBaseConnection::DataBaseConnection()
     QString dbPath = QCoreApplication::applicationDirPath() + "/musicDataBase.db";
     sqlitedb.setDatabaseName(dbPath);
     allSongsQueryModel = new QSqlQueryModel();
+    allPlaylistsQueryModel = new QSqlQueryModel();
     if(sqlitedb.open()){
 //        QSqlQueryModel *qm = new QSqlQueryModel();
         qInfo() << "db connected";
@@ -28,6 +29,11 @@ Database::DataBaseConnection::DataBaseConnection()
                         coverPath	TEXT, \
                         playCount   INTEGER, \
                         PRIMARY KEY(songPath) );");
+
+//        allSongsQueryModel->setQuery("CREATE TABLE playlistTable ( /
+//                        playlistName TEXT, \
+//                        playlistGenre TEXT, \
+//                        );");
         sqlitedb.close();
 
     } else {
@@ -37,8 +43,24 @@ Database::DataBaseConnection::DataBaseConnection()
 
     m_all_songs = new QList<Model::Song>();
 
+    if(sqlitedb.open()){
+        qInfo() << "db playlist auch";
+
+        allPlaylistsQueryModel->setQuery("CREATE TABLE playlistTable ( \
+                                            playlistName TEXT);");
+
+            sqlitedb.close();
+
+
+       m_all_playlists = new QList<Model::Playlist>();
+
+
+    }else {
+        qInfo() << "Doch nicht connected";
+    }
 
 }
+
 
 
 QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
@@ -94,6 +116,27 @@ QList<Model::Song>* Database::DataBaseConnection::get_and_create_all_Songs(){
 
 }
 
+QList<Model::Playlist>* Database::DataBaseConnection::get_and_create_all_Playlists() {
+    bool open_success;
+    open_success = sqlitedb.open();
+
+    QSqlQuery qry;
+    qInfo() << "db get query connected: " << open_success;
+    qry.prepare("SELECT * FROM playlistTable");
+    qry.exec();
+    allPlaylistsQueryModel->setQuery(qry);
+    sqlitedb.close();
+
+    for(int i = 0; i < allPlaylistsQueryModel->rowCount(); i++){
+        Model::Playlist playlist;
+        playlist.setPlaylistName(allPlaylistsQueryModel->record(i).value("playlistName").toString());;
+        m_all_playlists->append(playlist);
+        }
+
+    return m_all_playlists;
+
+}
+
 void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currently no functionality
 {
 //    this->sqlitedb.open();
@@ -116,13 +159,33 @@ void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currentl
 //        this->sqlitedb.close();
 }
 
+void Database::DataBaseConnection::insertPlaylist(Model::Playlist playlist){
+
+    this->sqlitedb.open();
+
+    QSqlQuery qry;
+
+    qry.prepare("INSERT INTO playlistTable (playlistName) VALUES (:playlistName)" );
+
+    qry.bindValue(":playlistName", playlist.getPlaylistName());
+
+    qry.exec();
+
+    this->sqlitedb.close();
+
+    updateAllPlaylistsModel();
+
+
+
+}
+
 void Database::DataBaseConnection::insertSong(Model::Song song)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
 
     qry.prepare("INSERT INTO songsTable (songPath, songName, songNr, artistName, albumName, addedDate, playCount) "
-                  "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate, 0)");
+                "VALUES (:songPath, :songName, :songNr, :artistName, :albumName, :addedDate, 0)");
     qry.bindValue(":songPath", song.getSongPath());
     qry.bindValue(":songName", song.getTitle());
     qry.bindValue(":songNr", song.getAlbumNr());
@@ -184,6 +247,13 @@ void Database::DataBaseConnection::updateAllSongsModel()
 {
     sqlitedb.open();
     allSongsQueryModel->setQuery("SELECT * FROM songsTable");
+    sqlitedb.close();
+}
+
+void Database::DataBaseConnection::updateAllPlaylistsModel()
+{
+    sqlitedb.open();
+    allPlaylistsQueryModel->setQuery("SELECT * FROM playlistTable");
     sqlitedb.close();
 }
 

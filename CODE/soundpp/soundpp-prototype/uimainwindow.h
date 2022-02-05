@@ -77,6 +77,7 @@ private slots:
     void on_artists_tableView_clicked(const QModelIndex &index);
     void on_actionDarkmode_triggered(bool checked);
     void createNewPlaylist();
+    void deletePlaylist();
 
     void on_btn_for_clicked();
 

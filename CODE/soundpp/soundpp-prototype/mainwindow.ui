@@ -127,7 +127,7 @@
     border-style: outset;
     border-width: 2px;
     border-radius: 10px;
-    border-color: beige;
+    border-color: black;
     font: 10px;
 	font-family: Verdana;
     max-width: 80px;

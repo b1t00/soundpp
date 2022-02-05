@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //Display & Interact PlaylistModel
-    m_display_playlist_model = new Model::DisplayPlaylistModel(sppm->get_all_songs());
+    m_display_playlist_model = new Model::DisplayPlaylistModel(sppm->get_all_playlists());
     ui->playlist_tableView->setModel(m_display_playlist_model);
 
     ui->playlist_tableView->setShowGrid(false);
@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->playlist_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu_2 = new QMenu(ui->playlist_tableView);
     contextMenu_2->addAction("new Playlist..", this, SLOT(createNewPlaylist()));
+    contextMenu_2->addAction("delete Playlist", this, SLOT(deletePlaylist()));
     connect(ui->playlist_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu_2(const QPoint &)));
 
     contextMenuHeader = new QMenu(ui->songs_tableView->horizontalHeader());
@@ -96,16 +97,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->btn_play->setIcon(play);
 
 
-//   QPushButton#btn_artists {
-//        background-color: red;
-//        border-style: outset;
-//        border-width: 2px;
-//        border-radius: 10px;
-//        border-color: beige;
-//        font: bold 14px;
-//        min-width: 10em;
-//        padding: 6px;
-//    }
 
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
@@ -242,8 +233,14 @@ void MainWindow::createNewPlaylist(){
     playlistdialog playlistdialog;
     playlistdialog.exec();
 
+    Model::Playlist newPlaylist = playlistdialog.getPlaylist();
+    qInfo() << newPlaylist.getPlaylistName();
+    sppm->new_playlist(newPlaylist);
 
+}
 
+void MainWindow::deletePlaylist(){
+    qInfo() << "gelöscht";
 }
 
 void MainWindow::addToPlaylist(){
