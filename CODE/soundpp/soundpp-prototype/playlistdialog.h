@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "modelsong.h"
+#include "playlist.h"
 
 namespace Ui {
 class playlistdialog;
@@ -16,18 +17,20 @@ public:
     explicit playlistdialog(QWidget *parent = nullptr);
     ~playlistdialog();
 
-    void setPlaylistName(QString name);
-    void setPlaylistGenre(QString genre);
+    void setPlaylistName(const Model::Playlist playlist);
 
+    Model::Playlist getPlaylist() const;
     QString playlistName() const;
-    QString playlistGenre() const;
+
 
 
 private slots:
-    void on_pushButton_clicked();
+
+    void on_accept_playlist_clicked();
 
 private:
     Ui::playlistdialog *ui;
+    Model::Playlist m_playlist;
 };
 
 #endif // PLAYLISTDIALOG_H

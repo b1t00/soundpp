@@ -9,7 +9,7 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     dbc = new Database::DataBaseConnection();
     mpqt = new MusikPlayer::MusikPlayerQt();
     mdr = new MetaData::MetaDataFromFile();
-    dm = new Model::DataManagement(dbc->get_and_create_all_Songs());
+    dm = new Model::DataManagement(dbc->get_and_create_all_Songs(), dbc->get_and_create_all_Playlists());
 
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
@@ -18,6 +18,15 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
 
 QList<Model::Song> SoundppManagement::get_all_songs(){
    return dm->get_all_songs();
+}
+
+QList<Model::Playlist> SoundppManagement::get_all_playlists(){
+    return dm->get_all_playlists();
+}
+
+void SoundppManagement::new_playlist(Model::Playlist new_playlist){
+     dbc->insertPlaylist(new_playlist);
+     dm->insert_playlist(new_playlist);
 }
 
 

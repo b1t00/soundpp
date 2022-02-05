@@ -27,6 +27,7 @@ public:
     explicit SoundppManagement(QObject *parent = nullptr);
     // database get
     QList<Model::Song> get_all_songs();
+    QList<Model::Playlist> get_all_playlists();
 //    QSqlQueryModel get_all_artists();
     QStringList* get_all_Interprets();
     QList<Model::Song> create_and_get_songs();
@@ -44,6 +45,7 @@ public:
     void incrementPlayCount(QString songPath);
     bool deleteSong(QString filePath);
     Model::Song editSong(Model::Song edited_song);
+    void new_playlist(Model::Playlist new_playlist);
 
     //musikplayerqt
     bool pressPlay();

@@ -1,7 +1,9 @@
 #include "playlistdialog.h"
 #include "ui_playlistdialog.h"
+#include "playlist.h"
+#include <QDebug>
 
-playlistdialog::playlistdialog(QWidget *parent) :
+playlistdialog::playlistdialog( QWidget *parent) :
     QDialog(parent),
     ui(new Ui::playlistdialog)
 {
@@ -13,18 +15,15 @@ playlistdialog::~playlistdialog()
     delete ui;
 }
 
-void setPlaylistName(QString name){
 
+void playlistdialog::on_accept_playlist_clicked()
+{
+    m_playlist.setPlaylistName(ui->playlist_name->text());
+    qDebug() << "Neue Playlist erstellt : " + m_playlist.getPlaylistName();
 }
-void setPlaylistGenre(QString genre){
 
-}
-
-QString playlistName()  {
-
-}
-QString playlistGenre() {
-
+Model::Playlist playlistdialog::getPlaylist() const {
+    return m_playlist;
 }
 
 

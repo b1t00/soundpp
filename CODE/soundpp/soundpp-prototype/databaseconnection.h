@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "modelsong.h"
+#include "playlist.h"
 
 
 namespace Database {
@@ -18,10 +19,13 @@ public:
     DataBaseConnection();
     QSqlQueryModel* getQueryModel_all();
     QList<Model::Song> *get_and_create_all_Songs();
+    QList<Model::Playlist> *get_and_create_all_Playlists();
     void insertQuery(QSqlQuery qry);
     void insertSong(Model::Song song);
+    void insertPlaylist(Model::Playlist playlist);
     Model::Song editSong(Model::Song edited_song);
     void updateAllSongsModel();
+    void updateAllPlaylistsModel();
     void incrementPlayCount(QString filePath);
     bool deleteSong(QString filePath);
 
@@ -29,7 +33,10 @@ public:
 private:
     QSqlDatabase sqlitedb;
     QSqlQueryModel *allSongsQueryModel;
+    QSqlQueryModel *allPlaylistsQueryModel;
     QList<Model::Song> *m_all_songs;
+    QList<Model::Playlist> *m_all_playlists;
+
 //    QList<Model::Song> m_all_songs;
 };
 

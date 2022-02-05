@@ -1,8 +1,8 @@
 #include "displayplaylistmodel.h"
 namespace Model {
 
-DisplayPlaylistModel::DisplayPlaylistModel(QList<Song> songs, QObject *parent)
-    : QAbstractTableModel(parent), m_all_songs(songs)
+DisplayPlaylistModel::DisplayPlaylistModel(QList<Playlist> playlists, QObject *parent)
+    : QAbstractTableModel(parent), m_all_playlists(playlists)
 {
 }
 
@@ -11,7 +11,7 @@ QVariant DisplayPlaylistModel::headerData(int section, Qt::Orientation orientati
     if(role == Qt::DisplayRole){
         if(orientation == Qt::Horizontal){
             switch(section){
-            case 0: return "Playlist";
+            case 0: return "Playlists";
             }
         }
     }
@@ -20,10 +20,7 @@ QVariant DisplayPlaylistModel::headerData(int section, Qt::Orientation orientati
 
 int DisplayPlaylistModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid())
-        return 0;
-
-    // FIXME: Implement me!
+    return m_all_playlists.size();
 }
 
 int DisplayPlaylistModel::columnCount(const QModelIndex &parent) const
@@ -33,10 +30,17 @@ int DisplayPlaylistModel::columnCount(const QModelIndex &parent) const
 
 QVariant DisplayPlaylistModel::data(const QModelIndex &index, int role) const
 {
+
     if (!index.isValid())
         return QVariant();
 
-    // FIXME: Implement me!
-    return QVariant();
+   if(role == Qt::DisplayRole){
+       const Model::Playlist playlist = m_all_playlists.at(index.row());
+
+       switch(index.column()){
+       case 0 : return playlist.getPlaylistName();
+       }
+   }
+   return QVariant();
 }
 }
