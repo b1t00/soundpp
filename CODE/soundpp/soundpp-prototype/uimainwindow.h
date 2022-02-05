@@ -19,12 +19,14 @@
 #include "modeldisplaysongs.h"
 #include "modeldisplayartists.h"
 #include "modeldisplayalbums.h"
+#include "displayplaylistmodel.h"
 
 #include <QContextMenuEvent>
 
 #include <QItemSelection>
 
 #include "uieditsongdialog.h"
+#include "playlistdialog.h"
 
 //TODO:: unused paramaters (was hat Last da nochmal gemacht?)
 
@@ -73,6 +75,8 @@ private slots:
     void on_actionPlay_triggered();
     void on_actionPlay_Next_triggered();
     void on_artists_tableView_clicked(const QModelIndex &index);
+    void on_actionDarkmode_triggered(bool checked);
+    void createNewPlaylist();
 
     void on_btn_for_clicked();
 
@@ -97,6 +101,7 @@ private:
     Model::DisplaySongModel* m_display_song_model;
     Model::DisplayArtistsModel* m_display_artist_model;
     Model::DisplayAlbumsModel* m_display_albums_model;
+    Model::DisplayPlaylistModel* m_display_playlist_model;
 
     QString currentSelectedAttribute() const ;
 //    QString currentSelectedAlbum() const ;
