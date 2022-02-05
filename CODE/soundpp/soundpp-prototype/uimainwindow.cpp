@@ -163,12 +163,15 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 
 }
 
-bool MainWindow::filterFilesByPrefix(const QUrl &url)
+bool MainWindow::filterFilesByPrefix(QString songPath)
 {
-    QList<QString> splittingString = url.toString().split(".");
+    QList<QString> splittingString = songPath.split(".");
     QString filePrefix = splittingString[splittingString.size()-1].toUpper();
     if(!(filePrefix == "MP3" | filePrefix == "WAV") ){
         ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
+        return false;
+    } else if(sppm->containsSongPath(songPath)){
+        ui->statusbar->showMessage(songPath + " is already in the database", 10000);
         return false;
     }
     return true;
@@ -176,27 +179,65 @@ bool MainWindow::filterFilesByPrefix(const QUrl &url)
 
 void MainWindow::dropEvent(QDropEvent *e)
 {
-    bool newArtist = false;
+    bool newArtist, currentArtist = false;
+    bool newAlbum, currentAlbum = false;
     foreach (const QUrl &url, e->mimeData()->urls()) {
-        if(filterFilesByPrefix(url)){
+        QString filePath (url.toLocalFile());
+        if(filterFilesByPrefix(filePath)){
 
-            QString filePath (url.toLocalFile());
             ui->statusbar->showMessage(filePath + " dropped", 3000);
             Model::Song song_to_add = sppm->droppedFile(filePath);
+            if(m_displayState == DisplayTitles){
+                m_display_song_model->addSong(song_to_add);
 
-            if(!m_display_artist_model->containsArtist(song_to_add.getArtistName())){
-                newArtist = true;
+            } else if(m_displayState == DisplayArtists){
+
+                if(song_to_add.getArtistName() == currentSelectedAttribute()){
+                    currentArtist = true;
+                } else if(!m_display_artist_model->containsArtist(song_to_add.getArtistName())){
+                    newArtist = true;
+                }
+
+            } else if(m_displayState == DisplayAlbums){
+                qDebug() << currentSelectedAttribute();
+                if(song_to_add.getAlbumName() == currentSelectedAttribute()){
+                    currentAlbum = true;
+                } else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName())){
+                    newAlbum = true;
+                }
             }
-//            m_display_song_model->addSong(song_to_add); // TODO::
-            if(newArtist){
-            // if a new artist is in the dopped file, the table will reload completely because of the sorting
-                m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
-                ui->artists_tableView->setModel(m_display_artist_model);
-            }
+
         }
-//    ui->songs_tableView->setModel(sppm->getQueryModel_all());
-//    set_songs_tableView();
+
     }
+    if(m_displayState == DisplayArtists){
+    // if a new artist is in the dopped file, the atribute table will reload completely because of the sorting
+        if (currentArtist){
+            m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
+            ui->songs_tableView->setModel(m_display_song_model);
+        }
+
+        if(newArtist){
+            m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
+            ui->artists_tableView->setModel(m_display_artist_model);
+        }
+    } else if(m_displayState == DisplayAlbums){
+        if (currentAlbum){
+            qDebug()<<  "current album " << currentSelectedAttribute() << newAlbum;
+            m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()));
+            ui->songs_tableView->setModel(m_display_song_model);
+        }
+        if(newAlbum){
+            m_display_albums_model = new Model::DisplayAlbumsModel(sppm->allAlbums(),this);
+            ui->artists_tableView->setModel(m_display_albums_model);
+        }
+    }
+}
+
+QString MainWindow::currentSelectedAttribute() const
+{
+    qDebug() << "currentSelectedAttribute() " << ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+    return ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
 }
 
 
@@ -281,7 +322,8 @@ void MainWindow::on_actionRemove_Song_triggered()
             QString songPath = ui->songs_tableView->model()->index(indexrow,0).data().toString();
             QString songName = ui->songs_tableView->model()->index(indexrow,1).data().toString();
             QString artistName = ui->songs_tableView->model()->index(indexrow,2).data().toString();
-//            qDebug() << "selection : " << selection.at(i).row();
+            QString albumName = ui->songs_tableView->model()->index(indexrow,3).data().toString();
+            qDebug() << "album : " << albumName;
                 if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
                     bool removed = sppm->deleteSong(songPath);
                     if(removed){
@@ -290,14 +332,14 @@ void MainWindow::on_actionRemove_Song_triggered()
                         ui->statusbar->showMessage("could not remove " + songName, 10000);
                     }
                     if(m_display_song_model->rowCount() <= 0){
+                        // if the last song from the seeable sontable was removed
                         qDebug() << "keine songs mehr da";
 //                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
 //                        ui->artists_tableView->setModel(m_display_artist_model);
                         if(m_displayState == DisplayArtists) {
-                            qDebug() << "remove arti";
                             m_display_artist_model->removeArtist(artistName);
                         } else if(m_displayState == DisplayAlbums){
-
+                            m_display_albums_model->removeAlbum(albumName);
                         }
 
                     }
@@ -421,9 +463,9 @@ void MainWindow::on_btn_artists_clicked()
 {
     // TODO: REIN ODER RAUS?= ----->>>
     if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
-        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+//        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
 //        qDebug() << "current_selected_artist" << current_selected_artist;
-         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(current_selected_artist), this);
+         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()), this);
          ui->songs_tableView->setModel(m_display_song_model);
     } else {
 //        ui->artists_tableView->selectRow(0);
@@ -443,8 +485,8 @@ void MainWindow::on_btn_albums_clicked()
 {    // very redundante to on_btn_artists_clicked(), but maybe can be adjusted to a proper albums view (covers etc)
 
     if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
-        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
-         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(current_selected_artist), this);
+//        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()), this);
          ui->songs_tableView->setModel(m_display_song_model);
     } else {
         m_display_song_model->clear();

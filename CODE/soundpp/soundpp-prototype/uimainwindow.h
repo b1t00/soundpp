@@ -88,7 +88,7 @@ private:
 
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);
-    bool filterFilesByPrefix(const QUrl &url);
+    bool filterFilesByPrefix(QString songPath);
     void dropEvent(QDropEvent *e);
 
 
@@ -97,6 +97,9 @@ private:
     Model::DisplaySongModel* m_display_song_model;
     Model::DisplayArtistsModel* m_display_artist_model;
     Model::DisplayAlbumsModel* m_display_albums_model;
+
+    QString currentSelectedAttribute() const ;
+//    QString currentSelectedAlbum() const ;
 
     QMenu* contextMenu;
     QMenu* contextMenu_2;
