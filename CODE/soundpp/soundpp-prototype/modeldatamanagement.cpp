@@ -162,6 +162,16 @@ bool DataManagement::editSong(Song song_from_db)
     return false;
 }
 
+bool DataManagement::containsSongPath(QString songPath)
+{
+    for(Model::Song s : *m_all_songs){
+//        qDebug() << "s path" << s.getSongPath();
+//        qDebug() << "2 path" << QString(songPath) << "\n -------------- ";
+        if(s.getSongPath() == songPath) return true;
+    }
+    return false;
+}
+
 
 
 

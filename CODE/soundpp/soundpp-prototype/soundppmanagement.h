@@ -41,6 +41,7 @@ public:
     //MetaData / database drop
 
     Model::Song droppedFile(QString filePath);
+    bool containsSongPath(QString songPath);
     void incrementPlayCount(QString songPath);
     bool deleteSong(QString filePath);
     Model::Song editSong(Model::Song edited_song);

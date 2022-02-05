@@ -54,6 +54,11 @@ Model::Song SoundppManagement::droppedFile(QString filePath)
     return song_to_add; // goes back to ui, for songs model
 }
 
+bool SoundppManagement::containsSongPath(QString songPath)
+{
+    return dm->containsSongPath(songPath);
+}
+
 void SoundppManagement::incrementPlayCount(QString songPath)
 {
     if(!mpqt->playedOnce()){

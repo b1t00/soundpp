@@ -6,6 +6,7 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QString>
+#include <QUrl>
 #include "modelsong.h"
 
 namespace Model {
@@ -34,6 +35,7 @@ public:
     bool deleteSong(QString filePath);
     bool insertSong(Model::Song song_to_add);
     bool editSong(Model::Song song_from_db);
+    bool containsSongPath(QString songPath);
 
 
 
