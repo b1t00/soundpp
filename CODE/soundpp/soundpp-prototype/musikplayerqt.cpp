@@ -5,8 +5,11 @@
 MusikPlayer::MusikPlayerQt::MusikPlayerQt()
 {
     m_playlist = new QMediaPlaylist();
+//    m_playlist->setPlaybackMode(QMediaPlaylist::AutoPla);
+//    m_playlist->()
     this->setPlaylist(m_playlist);
     setIsPlayling(false);
+    playlist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 }
 
 
@@ -41,11 +44,9 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
     setMedia(QUrl(crossPlatformFile));
 }
 
-void MusikPlayerQt::addToPlaylist(const QList<QUrl> &urls)
+void MusikPlayerQt::addToQueue(QUrl url)
 {
-
-
-
+    m_playlist->addMedia(url);
 }
 
 bool MusikPlayerQt::pressPlay()

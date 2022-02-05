@@ -87,6 +87,11 @@ void SoundppManagement::press_mute(bool mute){
     mpqt->setMuted(mute);
 }
 
+void SoundppManagement::addToQueue(QUrl url)
+{
+    mpqt->addToQueue(url);
+}
+
 bool SoundppManagement::pressPlay()
 {
     if(!mpqt->isAudioAvailable()) return false;

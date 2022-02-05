@@ -227,6 +227,7 @@ void MainWindow::dropEvent(QDropEvent *e)
                     currentAlbum = true;
                 } else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName())){
                     newAlbum = true;
+                    qDebug() << song_to_add.getAlbumName() << "newAlbum? " << newAlbum;
                 }
             }
 
@@ -259,8 +260,17 @@ void MainWindow::dropEvent(QDropEvent *e)
 
 QString MainWindow::currentSelectedAttribute() const
 {
-    qDebug() << "currentSelectedAttribute() " << ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
     return ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+}
+
+Model::Song MainWindow::currentSlectedSong() const
+{
+    Model::Song s;
+    s.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
+//    QString songPath = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString();
+//    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
+//    QString artistName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString();
+    return s;
 }
 
 
@@ -542,4 +552,9 @@ void MainWindow::on_btn_albums_clicked()
     ui->artists_tableView->setModel(m_display_albums_model);
     ui->artists_tableView->show();
     m_displayState = DisplayAlbums;
+}
+
+void MainWindow::on_actionadd_to_queue_triggered()
+{
+    sppm->addToQueue(currentSlectedSong().getSongPath());
 }

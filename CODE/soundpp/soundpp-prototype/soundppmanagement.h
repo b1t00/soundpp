@@ -53,6 +53,7 @@ public:
     void setPosition(int position);
     bool isAudioAvailable() const;
     void press_mute(bool mute);
+    void addToQueue(QUrl url);
 
 signals:
     void positionChanged(qint64 position);

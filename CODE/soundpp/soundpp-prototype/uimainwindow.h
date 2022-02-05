@@ -86,6 +86,8 @@ private slots:
     void on_btn_artists_clicked();
     void on_btn_albums_clicked();
 
+    void on_actionadd_to_queue_triggered();
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;
@@ -104,6 +106,7 @@ private:
     Model::DisplayPlaylistModel* m_display_playlist_model;
 
     QString currentSelectedAttribute() const ;
+    Model::Song currentSlectedSong() const;
 //    QString currentSelectedAlbum() const ;
 
     QMenu* contextMenu;
