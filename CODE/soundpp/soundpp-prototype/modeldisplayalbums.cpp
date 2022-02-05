@@ -45,4 +45,19 @@ QVariant DisplayAlbumsModel::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
+
+void DisplayAlbumsModel::removeAlbum(QString album_to_remove)
+{
+    for(int i = 0; i < m_allAlbums.size(); i++){
+        if(m_allAlbums.at(i) == album_to_remove) {
+            m_allAlbums.removeAt(i);
+            removeRow(i);
+        }
+    }
+}
+
+bool DisplayAlbumsModel::containsAlbum(QString album)
+{
+        return (m_allAlbums.contains(album)) ? true : false;
+}
 }

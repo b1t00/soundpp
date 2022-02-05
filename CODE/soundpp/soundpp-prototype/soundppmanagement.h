@@ -42,6 +42,7 @@ public:
     //MetaData / database drop
 
     Model::Song droppedFile(QString filePath);
+    bool containsSongPath(QString songPath);
     void incrementPlayCount(QString songPath);
     bool deleteSong(QString filePath);
     Model::Song editSong(Model::Song edited_song);
@@ -54,6 +55,7 @@ public:
     void setPosition(int position);
     bool isAudioAvailable() const;
     void press_mute(bool mute);
+    void addToQueue(QUrl url);
 
 signals:
     void positionChanged(qint64 position);

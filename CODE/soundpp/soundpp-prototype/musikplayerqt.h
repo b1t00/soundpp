@@ -23,7 +23,7 @@ public:
     QUrl songPath() const;
     void setSongPath(const QUrl &songPath);
 
-    void addToPlaylist(const QList<QUrl> &urls);
+    void addToQueue(QUrl url);
 
     bool pressPlay();
 //    void playSong();

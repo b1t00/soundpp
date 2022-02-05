@@ -63,6 +63,11 @@ Model::Song SoundppManagement::droppedFile(QString filePath)
     return song_to_add; // goes back to ui, for songs model
 }
 
+bool SoundppManagement::containsSongPath(QString songPath)
+{
+    return dm->containsSongPath(songPath);
+}
+
 void SoundppManagement::incrementPlayCount(QString songPath)
 {
     if(!mpqt->playedOnce()){
@@ -89,6 +94,11 @@ Model::Song SoundppManagement::editSong(Model::Song edited_song)
 
 void SoundppManagement::press_mute(bool mute){
     mpqt->setMuted(mute);
+}
+
+void SoundppManagement::addToQueue(QUrl url)
+{
+    mpqt->addToQueue(url);
 }
 
 bool SoundppManagement::pressPlay()

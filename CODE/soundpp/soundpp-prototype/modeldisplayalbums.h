@@ -22,6 +22,9 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    void removeAlbum(QString album);
+    bool containsAlbum(QString album);
+
 private:
     QList<QString> m_allAlbums;
 };

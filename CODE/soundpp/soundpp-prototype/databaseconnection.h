@@ -16,7 +16,7 @@ namespace Database {
 class DataBaseConnection
 {
 public:
-    DataBaseConnection();
+    DataBaseConnection( );
     QSqlQueryModel* getQueryModel_all();
     QList<Model::Song> *get_and_create_all_Songs();
     QList<Model::Playlist> *get_and_create_all_Playlists();

@@ -6,6 +6,7 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QString>
+#include <QUrl>
 #include "modelsong.h"
 #include "playlist.h"
 
@@ -38,6 +39,8 @@ public:
     bool insertSong(Model::Song song_to_add);
     bool editSong(Model::Song song_from_db);
     bool insert_playlist(Model::Playlist new_playlist);
+    bool containsSongPath(QString songPath);
+
 
 
 
