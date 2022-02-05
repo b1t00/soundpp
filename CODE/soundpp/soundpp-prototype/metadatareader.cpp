@@ -25,8 +25,8 @@ Model::Song MetaDataFromFile::getMetaDataFromFilePath(QString filePath)
 
     songName = (songName == NULL) ? QUrl(filePath).fileName() : songName;
     songNr = (songNr == NULL) ? 0 : songNr;
-    artistName = (artistName == NULL) ? "unknown": artistName;
-    albumName = (albumName == NULL) ? "unknown": albumName;
+    artistName = (artistName == NULL) ? "unknown artist": artistName;
+    albumName = (albumName == NULL) ? "unknown album": albumName;
 
     Model::Song song(filePath, songName,artistName,albumName, songNr,addedDate,0);
     return song;

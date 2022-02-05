@@ -370,7 +370,7 @@ min-height: 20px;
      <x>0</x>
      <y>0</y>
      <width>762</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -387,6 +387,7 @@ min-height: 20px;
     <addaction name="actionPlay"/>
     <addaction name="actionPlay_Next"/>
     <addaction name="separator"/>
+    <addaction name="actionadd_to_queue"/>
     <addaction name="actionEdit_Song"/>
     <addaction name="actionRemove_Song"/>
    </widget>
@@ -448,7 +449,12 @@ min-height: 20px;
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Switch theme</string>
+    <string>Dark Mode</string>
+   </property>
+  </action>
+  <action name="actionadd_to_queue">
+   <property name="text">
+    <string>add to queue</string>
    </property>
   </action>
  </widget>
