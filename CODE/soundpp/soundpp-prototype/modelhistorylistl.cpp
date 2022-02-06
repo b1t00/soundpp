@@ -3,6 +3,7 @@ namespace Model {
 HistoryListModel::HistoryListModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
+    m_indexHistory = 0;
 }
 
 QVariant HistoryListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -49,5 +50,20 @@ void HistoryListModel::addSong(Model::Song song)
     beginInsertRows(QModelIndex(),0,0);
     m_hList.insert(0,song);
     endInsertRows();
+}
+
+Song HistoryListModel::songByIndex()
+{
+    return m_hList.at(m_indexHistory);
+}
+
+unsigned int HistoryListModel::indexHistory() const
+{
+    return m_indexHistory;
+}
+
+void HistoryListModel::setIndexHistory(unsigned int indexHistory)
+{
+    m_indexHistory = indexHistory;
 }
 }
