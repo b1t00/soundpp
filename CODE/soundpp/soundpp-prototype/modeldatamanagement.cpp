@@ -14,8 +14,8 @@ DataManagement::DataManagement(QObject *parent)
 
 }
 
-DataManagement::DataManagement(QList<Model::Song> *all_songs, QObject *parent) :
-    QObject(parent), m_all_songs(all_songs)
+DataManagement::DataManagement(QList<Model::Song> *all_songs, QList<Model::Playlist> *all_playlists ,QObject *parent) :
+    QObject(parent), m_all_songs(all_songs), m_all_playlists(all_playlists)
 {
 }
 
@@ -23,6 +23,22 @@ QList<Model::Song> DataManagement::get_all_songs() const
 {
     QList<Model::Song> all_songs_copy = *m_all_songs;
     return all_songs_copy;
+}
+
+QList<Model::Playlist> DataManagement::get_all_playlists() const
+{
+    QList<Model::Playlist> all_playlists_copy = *m_all_playlists;
+
+    qInfo() << all_playlists_copy.size();
+//    for(int i = 0; i < all_playlists_copy.size(); i++) {
+//        qInfo() << all_playlists_copy;
+//    }
+    return all_playlists_copy;
+}
+
+bool DataManagement::insert_playlist(Model::Playlist new_playlist){
+    m_all_playlists->append(new_playlist);
+    return true;
 }
 
 void DataManagement::setAllSongs(QList<Model::Song> *all_songs)
