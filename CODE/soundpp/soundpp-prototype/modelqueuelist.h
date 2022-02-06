@@ -24,18 +24,18 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    void setToHistory();
+    void playNext(Model::Song song_selected);
+    void playNext(QList<Model::Song> songs_selection);
     void appendSong(Model::Song song);
 
-    void playSong(Model::Song triggered_song);
-    Model::Song getNextSong();
+    bool hasSongs();
+    Model::Song nextSong();
+
 
 private:
 
     QList<Model::Song> m_qSongs;
-    QList<Model::Song> m_history;
-    bool showHistory;
-    int m_index;
+
 };
 }
 

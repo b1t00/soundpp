@@ -7,7 +7,14 @@ HistoryListModel::HistoryListModel(QObject *parent)
 
 QVariant HistoryListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    // FIXME: Implement me!
+    if(role == Qt::DisplayRole){
+        if(orientation == Qt::Horizontal){
+            switch(section){
+            case 0: return "Artist";
+            case 1: return "Title";
+            }
+        }
+    }
     return QVariant();
 
 }
@@ -19,7 +26,7 @@ int HistoryListModel::rowCount(const QModelIndex &parent) const
 
 int HistoryListModel::columnCount(const QModelIndex &parent) const
 {
-    return 1;
+    return 2;
 }
 
 QVariant HistoryListModel::data(const QModelIndex &index, int role) const
@@ -30,7 +37,8 @@ QVariant HistoryListModel::data(const QModelIndex &index, int role) const
     if(role == Qt::DisplayRole){
         const Model::Song s = m_hList.at(index.row());
             switch(index.column()){
-            case 0: return s.getTitle();
+            case 0: return s.getArtistName();
+            case 1: return s.getTitle();
             }
     }
     return QVariant();

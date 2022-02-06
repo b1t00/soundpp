@@ -402,7 +402,7 @@ min-height: 20px;
              </size>
             </property>
             <attribute name="horizontalHeaderVisible">
-             <bool>false</bool>
+             <bool>true</bool>
             </attribute>
            </widget>
           </item>
