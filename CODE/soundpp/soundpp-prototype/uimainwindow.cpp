@@ -1,6 +1,7 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QFileDialog>
 #include <QWidget>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -216,6 +217,19 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 
 }
 
+
+void MainWindow::dropEvent(QDropEvent *e)
+{
+    QList<QUrl> file_urls = e->mimeData()->urls();
+    QList<QString> file_paths;
+    foreach(QUrl url, file_urls){
+        file_paths.append(url.toString());
+        qDebug() << "urls" << file_urls.at(file_paths.size()-1);
+        qDebug() << "string" << file_paths.at(file_paths.size()-1);
+    }
+    insertNewPaths(file_paths);
+}
+
 bool MainWindow::filterFilesByPrefix(QString songPath)
 {
     QList<QString> splittingString = songPath.split(".");
@@ -230,12 +244,16 @@ bool MainWindow::filterFilesByPrefix(QString songPath)
     return true;
 }
 
-void MainWindow::dropEvent(QDropEvent *e)
+
+void MainWindow::insertNewPaths(QList<QString> filePaths)
+/*
+ * Method to insert the paths and also update visible tableviews
+ */
 {
     bool newArtist, currentArtist = false;
     bool newAlbum, currentAlbum = false;
-    foreach (const QUrl &url, e->mimeData()->urls()) {
-        QString filePath (url.toLocalFile());
+    foreach (const QString &filePath, filePaths) {
+//        QString filePath (url.toLocalFile());
         if(filterFilesByPrefix(filePath)){
 
             ui->statusbar->showMessage(filePath + " dropped", 3000);
@@ -262,7 +280,6 @@ void MainWindow::dropEvent(QDropEvent *e)
             }
 
         }
-
     }
     if(m_displayState == DisplayArtists){
     // if a new artist is in the dopped file, the atribute table will reload completely because of the sorting
@@ -287,6 +304,7 @@ void MainWindow::dropEvent(QDropEvent *e)
         }
     }
 }
+
 
 // ---------------------Button - Views - Enums -------------------------//
 
@@ -412,7 +430,6 @@ void MainWindow::on_btn_play_clicked()
         }
     }
 }
-
 
 void MainWindow::on_btn_back_released()
 {
@@ -716,5 +733,33 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
 
     m_display_song_model = new Model::DisplaySongModel(sppm->search_result(arg1), this);
     ui->songs_tableView->setModel(m_display_song_model);
+
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+//    QString folderName = QFileDialog::getOpenFileName();
+//    QString openingPath = "C:/Users/Winny/Music";
+    QString openingPath = "C:/Users/Winny/Music/Musik/sppmusik";
+//    QDir directory = QFileDialog::getExistingDirectory(
+//                this,
+//                tr("select directory"),
+//                openingPath,
+////                { "*.mp3" }
+////                "Music Files(*.mp3 ; *.wav ; *.aiff) ;; All Files (*.*)"
+//                );
+//    qDebug() << "dir " << directory;
+//    QFileDialog::setOptions(QFileDialog::ShowDirsOnly);
+    QList<QString> fileNames = QFileDialog::getOpenFileNames(
+                this,
+                tr("Open Files"),
+                openingPath,
+                "Music Files(*.mp3 ; *.wav ; *.aiff) ;; All Files (*.*)"
+//                QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks,
+                );
+    for(int i = 0; i < fileNames.size(); i++){
+        qDebug() << fileNames.at(i);
+    }
+    insertNewPaths(fileNames);
 
 }
