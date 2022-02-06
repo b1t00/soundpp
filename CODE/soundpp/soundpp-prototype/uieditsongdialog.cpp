@@ -27,7 +27,7 @@ void EditSongDialog::on_buttonBox_accepted()
     m_song.setTitle(ui->lineEdit_songTitle->text());
     m_song.setArtistName(ui->lineEdit_artistName->text());
     m_song.setAlbumName(ui->lineEdit_albumName->text());
-    qDebug() << "hey";
+//    qDebug() << "hey";
 //    m_song.setAlbumNr(ui->lcd_songNr->value()); // TODO
 }
 

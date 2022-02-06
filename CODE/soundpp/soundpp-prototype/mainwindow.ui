@@ -171,7 +171,7 @@ min-height: 20px;
            </size>
           </property>
           <property name="value">
-           <number>99</number>
+           <number>75</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -420,7 +420,7 @@ min-height: 20px;
              </size>
             </property>
             <attribute name="horizontalHeaderVisible">
-             <bool>true</bool>
+             <bool>false</bool>
             </attribute>
            </widget>
           </item>
@@ -438,7 +438,7 @@ min-height: 20px;
      <x>0</x>
      <y>0</y>
      <width>871</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -458,6 +458,10 @@ min-height: 20px;
     <addaction name="separator"/>
     <addaction name="actionEdit_Song"/>
     <addaction name="actionRemove_Song"/>
+    <addaction name="separator"/>
+    <addaction name="actionPlay_Songs"/>
+    <addaction name="actionPlay_Songs_Next"/>
+    <addaction name="actionAppend_Songs_Queue"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -520,14 +524,24 @@ min-height: 20px;
     <string>Dark Mode</string>
    </property>
   </action>
-  <action name="actionadd_to_queue">
-   <property name="text">
-    <string>add to queue</string>
-   </property>
-  </action>
   <action name="actionAppend_Queue">
    <property name="text">
     <string>Append Queue</string>
+   </property>
+  </action>
+  <action name="actionPlay_Songs">
+   <property name="text">
+    <string>Play Songs</string>
+   </property>
+  </action>
+  <action name="actionPlay_Songs_Next">
+   <property name="text">
+    <string>Play Songs Next</string>
+   </property>
+  </action>
+  <action name="actionAppend_Songs_Queue">
+   <property name="text">
+    <string>Append Songs Queue</string>
    </property>
   </action>
  </widget>

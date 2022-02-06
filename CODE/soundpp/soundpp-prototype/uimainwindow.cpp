@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // ---------------------- Models -------------------------- //
 
-    // -------- SongTable Model
+    // -------- SongTable Model -
     m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     m_displayState = DisplayTitles;
     ui->songs_tableView->setModel(m_display_song_model);
@@ -55,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent)
     // connect(ui->songs_tableView->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
     // ---- Context Menu Song Table --
-
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     songTableContextMenu = new QMenu(ui->songs_tableView);
 //    songTableContextMenu->addAction("play song", this, &MainWindow::on_actionPlay_triggered); // a bit unnecessary because doubleclick makes the same
@@ -67,11 +66,19 @@ MainWindow::MainWindow(QWidget *parent)
     songTableContextMenu->addAction("edit song...", this,&MainWindow::on_actionEdit_Song_triggered);
     songTableContextMenu->addAction("remove song", this,&MainWindow::on_actionRemove_Song_triggered);
     connect(ui->songs_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onSongTableContextMenu);
-//    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+//    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)))
+
+    // --- Context Menu Attribute Table --
+    ui->artists_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    m_attributeTableContextMenu = new QMenu(ui->artists_tableView);
+    m_attributeTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
+    m_attributeTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_Next_triggered);
+    m_attributeTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionAppend_Songs_Queue_triggered);
+
+    connect(ui->artists_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onAttributeTableContextMenu);
 
     // -------------- selection change -------------------- //
     // TODO::
-
     connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
     connect(ui->artists_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
 
@@ -90,14 +97,8 @@ MainWindow::MainWindow(QWidget *parent)
     contextMenu_2->addAction("delete Playlist", this, SLOT(deletePlaylist()));
     connect(ui->playlist_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu_2(const QPoint &)));
 
-    //yeah();
 
-    //print_out();
-
-
-
-
-    // shortcuts
+    // ---------------- shortcuts Manuel
    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
@@ -313,6 +314,7 @@ void MainWindow::on_btn_titles_clicked()
 {
     m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     ui->songs_tableView->setModel(m_display_song_model);
+
     ui->artists_tableView->hide();
     m_displayState = DisplayTitles;
 }
@@ -337,7 +339,7 @@ void MainWindow::on_btn_artists_clicked()
     m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
     ui->artists_tableView->show();
-    m_displayState = DisplayArtists;
+    m_displayState = DisplayArtists; //ENUM setzten
 }
 
 void MainWindow::on_btn_albums_clicked()
@@ -362,6 +364,26 @@ void MainWindow::onSongTableContextMenu(const QPoint &point)
 {
      songTableContextMenu->exec(ui->songs_tableView->viewport()->mapToGlobal(point));
 
+}
+
+void MainWindow::onAttributeTableContextMenu(const QPoint &point)
+{
+    // also trigger
+    // more workaround, otherwise item from attribute view will not get triggert
+    switch(m_displayState){
+    case DisplayArtists :
+        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()), this);
+        break;
+    case DisplayAlbums :
+        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()), this);
+        break;
+    default:
+        qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
+        break;
+    }
+    ui->songs_tableView->setModel(m_display_song_model);
+//    on_artists_tableView_clicked(QModelIndex &index);
+    m_attributeTableContextMenu->exec(ui->artists_tableView->viewport()->mapToGlobal(point));
 }
 
 void MainWindow::onCustomContextMenu_2(const QPoint &point){
@@ -507,7 +529,9 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
 {
     switch (status) {
     case QMediaPlayer::UnknownMediaStatus:
+        qDebug() << "UnknownMediaStatus";
     case QMediaPlayer::NoMedia:
+        qDebug() << "NoMedia";
     case QMediaPlayer::LoadedMedia:
 //        setStatusInfo(QString());
          qDebug() << "on_playerstatusChanged loadmedia";
@@ -516,15 +540,19 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
         qDebug() << "on_playerstatusChanged Loading...";
         break;
     case QMediaPlayer::BufferingMedia:
+        qDebug() << "BufferingMedia";
     case QMediaPlayer::BufferedMedia:
+        qDebug() << "BUFFER...";
 //        setStatusInfo(tr("Buffering %1%").arg(m_player->bufferStatus()));
         break;
     case QMediaPlayer::StalledMedia:
+        qDebug() << "STALLED...";
 //        setStatusInfo(tr("Stalled %1%").arg(m_player->bufferStatus()));
         break;
     case QMediaPlayer::EndOfMedia:
+        qDebug() << "EndOfMedia...";
         on_btn_for_released();
-        QApplication::alert(this);
+//        QApplication::alert(this);
         break;
     case QMediaPlayer::InvalidMedia:
 //        displayErrorMessage();
@@ -534,9 +562,7 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
 
 }
 
-// --------------- Queue and History Methods ---------------//
-
-
+// --------------- Queue and History Actions ---------------//
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
     if(arg1 == "Queue List"){
@@ -554,11 +580,58 @@ void MainWindow::on_actionPlay_Next_triggered()
 
 void MainWindow::on_actionAppend_Queue_triggered()
 {
-    QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
-    QList<Model::Song> selectedSong;
-    for(auto i : selection){
-        m_queueListModel->appendSong(m_display_song_model->songAt(i.row()));
+    QList<Model::Song> selectedSong = currentSlectedSongs();
+    m_queueListModel->appendSongs(selectedSong);
+}
+
+
+// -------------- AttruteTable Actions --
+void MainWindow::on_artists_tableView_doubleClicked(const QModelIndex &index)
+{
+    on_actionPlay_Songs_triggered();
+}
+
+void MainWindow::on_actionPlay_Songs_triggered()
+{
+    QList<Model::Song> songs_from_view = m_display_song_model->songs();
+    // TODO:: SORT songs here
+    Model::Song song_to_play_direct = songs_from_view.at(0);
+    playSong(song_to_play_direct);
+    songs_from_view.pop_front();
+    m_queueListModel->playNext(songs_from_view);
+}
+
+void MainWindow::on_actionPlay_Songs_Next_triggered()
+{
+    QList<Model::Song> songs_from_view = m_display_song_model->songs();
+    // TODO:: SORT andersrum
+    m_queueListModel->playNext(songs_from_view);
+}
+
+void MainWindow::on_actionAppend_Songs_Queue_triggered()
+{
+    QList<Model::Song> songs_from_view = m_display_song_model->songs();
+    // TODO:: SORT andersrum
+    m_queueListModel->appendSongs(songs_from_view);
+}
+
+void MainWindow::on_artists_tableView_activated(const QModelIndex &index)
+// TODO :  Knan wahtscheinlich weg, weil nicht funzt wo gedacht
+{
+    qDebug() << "activäääääääääääääääääääääääääääted";
+    switch(m_displayState){
+    case DisplayArtists :
+        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
+        break;
+    case DisplayAlbums :
+        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
+        break;
+    default:
+        qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
+        break;
     }
+    ui->songs_tableView->setModel(m_display_song_model);
+//    on_artists_tableView_clicked(index);
 }
 
 
@@ -763,3 +836,4 @@ void MainWindow::on_actionOpen_triggered()
     insertNewPaths(fileNames);
 
 }
+
