@@ -114,6 +114,12 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap play (":img/Play.png");
     ui->btn_play->setIcon(play);
 
+    QPixmap shuffle (":img/shuffle.png");
+    ui->btn_shuffle->setIcon(shuffle);
+
+    QPixmap loop (":img/loop.png");
+    ui->btn_loop->setIcon(loop);
+
 
 
 //    QPixmap queue (":img/queue.png");

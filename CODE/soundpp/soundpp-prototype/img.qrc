@@ -8,5 +8,7 @@
         <file>img/volume.png</file>
         <file>img/pause.png</file>
         <file>img/mute.png</file>
+        <file>img/loop.png</file>
+        <file>img/shuffle.png</file>
     </qresource>
 </RCC>
