@@ -380,18 +380,36 @@ min-height: 20px;
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QComboBox" name="comboBox">
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
             <item>
-             <property name="text">
-              <string>Queue List</string>
-             </property>
+             <widget class="QComboBox" name="comboBox">
+              <item>
+               <property name="text">
+                <string>Queue List</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>History</string>
+               </property>
+              </item>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>History</string>
-             </property>
+             <widget class="QPushButton" name="btn_shuffle">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
             </item>
-           </widget>
+            <item>
+             <widget class="QPushButton" name="btn_loop">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QTableView" name="queue_tableView">
@@ -420,7 +438,7 @@ min-height: 20px;
      <x>0</x>
      <y>0</y>
      <width>871</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
