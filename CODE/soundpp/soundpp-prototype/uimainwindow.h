@@ -92,6 +92,10 @@ private slots:
     void on_btn_artists_clicked();
     void on_btn_albums_clicked();
 
+    // insert new files
+    void insertNewPaths(QList<QString> path);
+    void on_actionOpen_triggered();
+
     void on_actionadd_to_queue_triggered();
 
 
@@ -100,6 +104,7 @@ private slots:
     void on_comboBox_activated(const QString &arg1);
 
     void on_btn_back_released();
+
 
 private:
     Ui::MainWindow *ui;
