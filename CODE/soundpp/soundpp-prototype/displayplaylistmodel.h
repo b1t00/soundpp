@@ -3,6 +3,7 @@
 
 #include <QAbstractTableModel>
 #include "modelsong.h"
+#include "playlist.h"
 
 namespace Model {
 
@@ -11,7 +12,7 @@ class DisplayPlaylistModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit DisplayPlaylistModel(QList<Song> songs, QObject *parent = nullptr);
+    explicit DisplayPlaylistModel(QList<Model::Playlist> playlists, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -23,7 +24,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QList<Song> m_all_songs;
+    QList<Model::Playlist> m_all_playlists;
 };
 }
 

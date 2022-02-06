@@ -8,6 +8,7 @@
 #include <QString>
 #include <QUrl>
 #include "modelsong.h"
+#include "playlist.h"
 
 namespace Model {
 
@@ -17,14 +18,16 @@ class DataManagement : public QObject
 private:
     //QStringList artists;
       QList<Model::Song> *m_all_songs;
+      QList<Model::Playlist> *m_all_playlists;
 //    QList<Song> m_songs();
 //    QMap<Song> m_allSongs();
 //    QMap<Song> *m_all;
 public:
     explicit DataManagement(QObject *parent = nullptr);
-    explicit DataManagement(QList<Model::Song> *all_songs, QObject *parent = nullptr);
+    explicit DataManagement(QList<Model::Song> *all_songs, QList<Model::Playlist> *all_playlists, QObject *parent = nullptr);
     QStringList* getAllInterprets();
     QList<Model::Song> get_all_songs() const;
+    QList<Model::Playlist> get_all_playlists() const;
     void setAllSongs(QList<Model::Song> *allSongs);
     QList<Model::Song> songs();
     QList<Model::Song> filtered_songs_by_artist(QString artist);
@@ -35,7 +38,9 @@ public:
     bool deleteSong(QString filePath);
     bool insertSong(Model::Song song_to_add);
     bool editSong(Model::Song song_from_db);
+    bool insert_playlist(Model::Playlist new_playlist);
     bool containsSongPath(QString songPath);
+
 
 
 

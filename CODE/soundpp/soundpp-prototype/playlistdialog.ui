@@ -35,16 +35,6 @@
     <widget class="QLineEdit" name="playlist_name"/>
    </item>
    <item>
-    <widget class="QLabel" name="genre">
-     <property name="text">
-      <string>Genre:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEdit_2"/>
-   </item>
-   <item>
     <widget class="QPushButton" name="accept_playlist">
      <property name="text">
       <string>OK</string>
