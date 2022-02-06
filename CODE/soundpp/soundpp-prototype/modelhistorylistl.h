@@ -24,9 +24,14 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     void addSong(Model::Song song);
+    Model::Song songByIndex();
+
+    unsigned int indexHistory() const;
+    void setIndexHistory(unsigned int indexHistory);
 
 private:
     QList<Model::Song> m_hList;
+    unsigned int m_indexHistory;
 };
 }
 

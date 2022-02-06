@@ -99,6 +99,8 @@ private slots:
 
     void on_comboBox_activated(const QString &arg1);
 
+    void on_btn_back_released();
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;

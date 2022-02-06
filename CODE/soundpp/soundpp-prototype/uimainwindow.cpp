@@ -377,25 +377,6 @@ void MainWindow::on_songs_tableView_doubleClicked()
     on_actionPlay_triggered();
 }
 
-
-void MainWindow::on_btn_for_clicked()
-{
-    //maybe load song?
-}
-
-//push next button for next song method
-//dont mix up whith play next method, who adds song to queue list
-void MainWindow::on_btn_for_released()
-{
-    Model::Song song_next;
-    if(m_queueListModel->hasSongs()){
-        song_next = m_queueListModel->nextSong();
-//    } else if( loopQueueList){ // TODO
-//    } else if( autoPlay){ // TODO
-    }
-    playSong(song_next);
-}
-
 void MainWindow::on_btn_play_clicked()
 {
     if(sppm->isAudioAvailable()){
@@ -425,6 +406,46 @@ void MainWindow::on_btn_play_clicked()
         }
     }
 }
+
+
+void MainWindow::on_btn_back_released()
+{
+    if (ui->sldr_progress->value() < 5000){
+        m_historyListModel->setIndexHistory(1);
+        Model::Song song_previous = m_historyListModel->songByIndex();
+
+        playSong(song_previous);
+//        m_playlist->previous();
+    } else{
+        ui->sldr_progress->setValue(0);
+//        m_player->setPosition(0);
+    }
+}
+
+
+
+void MainWindow::on_btn_for_clicked()
+{
+    //maybe load song?
+}
+
+void MainWindow::on_btn_for_released()
+/*
+ * *dont mix up whith play next method, who adds song to queue list
+ * push next button for next song functionality
+*/
+{
+    Model::Song song_next;
+    if(m_queueListModel->hasSongs()){
+        song_next = m_queueListModel->nextSong();
+//    } else if( loopQueueList){ // TODO
+//    } else if( autoPlay){ // TODO
+    }
+    playSong(song_next);
+}
+
+
+// --- Musikplayer - Sliders and Volume ---
 
 void MainWindow::on_sldr_progress_sliderMoved(int position)
 {
@@ -691,4 +712,3 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
     ui->songs_tableView->setModel(m_display_song_model);
 
 }
-
