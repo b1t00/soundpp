@@ -47,6 +47,7 @@ public:
     bool deleteSong(QString filePath);
     Model::Song editSong(Model::Song edited_song);
     void new_playlist(Model::Playlist new_playlist);
+    bool deletePlaylist(int playlistID);
 
     //musikplayerqt
     bool pressPlay();

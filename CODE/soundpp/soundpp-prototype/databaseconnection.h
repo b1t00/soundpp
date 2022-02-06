@@ -28,6 +28,7 @@ public:
     void updateAllPlaylistsModel();
     void incrementPlayCount(QString filePath);
     bool deleteSong(QString filePath);
+    bool deletePlaylist(int playlistID);
 
 
 private:

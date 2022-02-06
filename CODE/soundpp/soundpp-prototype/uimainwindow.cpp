@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
     connect(sppm, &Management::SoundppManagement::playerstatusChanged, this, &MainWindow::on_playerstatusChanged);
 
-    display_tree();
 
     // ---------------------- Models -------------------------- //
 
@@ -80,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->playlist_tableView->setModel(m_display_playlist_model);
 
     ui->playlist_tableView->setShowGrid(false);
+    ui->playlist_tableView->setColumnHidden(1,true); //hide playlist_id
     ui->playlist_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->playlist_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -533,7 +533,36 @@ void MainWindow::createNewPlaylist(){
 }
 
 void MainWindow::deletePlaylist(){
-    qInfo() << "gelöscht";
+
+
+    int indexrow = ui->playlist_tableView->currentIndex().row();
+
+    QString deleteMessages = "Do you really want to remove?\n";
+
+    if(QMessageBox::question(this, "Remove playlist?", deleteMessages,"Yes","No")== 0){
+
+            QString playlistName = ui->playlist_tableView->model()->index(indexrow,0).data().toString();
+            qDebug() << playlistName;
+            int playlistID = ui->playlist_tableView->model()->index(indexrow,1).data().toInt();
+            qDebug() << playlistID;
+
+            ui->statusbar->showMessage("remove " + playlistName + " playlist.", 10000);
+
+            if(indexrow >= 0 && indexrow < m_display_playlist_model->rowCount()){
+                bool deleted = sppm->deletePlaylist(playlistID);
+
+                if(deleted){
+                    m_display_playlist_model->removeRow(indexrow);
+                }else {
+                    ui->statusbar->showMessage("could not remove" + playlistName, 10000);
+
+                }
+            }
+
+
+
+
+    }
 }
 
 void MainWindow::addToPlaylist(){
@@ -542,24 +571,6 @@ void MainWindow::addToPlaylist(){
 
     qInfo() << ui->songs_tableView->currentIndex().row();
 }
-
-void MainWindow::display_tree(){
-
-    QStandardItemModel* playlist = new QStandardItemModel();
-
-    QStandardItem* item0 = new QStandardItem("1 first item");
-    QStandardItem* item1 = new QStandardItem("2 second item");
-    QStandardItem* item3 = new QStandardItem("3 third item");
-    QStandardItem* item4 = new QStandardItem("4 forth item");
-
-    playlist->appendRow(item0);
-    item0->appendRow(item3);
-    item0->appendRow(item4);
-    playlist->appendRow(item1);
-
-   //ui->playlist_treeView->setModel(playlist);
-}
-
 
 
 

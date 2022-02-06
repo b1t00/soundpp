@@ -12,6 +12,7 @@ QVariant DisplayPlaylistModel::headerData(int section, Qt::Orientation orientati
         if(orientation == Qt::Horizontal){
             switch(section){
             case 0: return "Playlists";
+            case 1: return "Playlist_ID";
             }
         }
     }
@@ -25,7 +26,7 @@ int DisplayPlaylistModel::rowCount(const QModelIndex &parent) const
 
 int DisplayPlaylistModel::columnCount(const QModelIndex &parent) const
 {
-        return 1;
+        return 2;
 }
 
 QVariant DisplayPlaylistModel::data(const QModelIndex &index, int role) const
@@ -39,6 +40,7 @@ QVariant DisplayPlaylistModel::data(const QModelIndex &index, int role) const
 
        switch(index.column()){
        case 0 : return playlist.getPlaylistName();
+       case 1 : return playlist.getPlaylistID();
        }
    }
    return QVariant();

@@ -10,6 +10,16 @@ Playlist::Playlist(QString name):
 
 }
 
+int Playlist::getPlaylistID() const
+{
+    return playlistID;
+}
+
+void Playlist::setPlaylistID(int value)
+{
+    playlistID = value;
+}
+
 
 
 QString Playlist::getPlaylistName() const
