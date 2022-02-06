@@ -72,6 +72,14 @@ void QueueListModel::appendSong(Song song)
     endInsertRows();
 }
 
+void QueueListModel::appendSongs(QList<Song> songs)
+{
+    beginInsertRows(QModelIndex(), rowCount(), rowCount() + songs.size()-1);
+//    for(Model::S)
+    m_qSongs.append(songs);
+    endInsertRows();
+}
+
 bool QueueListModel::hasSongs()
 {
     return m_qSongs.size();

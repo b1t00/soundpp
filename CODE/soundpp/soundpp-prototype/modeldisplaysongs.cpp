@@ -118,4 +118,14 @@ Song DisplaySongModel::songAt(int index) const
 {
     return m_songs.at(index);
 }
+
+QList<Model::Song> DisplaySongModel::songs() const
+{
+    return m_songs;
+}
+
+void DisplaySongModel::setSongs(const QList<Model::Song> &songs)
+{
+    m_songs = songs;
+}
 }

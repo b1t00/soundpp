@@ -27,6 +27,7 @@ public:
     void playNext(Model::Song song_selected);
     void playNext(QList<Model::Song> songs_selection);
     void appendSong(Model::Song song);
+    void appendSongs(QList<Model::Song> songs);
 
     bool hasSongs();
     Model::Song nextSong();
