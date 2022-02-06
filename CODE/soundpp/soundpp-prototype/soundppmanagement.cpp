@@ -14,6 +14,8 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
+
+    connect(mpqt, &QMediaPlayer::mediaStatusChanged, this, &Management::SoundppManagement::playerstatusChanged);
 }
 
 QList<Model::Song> SoundppManagement::get_all_songs(){
@@ -92,13 +94,18 @@ void SoundppManagement::addToQueue(QUrl url)
     mpqt->addToQueue(url);
 }
 
+void SoundppManagement::playNex()
+{
+    mpqt->playNext();
+}
+
 bool SoundppManagement::pressPlay()
 {
     if(!mpqt->isAudioAvailable()) return false;
     return mpqt->pressPlay();
 }
 
-void SoundppManagement::doubleclickPlay(QString songPath)
+void SoundppManagement::playSong(QString songPath)
 {
     mpqt->setSongPath(songPath);
     mpqt->setIsPlayling(true);
@@ -121,6 +128,11 @@ void SoundppManagement::setPosition(int position)
 bool SoundppManagement::isAudioAvailable() const
 {
     return mpqt->isAudioAvailable();
+}
+
+bool SoundppManagement::isPlaying() const
+{
+    return mpqt->isPlayling();
 }
 
 }

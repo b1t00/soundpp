@@ -11,6 +11,7 @@
 
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QMediaPlayer>
 #include <QMimeData>
 
 #include <QStandardItemModel>
@@ -27,6 +28,8 @@
 
 #include "uieditsongdialog.h"
 #include "playlistdialog.h"
+#include "modelqueuelist.h"
+#include "modelhistorylistl.h"
 
 //TODO:: unused paramaters (was hat Last da nochmal gemacht?)
 
@@ -56,7 +59,6 @@ private slots:
     void onCustomContextMenu(const QPoint &point);
     void onCustomContextMenu_2(const QPoint &point);
     void addToPlaylist();
-    void addToQueue();
     void display_tree();
 
     //musik player
@@ -66,6 +68,7 @@ private slots:
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
     void on_btn_volume_clicked(bool checked);
+    void on_playerstatusChanged(QMediaPlayer::MediaStatus status);
 
     // actions
     void on_songs_tableView_doubleClicked();
@@ -88,6 +91,12 @@ private slots:
 
     void on_actionadd_to_queue_triggered();
 
+    void on_btn_for_released();
+
+    void on_actionAppend_Queue_triggered();
+
+    void on_comboBox_activated(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     Management::SoundppManagement *sppm;
@@ -104,9 +113,12 @@ private:
     Model::DisplayArtistsModel* m_display_artist_model;
     Model::DisplayAlbumsModel* m_display_albums_model;
     Model::DisplayPlaylistModel* m_display_playlist_model;
+    Model::QueueListModel *m_queueListModel;
+    Model::HistoryListModel *m_historyListModel;
 
     QString currentSelectedAttribute() const ;
     Model::Song currentSlectedSong() const;
+
 //    QString currentSelectedAlbum() const ;
 
     QMenu* contextMenu;

@@ -30,6 +30,8 @@ public:
     void addSong(Model::Song song);
     void clear();
 
+    Model::Song songAt(int index) const;
+
 private:
     QList<Model::Song> m_songs;
 };

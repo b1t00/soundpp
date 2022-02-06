@@ -17,6 +17,8 @@ SOURCES += \
     modeldisplayalbums.cpp \
     modeldisplayartists.cpp \
     modeldisplaysongs.cpp \
+    modelhistorylistl.cpp \
+    modelqueuelist.cpp \
     modelsong.cpp \
     musikplayerqt.cpp \
     playlistdialog.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
     modeldisplayalbums.h \
     modeldisplayartists.h \
     modeldisplaysongs.h \
+    modelhistorylistl.h \
+    modelqueuelist.h \
     modelsong.h \
     musikplayerqt.h \
     playlistdialog.h \
