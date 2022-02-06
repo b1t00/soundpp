@@ -10,6 +10,12 @@ Song::Song(QString songPath, QString title, QString artistName, QString albumNam
 
 }
 
+Song::Song(QString songPath, QString title, QString artistName, QString albumName):
+    m_songPath(songPath), m_title(title), m_artistName(artistName), m_albumName(albumName)
+{
+
+}
+
 
 QString Song::getTitle() const
 {

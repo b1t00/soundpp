@@ -70,6 +70,10 @@ private slots:
     void on_btn_volume_clicked(bool checked);
     void on_playerstatusChanged(QMediaPlayer::MediaStatus status);
 
+    void playSong(Model::Song song_to_play);
+    void on_btn_for_clicked();
+    void on_btn_for_released();
+
     // actions
     void on_songs_tableView_doubleClicked();
     void on_actionRemove_Song_triggered();
@@ -82,7 +86,6 @@ private slots:
     void createNewPlaylist();
     void deletePlaylist();
 
-    void on_btn_for_clicked();
 
     void on_insert_search_textChanged(const QString &arg1);
 
@@ -92,7 +95,6 @@ private slots:
 
     void on_actionadd_to_queue_triggered();
 
-    void on_btn_for_released();
 
     void on_actionAppend_Queue_triggered();
 
@@ -119,6 +121,7 @@ private:
 
     QString currentSelectedAttribute() const ;
     Model::Song currentSlectedSong() const;
+    QList<Model::Song> currentSlectedSongs() const;
 
 //    QString currentSelectedAlbum() const ;
 

@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     //Display QueueModel
     m_historyListModel = new Model::HistoryListModel(this);
     m_queueListModel = new Model::QueueListModel(this);
-    ui->queue_tableView->setModel(m_historyListModel);
+    ui->queue_tableView->setModel(m_queueListModel);
 
 //    m_display_artist_model->headerData(2,Qt::Orientation::Horizontal)
 
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     contextMenu = new QMenu(ui->songs_tableView);
-//    contextMenu->addAction("play next", this, &MainWindow::addToQueue);
+    contextMenu->addAction("play next", this, &MainWindow::on_actionPlay_Next_triggered);
     contextMenu->addAction("append queuelist",this, &MainWindow::on_actionAppend_Queue_triggered);
     contextMenu->addAction("add to Playlist", this,&MainWindow::addToPlaylist);
     contextMenu->addSeparator();
@@ -116,6 +116,43 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// ---------------- Private Helper-Methods ----------------- //
+
+QString MainWindow::currentSelectedAttribute() const
+{
+    return ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
+}
+
+Model::Song MainWindow::currentSlectedSong() const
+{
+    Model::Song s;
+    s.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
+    s.setTitle(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
+    s.setArtistName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString());
+//    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
+//    QString artistName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString();
+    return s;
+}
+
+QList<Model::Song> MainWindow::currentSlectedSongs() const
+{
+    QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
+    QList<Model::Song> songs_selected;
+    QString deleteMessages = "Do you really want to remove?\n";
+    for(int i = 0 ; i < selection.size(); i++){
+        songs_selected.append(Model::Song(
+                                  ui->songs_tableView->model()->index(selection.at(i).row(),0).data().toString(),
+                                  ui->songs_tableView->model()->index(selection.at(i).row(),1).data().toString(),
+                                  ui->songs_tableView->model()->index(selection.at(i).row(),2).data().toString(),
+                                  ui->songs_tableView->model()->index(selection.at(i).row(),3).data().toString()
+                                  ));
+        deleteMessages += ui->songs_tableView->model()->index(selection.at(i).row(),1).data().toString() + "\n";
+    }
+
+    return songs_selected;
+}
+
+
 
 void MainWindow::updateGui() //TODO::
 {
@@ -123,7 +160,53 @@ void MainWindow::updateGui() //TODO::
 }
 
 
-// musikplayer >
+// --------------- Musik Player Methods ---------------------//
+
+void MainWindow::playSong(Model::Song song_to_play)
+{
+    QPixmap pause (":img/pause.png");
+    ui->btn_play->setIcon(pause);
+
+    ui->current_song_label->setText(song_to_play.getArtistName() + " - " + song_to_play.getTitle());
+    ui->statusbar->showMessage("playing: " + song_to_play.getArtistName(), 3000);
+
+    sppm->playSong(song_to_play.getSongPath());
+    m_historyListModel->addSong(song_to_play);
+//    m_queueListModel->playSong(s);
+}
+
+
+void MainWindow::on_actionPlay_triggered() // TODO:: function redundante
+{
+    Model::Song song_selected = currentSlectedSong();
+    playSong(song_selected);
+
+}
+
+void MainWindow::on_songs_tableView_doubleClicked()
+{
+    on_actionPlay_triggered();
+}
+
+
+void MainWindow::on_btn_for_clicked()
+{
+    //maybe load song?
+}
+
+//push next button for next song method
+//dont mix up whith play next method, who adds song to queue list
+void MainWindow::on_btn_for_released()
+{
+    Model::Song song_next;
+    if(m_queueListModel->hasSongs()){
+        song_next = m_queueListModel->nextSong();
+//    } else if( loopQueueList){ // TODO
+//    } else if( autoPlay){ // TODO
+    }
+    playSong(song_next);
+}
+
 void MainWindow::on_btn_play_clicked()
 {
     if(sppm->isAudioAvailable()){
@@ -152,8 +235,6 @@ void MainWindow::on_btn_play_clicked()
             ui->statusbar->showMessage("No song selected", 5000);
         }
     }
-
-
 }
 
 void MainWindow::on_sldr_progress_sliderMoved(int position)
@@ -176,7 +257,80 @@ void MainWindow::on_durationChanged(qint64 duration)
     ui->sldr_progress->setMaximum(duration);
 }
 
+void MainWindow::on_btn_volume_clicked(bool checked)
+{
+    sppm->press_mute(checked);
 
+    if(checked){
+        QPixmap mute (":img/mute.png");
+        ui->btn_volume->setIcon(mute);
+    } else {
+        QPixmap volume (":img/volume.png");
+        ui->btn_volume->setIcon(volume);
+    }
+}
+
+void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
+{
+    switch (status) {
+    case QMediaPlayer::UnknownMediaStatus:
+    case QMediaPlayer::NoMedia:
+    case QMediaPlayer::LoadedMedia:
+//        setStatusInfo(QString());
+         qDebug() << "on_playerstatusChanged loadmedia";
+        break;
+    case QMediaPlayer::LoadingMedia:
+        qDebug() << "on_playerstatusChanged Loading...";
+        break;
+    case QMediaPlayer::BufferingMedia:
+    case QMediaPlayer::BufferedMedia:
+//        setStatusInfo(tr("Buffering %1%").arg(m_player->bufferStatus()));
+        break;
+    case QMediaPlayer::StalledMedia:
+//        setStatusInfo(tr("Stalled %1%").arg(m_player->bufferStatus()));
+        break;
+    case QMediaPlayer::EndOfMedia:
+        on_btn_for_released();
+        QApplication::alert(this);
+        break;
+    case QMediaPlayer::InvalidMedia:
+//        displayErrorMessage();
+        qDebug() << "on_playerstatusChanged EEROORS";
+        break;
+    }
+
+}
+
+
+// --------------- Queue and History Methods ---------------//
+
+
+void MainWindow::on_comboBox_activated(const QString &arg1)
+{
+    if(arg1 == "Queue List"){
+        ui->queue_tableView->setModel(m_queueListModel);
+    } else {
+        ui->queue_tableView->setModel(m_historyListModel);
+    }
+}
+
+void MainWindow::on_actionPlay_Next_triggered()
+{
+    m_queueListModel->playNext(currentSlectedSongs());
+}
+
+
+void MainWindow::on_actionAppend_Queue_triggered()
+{
+    QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
+    QList<Model::Song> selectedSong;
+    for(auto i : selection){
+        m_queueListModel->appendSong(m_display_song_model->songAt(i.row()));
+    }
+}
+
+
+// --------------- Drag and Drop ------------------------
 void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 {
     if (e->mimeData()->hasUrls()) {
@@ -257,21 +411,8 @@ void MainWindow::dropEvent(QDropEvent *e)
     }
 }
 
-QString MainWindow::currentSelectedAttribute() const
-{
-    return ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
-}
 
-Model::Song MainWindow::currentSlectedSong() const
-{
-    Model::Song s;
-    s.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
-    s.setTitle(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
-//    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
-//    QString artistName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString();
-    return s;
-}
-
+// -------------------- context Menus ---------------------------------
 
 void MainWindow::onCustomContextMenu(const QPoint &point)
 {
@@ -325,23 +466,6 @@ void MainWindow::display_tree(){
    //ui->playlist_treeView->setModel(playlist);
 }
 
-void MainWindow::on_songs_tableView_doubleClicked()
-{
-    on_actionPlay_triggered();
-}
-
-
-void MainWindow::on_actionPlay_triggered() // TODO:: function redundante
-{
-    QPixmap pause (":img/pause.png");
-    ui->btn_play->setIcon(pause);
-    Model::Song s = currentSlectedSong();
-    ui->current_song_label->setText(s.getArtistName() + " - " + s.getTitle());
-    ui->statusbar->showMessage("playing: " + s.getArtistName(), 3000);
-    m_queueListModel->playSong(s);
-    sppm->playSong(s.getSongPath());
-    m_historyListModel->addSong(s);
-}
 
 
 //----------Dark Mode --------------//
@@ -360,7 +484,6 @@ void MainWindow::on_actionDarkmode_triggered(bool checked)
 
 }
 
-#include<algorithm>
 void MainWindow::on_actionRemove_Song_triggered()
 {
     QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
@@ -463,11 +586,6 @@ void MainWindow::on_actionEdit_Song_triggered()
 }
 
 
-
-void MainWindow::on_actionPlay_Next_triggered()
-{
-}
-
 void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 {
     switch(m_displayState){
@@ -482,56 +600,6 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
         break;
     }
     ui->songs_tableView->setModel(m_display_song_model);
-}
-void MainWindow::on_btn_volume_clicked(bool checked)
-{
-    sppm->press_mute(checked);
-
-    if(checked){
-        QPixmap mute (":img/mute.png");
-        ui->btn_volume->setIcon(mute);
-    } else {
-        QPixmap volume (":img/volume.png");
-        ui->btn_volume->setIcon(volume);
-    }
-}
-
-void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
-{
-    switch (status) {
-    case QMediaPlayer::UnknownMediaStatus:
-    case QMediaPlayer::NoMedia:
-    case QMediaPlayer::LoadedMedia:
-//        setStatusInfo(QString());
-         qDebug() << "on_playerstatusChanged loadmedia";
-        break;
-    case QMediaPlayer::LoadingMedia:
-        qDebug() << "on_playerstatusChanged Loading...";
-        break;
-    case QMediaPlayer::BufferingMedia:
-    case QMediaPlayer::BufferedMedia:
-//        setStatusInfo(tr("Buffering %1%").arg(m_player->bufferStatus()));
-        break;
-    case QMediaPlayer::StalledMedia:
-//        setStatusInfo(tr("Stalled %1%").arg(m_player->bufferStatus()));
-        break;
-    case QMediaPlayer::EndOfMedia:
-        qDebug() << "automate next song";
-        QApplication::alert(this);
-        break;
-    case QMediaPlayer::InvalidMedia:
-//        displayErrorMessage();
-        qDebug() << "on_playerstatusChanged EEROORS";
-        break;
-    }
-
-}
-
-
-
-void MainWindow::on_btn_for_clicked()
-{
-
 }
 
 void MainWindow::on_insert_search_textChanged(const QString &arg1)
@@ -588,42 +656,4 @@ void MainWindow::on_btn_albums_clicked()
     ui->artists_tableView->setModel(m_display_albums_model);
     ui->artists_tableView->show();
     m_displayState = DisplayAlbums;
-}
-
-void MainWindow::on_actionadd_to_queue_triggered()
-{
-    sppm->addToQueue(currentSlectedSong().getSongPath());
-}
-
-void MainWindow::on_btn_for_released()
-{
-//    sppm->playNex();
-//    on_actionPlay_triggered();
-    Model::Song s = m_queueListModel->getNextSong();
-    sppm->playSong(s.getSongPath());
-//    currentSlectedSong();
-//    qDebug() << "release";
-}
-
-void MainWindow::on_actionAppend_Queue_triggered()
-{
-    QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
-    QList<Model::Song> selectedSong;
-    for(auto i : selection){
-        m_queueListModel->appendSong(m_display_song_model->songAt(i.row()));
-    }
-}
-
-void MainWindow::on_comboBox_activated(const QString &arg1)
-{
-    if(arg1 == "Queue List"){
-        ui->queue_tableView->setModel(m_queueListModel);
-        qDebug() << "quwwwwwwwuw li8sst";
-    } else {
-        qDebug() << "histoooooo";
-        ui->queue_tableView->setModel(m_historyListModel);
-//        m_queueListModel->dataChanged();
-//        m_queueListModel->data(QModelIndex(),0);
-//        m_queueListModel->setToHistory();
-    }
 }
