@@ -28,11 +28,6 @@ QList<Model::Song> DataManagement::get_all_songs() const
 QList<Model::Playlist> DataManagement::get_all_playlists() const
 {
     QList<Model::Playlist> all_playlists_copy = *m_all_playlists;
-
-    qInfo() << all_playlists_copy.size();
-//    for(int i = 0; i < all_playlists_copy.size(); i++) {
-//        qInfo() << all_playlists_copy;
-//    }
     return all_playlists_copy;
 }
 
@@ -147,6 +142,18 @@ QList<QString> DataManagement::allArtists()
     }
     std::sort(allArtists.begin(), allArtists.end());
     return allArtists;
+}
+
+bool DataManagement::deletePlaylist(int playlistID){
+
+
+    for(int i = 0; i < m_all_playlists->size(); i++){
+        if(m_all_playlists->at(i).getPlaylistID() == playlistID){
+            m_all_playlists->removeAt(i);
+            return true;
+        }
+    }
+    return false;
 }
 
 bool DataManagement::deleteSong(QString filePath)

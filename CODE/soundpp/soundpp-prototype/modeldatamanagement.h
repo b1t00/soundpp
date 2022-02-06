@@ -40,6 +40,7 @@ public:
     bool editSong(Model::Song song_from_db);
     bool insert_playlist(Model::Playlist new_playlist);
     bool containsSongPath(QString songPath);
+    bool deletePlaylist(int playlistID);
 
 
 

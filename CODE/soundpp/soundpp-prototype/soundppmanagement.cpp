@@ -31,6 +31,14 @@ void SoundppManagement::new_playlist(Model::Playlist new_playlist){
      dm->insert_playlist(new_playlist);
 }
 
+bool SoundppManagement::deletePlaylist(int playlistID){
+   bool deleted = dbc->deletePlaylist(playlistID);
+
+   if(deleted) deleted = dm->deletePlaylist(playlistID);
+   return deleted;
+
+}
+
 
 
 QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){

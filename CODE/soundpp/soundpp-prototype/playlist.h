@@ -12,11 +12,19 @@ public:
     Playlist(QString playlistName);
 
     QString playlistName;
+    int playlistID;
+    int increment = 0;
 
 
     QString getPlaylistName() const;
     void setPlaylistName(const QString &value);
 
+    int getPlaylistID() const;
+    void setPlaylistID(int value);
+
+private:
+    QString m_playlistName;
+    int m_playlistID;
 };
 }
 #endif // PLAYLIST_H

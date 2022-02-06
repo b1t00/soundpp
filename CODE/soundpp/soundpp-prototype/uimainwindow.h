@@ -59,7 +59,6 @@ private slots:
     void onSongTableContextMenu(const QPoint &point);
     void onCustomContextMenu_2(const QPoint &point);
     void addToPlaylist();
-    void display_tree();
 
     //musik player
     void on_btn_play_clicked();

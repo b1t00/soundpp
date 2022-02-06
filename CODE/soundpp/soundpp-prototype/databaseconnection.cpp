@@ -47,7 +47,8 @@ Database::DataBaseConnection::DataBaseConnection()
         qInfo() << "db playlist auch";
 
         allPlaylistsQueryModel->setQuery("CREATE TABLE playlistTable ( \
-                                            playlistName TEXT);");
+                                            playlistName TEXT \
+                                            playlistID INTEGER);");
 
             sqlitedb.close();
 
@@ -129,7 +130,8 @@ QList<Model::Playlist>* Database::DataBaseConnection::get_and_create_all_Playlis
 
     for(int i = 0; i < allPlaylistsQueryModel->rowCount(); i++){
         Model::Playlist playlist;
-        playlist.setPlaylistName(allPlaylistsQueryModel->record(i).value("playlistName").toString());;
+        playlist.setPlaylistName(allPlaylistsQueryModel->record(i).value("playlistName").toString());
+        playlist.setPlaylistID(allPlaylistsQueryModel->record(i).value("playlistID").toInt());
         m_all_playlists->append(playlist);
         }
 
@@ -165,10 +167,10 @@ void Database::DataBaseConnection::insertPlaylist(Model::Playlist playlist){
 
     QSqlQuery qry;
 
-    qry.prepare("INSERT INTO playlistTable (playlistName) VALUES (:playlistName)" );
+    qry.prepare("INSERT INTO playlistTable (playlistName, playlistID) VALUES (:playlistName, :playlistID)" );
 
     qry.bindValue(":playlistName", playlist.getPlaylistName());
-
+    qry.bindValue(":playlistID", playlist.getPlaylistID());
     qry.exec();
 
     this->sqlitedb.close();
@@ -295,6 +297,17 @@ bool Database::DataBaseConnection::deleteSong(QString filePath)
     return false;
 }
 
+
+bool Database::DataBaseConnection::deletePlaylist(int playlistID){
+    this->sqlitedb.open();
+    QSqlQuery qry;
+    qry.prepare("DELETE from playlistTable WHERE playlistID = (:playlistID)");
+    qry.bindValue(":playlistID", playlistID);
+    if(qry.exec()){
+        return true;
+    }
+    return false;
+}
 
 
 
