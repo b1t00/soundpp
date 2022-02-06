@@ -125,9 +125,10 @@ private:
 
 //    QString currentSelectedAlbum() const ;
 
+    // contex Menus
     QMenu* songTableContextMenu;
+    QMenu* songTableHeaderContextMenu;
     QMenu* contextMenu_2;
-    QMenu* contextMenuHeader;
 
     // dbconnection
 
