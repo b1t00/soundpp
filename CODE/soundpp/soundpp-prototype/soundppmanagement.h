@@ -48,16 +48,19 @@ public:
 
     //musikplayerqt
     bool pressPlay();
-    void doubleclickPlay(QString songPath);
+    void playSong(QString songPath);
     void setVolume(int volume);
     void setPosition(int position);
     bool isAudioAvailable() const;
+    bool isPlaying() const;
     void press_mute(bool mute);
     void addToQueue(QUrl url);
+    void playNex();
 
 signals:
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
+    void playerstatusChanged(QMediaPlayer::MediaStatus status);
 //    void songDoubleClicked(const QModelIndex &index);
 
 };
