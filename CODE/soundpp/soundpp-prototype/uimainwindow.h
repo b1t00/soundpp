@@ -56,7 +56,7 @@ public:
 private slots:
 
     void updateGui(); // :TODO
-    void onCustomContextMenu(const QPoint &point);
+    void onSongTableContextMenu(const QPoint &point);
     void onCustomContextMenu_2(const QPoint &point);
     void addToPlaylist();
     void display_tree();
@@ -125,7 +125,7 @@ private:
 
 //    QString currentSelectedAlbum() const ;
 
-    QMenu* contextMenu;
+    QMenu* songTableContextMenu;
     QMenu* contextMenu_2;
     QMenu* contextMenuHeader;
 

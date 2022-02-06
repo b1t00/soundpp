@@ -1,6 +1,8 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QWidget>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -21,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
     ui->artists_tableView->setModel(m_display_artist_model);
 
-    //Display QueueModel
+    //QueueList and History Model
     m_historyListModel = new Model::HistoryListModel(this);
     m_queueListModel = new Model::QueueListModel(this);
     ui->queue_tableView->setModel(m_queueListModel);
@@ -29,18 +31,23 @@ MainWindow::MainWindow(QWidget *parent)
 //    m_display_artist_model->headerData(2,Qt::Orientation::Horizontal)
 
 
-    //Display & Interact SongModel
+    // -----Context Menus
+    // ---- CM Song Table
     ui->songs_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
-    ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
-    contextMenu = new QMenu(ui->songs_tableView);
-    contextMenu->addAction("play next", this, &MainWindow::on_actionPlay_Next_triggered);
-    contextMenu->addAction("append queuelist",this, &MainWindow::on_actionAppend_Queue_triggered);
-    contextMenu->addAction("add to Playlist", this,&MainWindow::addToPlaylist);
-    contextMenu->addSeparator();
-    contextMenu->addAction("edit song...", this,&MainWindow::on_actionEdit_Song_triggered);
-    contextMenu->addAction("remove song", this,&MainWindow::on_actionRemove_Song_triggered);
-    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+    songTableContextMenu = new QMenu(ui->songs_tableView);
+    songTableContextMenu->addAction("play song", this, &MainWindow::on_actionPlay_triggered);
+    songTableContextMenu->addAction("play next", this, &MainWindow::on_actionPlay_Next_triggered);
+    songTableContextMenu->addAction("append queuelist",this, &MainWindow::on_actionAppend_Queue_triggered);
+    songTableContextMenu->addSeparator();
+    songTableContextMenu->addAction("add to Playlist", this,&MainWindow::addToPlaylist);
+    songTableContextMenu->addSeparator();
+    songTableContextMenu->addAction("edit song...", this,&MainWindow::on_actionEdit_Song_triggered);
+    songTableContextMenu->addAction("remove song", this,&MainWindow::on_actionRemove_Song_triggered);
+//    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+        connect(ui->songs_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onSongTableContextMenu);
 
+
+//    ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
     m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     m_displayState = DisplayTitles;
@@ -59,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->playlist_tableView->setShowGrid(false);
     ui->playlist_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->playlist_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+
+
     contextMenu_2 = new QMenu(ui->playlist_tableView);
     contextMenu_2->addAction("new Playlist..", this, SLOT(createNewPlaylist()));
     contextMenu_2->addAction("delete Playlist", this, SLOT(deletePlaylist()));
@@ -414,9 +423,9 @@ void MainWindow::dropEvent(QDropEvent *e)
 
 // -------------------- context Menus ---------------------------------
 
-void MainWindow::onCustomContextMenu(const QPoint &point)
+void MainWindow::onSongTableContextMenu(const QPoint &point)
 {
-     contextMenu->exec(ui->songs_tableView->viewport()->mapToGlobal(point));
+     songTableContextMenu->exec(ui->songs_tableView->viewport()->mapToGlobal(point));
 
 }
 
