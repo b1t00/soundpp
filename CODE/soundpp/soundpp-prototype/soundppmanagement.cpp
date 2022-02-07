@@ -122,6 +122,11 @@ bool SoundppManagement::pressPlay()
     return mpqt->pressPlay();
 }
 
+void SoundppManagement::stopPlaying()
+{
+    mpqt->stop();
+}
+
 void SoundppManagement::playSong(QString songPath)
 {
     mpqt->setSongPath(songPath);

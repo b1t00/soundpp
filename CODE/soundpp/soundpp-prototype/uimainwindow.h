@@ -122,7 +122,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
     Management::SoundppManagement *sppm;
+    Model::Song m_current_playing_song;
 
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);
