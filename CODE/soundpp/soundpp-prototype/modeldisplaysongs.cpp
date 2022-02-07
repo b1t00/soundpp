@@ -110,14 +110,25 @@ void DisplaySongModel::addSong(Model::Song song)
 
 void DisplaySongModel::clear()
 {
+    beginResetModel();
     m_songs.clear();
+    endResetModel();
     //    qDebug() << "blub blub clear";
+}
+
+void DisplaySongModel::resetData(QList<Song> otherSongs)
+{
+    beginResetModel();
+    m_songs = otherSongs;
+    endResetModel();
 }
 
 Song DisplaySongModel::songAt(int index) const
 {
     return m_songs.at(index);
 }
+
+
 
 QList<Model::Song> DisplaySongModel::songs() const
 {

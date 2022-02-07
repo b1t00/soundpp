@@ -156,7 +156,6 @@ QList<Model::Song> MainWindow::currentSlectedSongs() const
 {
     QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
     QList<Model::Song> songs_selected;
-    QString deleteMessages = "Do you really want to remove?\n";
     for(int i = 0 ; i < selection.size(); i++){
         songs_selected.append(Model::Song(
                                   ui->songs_tableView->model()->index(selection.at(i).row(),0).data().toString(),
@@ -164,7 +163,6 @@ QList<Model::Song> MainWindow::currentSlectedSongs() const
                                   ui->songs_tableView->model()->index(selection.at(i).row(),2).data().toString(),
                                   ui->songs_tableView->model()->index(selection.at(i).row(),3).data().toString()
                                   ));
-        deleteMessages += ui->songs_tableView->model()->index(selection.at(i).row(),1).data().toString() + "\n";
     }
 
     return songs_selected;
@@ -224,9 +222,17 @@ void MainWindow::dropEvent(QDropEvent *e)
     QList<QUrl> file_urls = e->mimeData()->urls();
     QList<QString> file_paths;
     foreach(QUrl url, file_urls){
-        file_paths.append(url.toString());
-        qDebug() << "urls" << file_urls.at(file_paths.size()-1);
-        qDebug() << "string" << file_paths.at(file_paths.size()-1);
+        QString path(url.toString());
+        if(path.left(7) == "file://"){
+            qDebug() << "leg6t" << path.left(7);
+            path.remove(0,7);
+            qDebug() << "chop" << path;
+        }
+//        file_paths.append(QString());
+        file_paths.append(url.toLocalFile());
+
+//        qDebug() << "urls" << url;
+        qDebug() << "string" << file_paths.at(file_paths.length()-1);
     }
     insertNewPaths(file_paths);
 }
@@ -295,7 +301,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
         }
     } else if(m_displayState == DisplayAlbums){
         if (currentAlbum){
-            qDebug()<<  "current album " << currentSelectedAttribute() << newAlbum;
+//            qDebug()<<  "current album " << currentSelectedAttribute() << newAlbum;
             m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()));
             ui->songs_tableView->setModel(m_display_song_model);
         }
@@ -372,7 +378,9 @@ void MainWindow::onAttributeTableContextMenu(const QPoint &point)
     // more workaround, otherwise item from attribute view will not get triggert
     switch(m_displayState){
     case DisplayArtists :
-        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()), this);
+        m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
+//        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()), this);
+//        m_display_song_model->dataChanged(0,0,1);
         break;
     case DisplayAlbums :
         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()), this);
@@ -381,7 +389,8 @@ void MainWindow::onAttributeTableContextMenu(const QPoint &point)
         qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
         break;
     }
-    ui->songs_tableView->setModel(m_display_song_model);
+//    ui->songs_tableView->setModel(m_display_song_model);
+//    ui->songs_tableView->setModel(m_display_song_model);
 //    on_artists_tableView_clicked(QModelIndex &index);
     m_attributeTableContextMenu->exec(ui->artists_tableView->viewport()->mapToGlobal(point));
 }
@@ -422,7 +431,7 @@ void MainWindow::on_songs_tableView_doubleClicked()
 {
     on_actionPlay_triggered();
 }
-
+// -- Musikplayer buttons
 void MainWindow::on_btn_play_clicked()
 {
     if(sppm->isAudioAvailable()){
@@ -741,7 +750,7 @@ void MainWindow::on_actionRemove_Song_triggered()
 void MainWindow::on_actionEdit_Song_triggered()
 {
     Model::Song song_to_edit;
-    QAbstractItemModel* selectedSong = ui->songs_tableView->model();
+    QAbstractItemModel* selectedSong = ui->songs_tableView->model(); //TODO
     int rowIndex = ui->songs_tableView->currentIndex().row();
     song_to_edit.setSongPath(ui->songs_tableView->model()->index(rowIndex,0).data().toString());
     song_to_edit.setTitle(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
@@ -788,16 +797,18 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 {
     switch(m_displayState){
     case DisplayArtists :
-        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
+        m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
+//        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
         break;
     case DisplayAlbums :
-        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
+        m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
+//        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
         break;
     default:
         qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
         break;
     }
-    ui->songs_tableView->setModel(m_display_song_model);
+//    ui->songs_tableView->setModel(m_display_song_model);
 }
 
 void MainWindow::on_insert_search_textChanged(const QString &arg1)
