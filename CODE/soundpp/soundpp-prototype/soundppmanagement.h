@@ -49,6 +49,7 @@ public:
     void new_playlist(Model::Playlist new_playlist);
     bool deletePlaylist(int playlistID);
 
+    //audios
     //musikplayerqt
     bool pressPlay();
     void stopPlaying();
@@ -60,6 +61,8 @@ public:
     void press_mute(bool mute);
     void addToQueue(QUrl url);
     void playNex();
+
+    void audioOutputChanged(int index_of_device);
 
 signals:
     void positionChanged(qint64 position);

@@ -1,6 +1,7 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QAudioDeviceInfo>
 #include <QFileDialog>
 #include <QWidget>
 
@@ -111,8 +112,17 @@ MainWindow::MainWindow(QWidget *parent)
    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
    // ----------- statusbar
-   QComboBox output = new QComboBox(this);
-   ui->statusbar->addPermanentWidget(output,1);
+   // ouput device
+   m_deviceBox = new QComboBox(this);
+   m_deviceBox->setMaximumWidth(120);
+   const QAudioDeviceInfo &defaultDeviceInfo = QAudioDeviceInfo::defaultOutputDevice();
+   m_deviceBox->addItem(defaultDeviceInfo.deviceName(), QVariant::fromValue(defaultDeviceInfo));
+   for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(QAudio::AudioOutput)) {
+       if (deviceInfo != defaultDeviceInfo)
+           m_deviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
+   }
+   ui->statusbar->addPermanentWidget(m_deviceBox,0);
+   connect(m_deviceBox, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::audioOutputChanged);
     //----------------Icons
 
     QPixmap logo (":img/logo.png");
@@ -134,7 +144,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->btn_loop->setIcon(loop);
 
 
-
+    AudioOutputInit(QAudioDeviceInfo::defaultOutputDevice());
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
 
@@ -603,6 +613,64 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
         ui->queue_tableView->setModel(m_historyListModel);
 //        ui->queue_tableView->setRowHidden(0,true);
     }
+}
+
+void MainWindow::AudioOutputInit(const QAudioDeviceInfo &deviceInfo)
+{
+    QAudioFormat format;
+    format.setSampleRate(44100);
+    format.setChannelCount(1);
+    format.setSampleSize(16);
+    format.setCodec("audio/pcm");
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleType(QAudioFormat::SignedInt);
+
+    if (!deviceInfo.isFormatSupported(format)) {
+        qWarning() << "Default format not supported - trying to use nearest";
+        format = deviceInfo.nearestFormat(format);
+    }
+
+//    const int durationSeconds = 1;
+//    const int toneSampleRateHz = 600;
+//    m_generator.reset(new Generator(format, durationSeconds * 1000000, toneSampleRateHz));
+    m_audioOutput.reset(new QAudioOutput(deviceInfo, format));
+//    m_generator->start();
+
+    qreal initialVolume = QAudio::convertVolume(m_audioOutput->volume(),
+                                                QAudio::LinearVolumeScale,
+                                                QAudio::LogarithmicVolumeScale);
+//    m_volumeSlider->setValue(qRound(initialVolume * 100));
+//    toggleMode();
+}
+
+void MainWindow::audioOutputChanged(int output_index)
+{
+    QAudioDeviceInfo ai = m_deviceBox->itemData(output_index).value<QAudioDeviceInfo>();
+    qDebug()<<output_index;
+    QAudioFormat format;
+    format.setSampleRate(44100);
+    format.setChannelCount(1);
+    format.setSampleSize(16);
+    format.setCodec("audio/pcm");
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleType(QAudioFormat::SignedInt);
+
+    if (!ai.isFormatSupported(format)) {
+        qWarning() << "Default format not supported - trying to use nearest";
+        format = ai.nearestFormat(format);
+    }
+//    sppm->audioOutputChanged(output_index);
+    sppm->stopPlaying();
+    m_audioOutput->stop();
+    m_audioOutput->disconnect(this);
+    m_audioOutput.reset(new QAudioOutput(ai,format));
+//    m_audioOutput->resume();
+    m_audioOutput->suspend();
+    qreal initialVolume = QAudio::convertVolume(m_audioOutput->volume(),
+                                                QAudio::LinearVolumeScale,
+                                                QAudio::LogarithmicVolumeScale);
+    ui->sldr_volume->setValue(qRound(initialVolume * 100));
+//    initializeAudio(m_deviceBox->itemData(output_index).value<QAudioDeviceInfo>());
 }
 
 void MainWindow::on_actionPlay_Next_triggered()

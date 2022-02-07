@@ -116,6 +116,13 @@ void SoundppManagement::playNex()
     mpqt->playNext();
 }
 
+void SoundppManagement::audioOutputChanged(int index_of_device)
+{
+//    QMediaPlayer mp = new QMediaPlayer(this,);
+//    mp.audioOutput();
+//    mp.setAudioOutput()
+}
+
 bool SoundppManagement::pressPlay()
 {
     if(!mpqt->isAudioAvailable()) return false;
@@ -125,6 +132,10 @@ bool SoundppManagement::pressPlay()
 void SoundppManagement::stopPlaying()
 {
     mpqt->stop();
+//    mpqt->setAudioOutput()
+//    mpqt->setAu();
+//    mpqt->audioOutput();
+    mpqt->disconnect(this);
 }
 
 void SoundppManagement::playSong(QString songPath)

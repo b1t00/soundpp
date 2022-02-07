@@ -9,6 +9,7 @@
 #include <QSqlQueryModel>
 #include <QUrl>
 
+#include <QAudioOutput>
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMediaPlayer>
@@ -121,6 +122,10 @@ private slots:
 
     void on_comboBox_activated(const QString &arg1);
 
+    void AudioOutputInit(const QAudioDeviceInfo &deviceInfo);
+    void audioOutputChanged(int output_index);
+
+
 private:
     Ui::MainWindow *ui;
 
@@ -156,6 +161,9 @@ private:
     QMenu* contextMenu_2;
 
     // dbconnection
+    QComboBox *m_deviceBox = nullptr;
+    QScopedPointer<QAudioOutput> m_audioOutput;
+
 
 };
 #endif // UIMAINWINDOW_H

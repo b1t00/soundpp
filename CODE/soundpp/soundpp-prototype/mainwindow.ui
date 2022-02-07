@@ -378,13 +378,6 @@ min-height: 20px;
          </widget>
         </item>
         <item>
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -422,7 +415,7 @@ min-height: 20px;
            <widget class="QTableView" name="queue_tableView">
             <property name="maximumSize">
              <size>
-              <width>200</width>
+              <width>250</width>
               <height>16777215</height>
              </size>
             </property>

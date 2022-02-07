@@ -1,6 +1,7 @@
 #ifndef MUSIKPLAYERQT_H
 #define MUSIKPLAYERQT_H
 
+#include <QAudioOutput>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 
@@ -14,6 +15,7 @@ private:
     bool m_playedOnce;
     QUrl m_songPath;
     QMediaPlaylist *m_playlist = nullptr;
+    QAudioOutput *audioOutput;
 
 public:
     MusikPlayerQt();
