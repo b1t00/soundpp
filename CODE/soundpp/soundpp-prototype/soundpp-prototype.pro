@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     databaseconnection.cpp \
+    dialogplaylist.cpp \
     displayplaylistmodel.cpp \
     main.cpp \
     metadatareader.cpp \
@@ -22,13 +23,13 @@ SOURCES += \
     modelsong.cpp \
     musikplayerqt.cpp \
     playlist.cpp \
-    playlistdialog.cpp \
     soundppmanagement.cpp \
     uieditsongdialog.cpp \
     uimainwindow.cpp
 
 HEADERS += \
     databaseconnection.h \
+    dialogplaylist.h \
     displayplaylistmodel.h \
     metadatareader.h \
     modeldatamanagement.h \
@@ -40,15 +41,14 @@ HEADERS += \
     modelsong.h \
     musikplayerqt.h \
     playlist.h \
-    playlistdialog.h \
     soundppmanagement.h \
     uieditsongdialog.h \
     uimainwindow.h
 
 FORMS += \
+    dialogplaylist.ui \
     editsongdialog.ui \
-    mainwindow.ui \
-    playlistdialog.ui
+    mainwindow.ui
 
 #taglib library funktioniert mit dem minGW 64 compiler
 LIBS += -L$$PWD/libs/taglib/bin -ltag

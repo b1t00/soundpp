@@ -45,4 +45,22 @@ QVariant DisplayPlaylistModel::data(const QModelIndex &index, int role) const
    }
    return QVariant();
 }
+
+void DisplayPlaylistModel::addPlaylist(Model::Playlist playlist){
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    m_all_playlists.append(playlist);
+    endInsertRows();
+
+}
+
+bool DisplayPlaylistModel::removeRows(int row, int count, const QModelIndex &parent ){
+    if(row >= rowCount() || row+count-1 >= rowCount()) return false;
+    beginRemoveRows(parent, row, row+count-1);
+    for(int i=0; i < count; i++) m_all_playlists.removeAt(row);
+
+    endRemoveRows();
+
+    return true;
+
+}
 }

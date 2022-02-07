@@ -28,6 +28,7 @@
 
 #include "uieditsongdialog.h"
 #include "playlistdialog.h"
+#include "dialogplaylist.h"
 #include "modelqueuelist.h"
 #include "modelhistorylistl.h"
 
@@ -71,6 +72,7 @@ private slots:
 
     void playSong(Model::Song song_to_play);
     void on_btn_for_clicked();
+
     void on_btn_for_released();
 
     // actions
@@ -95,8 +97,6 @@ private slots:
     // insert new files
     void insertNewPaths(QList<QString> path);
     void on_actionOpen_triggered();
-
-    void on_actionadd_to_queue_triggered();
 
 
     void on_actionAppend_Queue_triggered();

@@ -1,37 +1,33 @@
-#ifndef PLAYLISTDIALOG_H
-#define PLAYLISTDIALOG_H
+#ifndef DIALOGPLAYLIST_H
+#define DIALOGPLAYLIST_H
 
 #include <QDialog>
-#include "modelsong.h"
 #include "playlist.h"
 
 namespace Ui {
-class playlistdialog;
+class Dialog;
 }
 
-class playlistdialog : public QDialog
+class Dialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit playlistdialog(QWidget *parent = nullptr);
-    ~playlistdialog();
+    explicit Dialog(QWidget *parent = nullptr);
+    ~Dialog();
+
 
     void setPlaylistName(const Model::Playlist playlist);
 
     Model::Playlist getPlaylist() const;
     QString playlistName() const;
 
-
-
 private slots:
-
-
     void on_buttonBox_accepted();
 
 private:
-    Ui::playlistdialog *ui;
+    Ui::Dialog *ui;
     Model::Playlist m_playlist;
 };
 
-#endif // PLAYLISTDIALOG_H
+#endif // DIALOGPLAYLIST_H
