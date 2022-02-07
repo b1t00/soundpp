@@ -60,6 +60,7 @@ private slots:
     // trigger context Menus
     void onSongTableContextMenu(const QPoint &point);
     void onAttributeTableContextMenu(const QPoint &point);
+    void onQueueTableContextMenu(const QPoint &point);
     void onCustomContextMenu_2(const QPoint &point);
 
     void addToPlaylist();
@@ -150,6 +151,7 @@ private:
     // contex Menus
     QMenu* songTableContextMenu;
     QMenu* m_attributeTableContextMenu;
+    QMenu* m_queueTableContextMenu;
     QMenu* songTableHeaderContextMenu;
     QMenu* contextMenu_2;
 

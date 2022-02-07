@@ -77,6 +77,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->artists_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onAttributeTableContextMenu);
 
+    // --- Context Menu Queue Table --
+    ui->queue_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    m_queueTableContextMenu = new QMenu(ui->queue_tableView);
+    m_queueTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
+    m_queueTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_Next_triggered);
+    m_queueTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionAppend_Songs_Queue_triggered);
+    connect(ui->queue_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onQueueTableContextMenu);
+
     // -------------- selection change -------------------- //
     // TODO::
     connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
@@ -102,7 +110,10 @@ MainWindow::MainWindow(QWidget *parent)
    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
-    //Icons
+   // ----------- statusbar
+   QComboBox output = new QComboBox(this);
+   ui->statusbar->addPermanentWidget(output,1);
+    //----------------Icons
 
     QPixmap logo (":img/logo.png");
     ui->logo->setPixmap(logo);
@@ -379,10 +390,18 @@ void MainWindow::onAttributeTableContextMenu(const QPoint &point)
         qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
         break;
     }
-//    ui->songs_tableView->setModel(m_display_song_model);
-//    ui->songs_tableView->setModel(m_display_song_model);
-//    on_artists_tableView_clicked(QModelIndex &index);
+
     m_attributeTableContextMenu->exec(ui->artists_tableView->viewport()->mapToGlobal(point));
+}
+
+void MainWindow::onQueueTableContextMenu(const QPoint &point)
+{
+    if(ui->comboBox->currentText()=="Queue List"){
+        qDebug() << "queuecontextMenu";
+        m_queueTableContextMenu->exec(ui->queue_tableView->viewport()->mapToGlobal(point));
+    } else {
+        qDebug() << "historx contxt menu";
+    }
 }
 
 void MainWindow::onCustomContextMenu_2(const QPoint &point){
