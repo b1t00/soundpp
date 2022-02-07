@@ -26,8 +26,6 @@ public:
     void addToQueue(QUrl url);
 
     bool pressPlay();
-//    void playSong();
-    void playNext();
 
     bool playedOnce() const;
 

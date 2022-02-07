@@ -60,6 +60,7 @@ private slots:
 
     // trigger context Menus
     void onSongTableContextMenu(const QPoint &point);
+    void onSongTableHeaderContextMenu(const QPoint &point);
     void onAttributeTableContextMenu(const QPoint &point);
     void onQueueTableContextMenu(const QPoint &point);
     void onCustomContextMenu_2(const QPoint &point);
@@ -129,6 +130,9 @@ private slots:
     void on_actionOpen_triggered();
     void on_comboBox_activated(const QString &arg1);
 
+    void on_actionshow_path_toggled(bool arg1);
+
+    void on_actionshow_title_toggled(bool arg1);
 
 private:
     Ui::MainWindow *ui;

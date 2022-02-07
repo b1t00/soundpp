@@ -59,7 +59,6 @@ public:
     bool isPlaying() const;
     void press_mute(bool mute);
     void addToQueue(QUrl url);
-    void playNex();
 
 signals:
     void positionChanged(qint64 position);

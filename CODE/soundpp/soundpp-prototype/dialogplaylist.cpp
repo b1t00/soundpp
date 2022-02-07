@@ -1,7 +1,7 @@
 #include "dialogplaylist.h"
-#include "ui_dialog.h"
 #include <QDebug>
 #include <QRandomGenerator>
+#include <ui_dialogplaylist.h>
 #include "playlist.h"
 
 Dialog::Dialog(QWidget *parent) :

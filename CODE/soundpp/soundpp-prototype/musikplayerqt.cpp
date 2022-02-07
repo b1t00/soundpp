@@ -5,11 +5,7 @@
 MusikPlayer::MusikPlayerQt::MusikPlayerQt()
 {
     m_playlist = new QMediaPlaylist();
-//    m_playlist->addMedia(QUrl("C:/Users/Winny/Music/Musik/testmusik/[1977] Lust For Life/04 - The Passenger.mp3"));
-//    m_playlist->addMedia(QUrl("C:/Users/Winny/Music/Musik/testmusik/[1977] Lust For Life/05 - Tonight.mp3"));
-//    m_playlist->addMedia(QUrl("C:/Users/Winny/Music/Musik/testmusik/[1977] Lust For Life/02 - Sixteen.mp3"));
 //    m_playlist->setPlaybackMode(QMediaPlaylist::AutoPla);
-//    m_playlist->()
     this->setPlaylist(m_playlist);
     setIsPlayling(false);
 //    playlist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
@@ -58,7 +54,6 @@ void MusikPlayerQt::addToQueue(QUrl url)
 
 bool MusikPlayerQt::pressPlay()
 {
-//    m_playlist->setCurrentIndex(0);
     if(!m_playedOnce) m_playedOnce = true;
 
     setIsPlayling(!isPlayling());
@@ -66,22 +61,6 @@ bool MusikPlayerQt::pressPlay()
     isPlayling() ? play() : pause();
     return m_isPlayling;
 }
-
-void MusikPlayerQt::playNext()
-{
-    qDebug() << "playlist current index" << m_playlist->currentIndex();
-    qDebug() << "playlist mext index" << m_playlist->nextIndex();
-    m_playlist->setCurrentIndex(m_playlist->nextIndex());
-    play();
-//    playlist()->next();
-
-//    m_playlist->next();
-//    m_playlist->next();
-//    playlist()->
-//    play();
-//    next();
-}
-
 
 
 bool MusikPlayerQt::isPlayling() const

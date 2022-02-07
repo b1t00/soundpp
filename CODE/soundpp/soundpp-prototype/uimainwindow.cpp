@@ -48,8 +48,13 @@ MainWindow::MainWindow(QWidget *parent)
     // -- Context Menus Song Table Header-
 
     // TODO: Coloms hide and show
-//    ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     songTableHeaderContextMenu = new QMenu(ui->songs_tableView->horizontalHeader());
+    songTableHeaderContextMenu->addAction("show path", this, &MainWindow::on_actionshow_path_toggled)->setCheckable(true);
+    songTableHeaderContextMenu->addAction("show title", this, &MainWindow::on_actionshow_title_toggled)->setCheckable(true);
+    songTableHeaderContextMenu->actions().at(1)->setChecked(true);
+    connect( ui->songs_tableView->horizontalHeader(), &QWidget::customContextMenuRequested, this, &MainWindow::onSongTableHeaderContextMenu);
+    ui->actionshow_title->setChecked(true);
 
     //  contextMenuHeader->addAction("todo", this, SLOT(addToQueue()));
     // connect(ui->songs_tableView->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -377,6 +382,11 @@ void MainWindow::onSongTableContextMenu(const QPoint &point)
 
 }
 
+void MainWindow::onSongTableHeaderContextMenu(const QPoint &point)
+{
+    songTableHeaderContextMenu->exec(ui->songs_tableView->horizontalHeader()->viewport()->mapToGlobal(point));
+}
+
 void MainWindow::onAttributeTableContextMenu(const QPoint &point)
 {
     // also trigger
@@ -401,10 +411,8 @@ void MainWindow::onAttributeTableContextMenu(const QPoint &point)
 void MainWindow::onQueueTableContextMenu(const QPoint &point)
 {
     if(ui->comboBox->currentText()=="Queue List"){
-        qDebug() << "queuecontextMenu";
         m_queueTableContextMenu->exec(ui->queue_tableView->viewport()->mapToGlobal(point));
     } else {
-        qDebug() << "historx contxt menu";
         m_historyTableContextMenu->exec(ui->queue_tableView->viewport()->mapToGlobal(point));
     }
 }
@@ -951,3 +959,17 @@ void MainWindow::on_actionOpen_triggered()
 
 }
 
+void MainWindow::on_actionshow_path_toggled(bool arg1)
+{
+    ui->songs_tableView->setColumnHidden(0,!arg1);
+    ui->actionshow_path->setChecked(arg1);
+    songTableHeaderContextMenu->actions().at(0)->setChecked(arg1);  // synchronise checkboxes
+}
+
+void MainWindow::on_actionshow_title_toggled(bool arg1)
+{
+    ui->songs_tableView->setColumnHidden(1,!arg1);
+    ui->actionshow_title->setChecked(arg1); // synchronise checkboxes
+    songTableHeaderContextMenu->actions().at(1)->setChecked(arg1);  // synchronise checkboxes
+
+}

@@ -11,6 +11,9 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     mdr = new MetaData::MetaDataFromFile();
     dm = new Model::DataManagement(dbc->get_and_create_all_Songs(), dbc->get_and_create_all_Playlists());
 
+//    mpqt->setVolume(75);
+    mpqt->setVolume(2);
+
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
@@ -109,11 +112,6 @@ void SoundppManagement::press_mute(bool mute){
 void SoundppManagement::addToQueue(QUrl url)
 {
     mpqt->addToQueue(url);
-}
-
-void SoundppManagement::playNex()
-{
-    mpqt->playNext();
 }
 
 bool SoundppManagement::pressPlay()
