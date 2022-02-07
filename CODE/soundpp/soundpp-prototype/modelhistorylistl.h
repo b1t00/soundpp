@@ -24,6 +24,9 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     void addSong(Model::Song song);
+    void removeLastSong();
+    bool incrementIndex();
+    void resetHistoryIndex();
     Model::Song songByIndex();
 
     unsigned int indexHistory() const;
@@ -31,7 +34,8 @@ public:
 
 private:
     QList<Model::Song> m_hList;
-    unsigned int m_indexHistory;
+    int m_indexHistory;
+    bool is_playing;
 };
 }
 

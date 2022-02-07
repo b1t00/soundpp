@@ -1,9 +1,13 @@
 #include "modelhistorylistl.h"
+#include <QBrush>
+#include <QColor>
+#include <QDebug>
+
 namespace Model {
 HistoryListModel::HistoryListModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    m_indexHistory = 0;
+    m_indexHistory = -1;
 }
 
 QVariant HistoryListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -30,20 +34,71 @@ int HistoryListModel::columnCount(const QModelIndex &parent) const
     return 2;
 }
 
-QVariant HistoryListModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();
+//QVariant HistoryListModel::data(const QModelIndex &index, int role) const
+//{
+//    if (!index.isValid())
+//        return QVariant();
 
-    if(role == Qt::DisplayRole){
-        const Model::Song s = m_hList.at(index.row());
-            switch(index.column()){
-            case 0: return s.getArtistName();
-            case 1: return s.getTitle();
+//    if(role == Qt::DisplayRole){
+//        const Model::Song s = m_hList.at(index.row());
+//            switch(index.column()){
+//            case 0: return s.getArtistName();
+//            case 1: return s.getTitle();
+//            }
+//    }
+//    return QVariant();
+//}
+
+QVariant HistoryListModel::data(const QModelIndex &index, int role) const
+ {
+     if ( !index.isValid() )
+         return QVariant();
+
+     int row = index.row();
+     int col = index.column();
+
+     switch ( role )
+     {
+
+        case Qt::BackgroundRole:
+        {
+
+            if(index.row()==(m_indexHistory+1)){
+               // background for this row,col is blue
+               return QVariant(QBrush (QColor(Qt::green)));
             }
-    }
-    return QVariant();
-}
+            // otherwise background is white
+            return QVariant(QBrush (QColor(Qt::white)));
+        }
+
+        case Qt::DisplayRole:
+        {
+            const Model::Song s = m_hList.at(index.row());
+            switch(index.column()){
+                case 0: return s.getArtistName();
+                case 1: return s.getTitle();
+            }
+
+        }
+
+//        case Qt::TextAlignmentRole:
+//        {
+
+//           if (1==col)
+//              return QVariant ( Qt::AlignVCenter | Qt::AlignLeft );
+
+//           if (2==col)
+//              return QVariant ( Qt::AlignVCenter | Qt::AlignTrailing );
+
+//           return QVariant ( Qt::AlignVCenter | Qt::AlignHCenter );
+
+//        }
+     }
+     return QVariant();
+
+  }
+
+
 
 void HistoryListModel::addSong(Model::Song song)
 {
@@ -52,9 +107,35 @@ void HistoryListModel::addSong(Model::Song song)
     endInsertRows();
 }
 
+void HistoryListModel::removeLastSong()
+{
+    beginRemoveRows(QModelIndex(),0,0);
+    m_hList.pop_front();
+    endRemoveRows();
+}
+
+bool HistoryListModel::incrementIndex()
+{
+    qDebug() << "history size " << m_hList.size();
+    qDebug() << "indexHistory" << m_indexHistory;
+
+    if(m_indexHistory < m_hList.size()-2){
+        m_indexHistory++;
+        return true;
+    }
+    return false;
+}
+
+void HistoryListModel::resetHistoryIndex()
+{
+    m_indexHistory = -1;
+}
+
 Song HistoryListModel::songByIndex()
 {
-    return m_hList.at(m_indexHistory);
+    if(m_indexHistory < m_hList.size()){
+        return m_hList.at(m_indexHistory);
+    }
 }
 
 unsigned int HistoryListModel::indexHistory() const

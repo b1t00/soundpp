@@ -51,6 +51,7 @@ public:
 
     //musikplayerqt
     bool pressPlay();
+    void stopPlaying();
     void playSong(QString songPath);
     void setVolume(int volume);
     void setPosition(int position);

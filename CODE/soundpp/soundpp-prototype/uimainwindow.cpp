@@ -222,17 +222,7 @@ void MainWindow::dropEvent(QDropEvent *e)
     QList<QUrl> file_urls = e->mimeData()->urls();
     QList<QString> file_paths;
     foreach(QUrl url, file_urls){
-        QString path(url.toString());
-        if(path.left(7) == "file://"){
-            qDebug() << "leg6t" << path.left(7);
-            path.remove(0,7);
-            qDebug() << "chop" << path;
-        }
-//        file_paths.append(QString());
         file_paths.append(url.toLocalFile());
-
-//        qDebug() << "urls" << url;
-        qDebug() << "string" << file_paths.at(file_paths.length()-1);
     }
     insertNewPaths(file_paths);
 }
@@ -415,6 +405,7 @@ void MainWindow::playSong(Model::Song song_to_play)
     ui->statusbar->showMessage("playing: " + song_to_play.getArtistName(), 3000);
 
     sppm->playSong(song_to_play.getSongPath());
+    m_current_playing_song = song_to_play;
     m_historyListModel->addSong(song_to_play);
 //    m_queueListModel->playSong(s);
 }
@@ -423,8 +414,8 @@ void MainWindow::playSong(Model::Song song_to_play)
 void MainWindow::on_actionPlay_triggered() // TODO:: function redundante
 {
     Model::Song song_selected = currentSlectedSong();
+    m_historyListModel->resetHistoryIndex();
     playSong(song_selected);
-
 }
 
 void MainWindow::on_songs_tableView_doubleClicked()
@@ -464,15 +455,20 @@ void MainWindow::on_btn_play_clicked()
 
 void MainWindow::on_btn_back_released()
 {
-    if (ui->sldr_progress->value() < 5000){
-        m_historyListModel->setIndexHistory(1);
-        Model::Song song_previous = m_historyListModel->songByIndex();
-
-        playSong(song_previous);
+    if (ui->sldr_progress->value() < 1000){
+        if(m_historyListModel->incrementIndex()){
+            m_historyListModel->removeLastSong();
+            Model::Song song_previous = m_historyListModel->songByIndex();
+            playSong(song_previous);
+        } else {
+            ui->statusbar->showMessage("No more songs in the history", 5000);
+        };
 //        m_playlist->previous();
     } else{
         ui->sldr_progress->setValue(0);
-//        m_player->setPosition(0);
+        sppm->setPosition(0);
+        m_historyListModel->addSong(m_current_playing_song);
+        m_historyListModel->incrementIndex();
     }
 }
 
@@ -490,12 +486,19 @@ void MainWindow::on_btn_for_released()
 */
 {
     Model::Song song_next;
+    m_historyListModel->resetHistoryIndex();
     if(m_queueListModel->hasSongs()){
         song_next = m_queueListModel->nextSong();
+        playSong(song_next);
 //    } else if( loopQueueList){ // TODO
 //    } else if( autoPlay){ // TODO
+    } else {
+        sppm->stopPlaying();
+        ui->current_song_label->setText(" --- ");
+        ui->statusbar->showMessage("No songs in the queue list", 5000);
+        QPixmap play (":img/Play.png");
+        ui->btn_play->setIcon(play);
     }
-    playSong(song_next);
 }
 
 
@@ -576,8 +579,10 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
 {
     if(arg1 == "Queue List"){
         ui->queue_tableView->setModel(m_queueListModel);
+//        ui->queue_tableView->setRowHidden(0,false);
     } else {
         ui->queue_tableView->setModel(m_historyListModel);
+//        ui->queue_tableView->setRowHidden(0,true);
     }
 }
 
@@ -605,6 +610,7 @@ void MainWindow::on_actionPlay_Songs_triggered()
     QList<Model::Song> songs_from_view = m_display_song_model->songs();
     // TODO:: SORT songs here
     Model::Song song_to_play_direct = songs_from_view.at(0);
+    m_historyListModel->resetHistoryIndex();
     playSong(song_to_play_direct);
     songs_from_view.pop_front();
     m_queueListModel->playNext(songs_from_view);
@@ -731,7 +737,6 @@ void MainWindow::on_actionRemove_Song_triggered()
                     }
                     if(m_display_song_model->rowCount() <= 0){
                         // if the last song from the seeable sontable was removed
-                        qDebug() << "keine songs mehr da";
 //                        m_display_artist_model = new display_artist_model(sppm->allArtists(),this);
 //                        ui->artists_tableView->setModel(m_display_artist_model);
                         if(m_displayState == DisplayArtists) {
