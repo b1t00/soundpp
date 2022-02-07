@@ -32,8 +32,11 @@ public:
     unsigned int indexHistory() const;
     void setIndexHistory(unsigned int indexHistory);
 
+    QList<Model::Song> hSongs() const;
+    void setHSongs(const QList<Model::Song> &hSongs);
+
 private:
-    QList<Model::Song> m_hList;
+    QList<Model::Song> m_hSongs;
     int m_indexHistory;
     bool is_playing;
 };

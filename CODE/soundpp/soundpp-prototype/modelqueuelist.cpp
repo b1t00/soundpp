@@ -1,4 +1,5 @@
 #include "modelqueuelist.h"
+#include<algorithm>
 #include<QDebug>
 
 namespace Model {
@@ -80,6 +81,16 @@ void QueueListModel::appendSongs(QList<Song> songs)
     endInsertRows();
 }
 
+void QueueListModel::removeSongs(QList<int> indeces)
+{
+    std::sort(indeces.begin(),indeces.end());
+    for(int i = 0; i < indeces.size(); i++){
+        beginRemoveRows(QModelIndex(),indeces.at(i), indeces.at(i));
+        m_qSongs.removeAt(indeces.at(i)-i);
+        endRemoveRows();
+    }
+}
+
 bool QueueListModel::hasSongs()
 {
     return m_qSongs.size();
@@ -93,5 +104,15 @@ Song QueueListModel::nextSong()
     m_qSongs.removeFirst();
     endRemoveRows();
     return song_next;
+}
+
+QList<Model::Song> QueueListModel::qSongs() const
+{
+    return m_qSongs;
+}
+
+void QueueListModel::setQSongs(const QList<Model::Song> &qSongs)
+{
+    m_qSongs = qSongs;
 }
 }

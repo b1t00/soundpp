@@ -97,6 +97,13 @@ private slots:
     void on_actionPlay_Songs_Next_triggered();
     void on_actionAppend_Songs_Queue_triggered();
 
+    // actions QueueTable
+
+    void on_queue_tableView_doubleClicked(const QModelIndex &index);
+    void on_actionPlay_Songs_from_Queue_Next_triggered();
+    void on_actionPlay_Songs_from_Queue_Append();
+    void on_actionRemove_Songs_Queue_triggered();
+
     // actiond view
     void on_actionDarkmode_triggered(bool checked);
 
@@ -120,6 +127,7 @@ private slots:
     void on_actionOpen_triggered();
 
     void on_comboBox_activated(const QString &arg1);
+
 
 private:
     Ui::MainWindow *ui;
@@ -152,6 +160,7 @@ private:
     QMenu* songTableContextMenu;
     QMenu* m_attributeTableContextMenu;
     QMenu* m_queueTableContextMenu;
+    QMenu* m_historyTableContextMenu;
     QMenu* songTableHeaderContextMenu;
     QMenu* contextMenu_2;
 

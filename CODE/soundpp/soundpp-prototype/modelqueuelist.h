@@ -28,10 +28,14 @@ public:
     void playNext(QList<Model::Song> songs_selection);
     void appendSong(Model::Song song);
     void appendSongs(QList<Model::Song> songs);
+    void removeSongs(QList<int> indeces);
 
     bool hasSongs();
     Model::Song nextSong();
 
+
+    QList<Model::Song> qSongs() const;
+    void setQSongs(const QList<Model::Song> &qSongs);
 
 private:
 

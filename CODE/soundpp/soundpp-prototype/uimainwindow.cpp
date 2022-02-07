@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
     // --- Context Menu Attribute Table --
     ui->artists_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     m_attributeTableContextMenu = new QMenu(ui->artists_tableView);
-    m_attributeTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
+//    m_attributeTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
     m_attributeTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_Next_triggered);
     m_attributeTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionAppend_Songs_Queue_triggered);
 
@@ -80,10 +80,17 @@ MainWindow::MainWindow(QWidget *parent)
     // --- Context Menu Queue Table --
     ui->queue_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     m_queueTableContextMenu = new QMenu(ui->queue_tableView);
-    m_queueTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
-    m_queueTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_Next_triggered);
-    m_queueTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionAppend_Songs_Queue_triggered);
+//    m_queueTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
+    m_queueTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered);
+    m_queueTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionPlay_Songs_from_Queue_Append);
+    m_queueTableContextMenu->addAction("Remove", this, &MainWindow::on_actionRemove_Songs_Queue_triggered);
     connect(ui->queue_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onQueueTableContextMenu);
+
+    // --- Context Menu History Table --
+    m_historyTableContextMenu = new QMenu(ui->queue_tableView);
+//    m_historyTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
+    m_historyTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered);
+    m_historyTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionPlay_Songs_from_Queue_Append);
 
     // -------------- selection change -------------------- //
     // TODO::
@@ -110,9 +117,6 @@ MainWindow::MainWindow(QWidget *parent)
    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
-   // ----------- statusbar
-   QComboBox output = new QComboBox(this);
-   ui->statusbar->addPermanentWidget(output,1);
     //----------------Icons
 
     QPixmap logo (":img/logo.png");
@@ -401,6 +405,7 @@ void MainWindow::onQueueTableContextMenu(const QPoint &point)
         m_queueTableContextMenu->exec(ui->queue_tableView->viewport()->mapToGlobal(point));
     } else {
         qDebug() << "historx contxt menu";
+        m_historyTableContextMenu->exec(ui->queue_tableView->viewport()->mapToGlobal(point));
     }
 }
 
@@ -571,7 +576,7 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
         qDebug() << "on_playerstatusChanged Loading...";
         break;
     case QMediaPlayer::BufferingMedia:
-        qDebug() << "BufferingMedia";
+//        qDebug() << "BufferingMedia";
     case QMediaPlayer::BufferedMedia:
         qDebug() << "BUFFER...";
 //        setStatusInfo(tr("Buffering %1%").arg(m_player->bufferStatus()));
@@ -604,6 +609,64 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
 //        ui->queue_tableView->setRowHidden(0,true);
     }
 }
+
+
+void MainWindow::on_queue_tableView_doubleClicked(const QModelIndex &index)
+{
+    if(ui->comboBox->currentText()=="Queue List"){
+        playSong(m_queueListModel->qSongs().at(index.row()));
+//        qDebug() << index.row();
+    } else {
+        playSong(m_historyListModel->hSongs().at(index.row()));
+    }
+}
+
+void MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered()
+{
+    QModelIndexList selection = ui->queue_tableView->selectionModel()->selectedRows();
+    QList<Model::Song> songs_next;
+
+    if(ui->comboBox->currentText()=="Queue List"){
+        for(auto i : selection){
+            songs_next.append(m_queueListModel->qSongs().at(i.row()));
+        }
+    } else {
+        for(auto i : selection){
+            songs_next.append(m_historyListModel->hSongs().at(i.row()));
+            qDebug() << m_historyListModel->hSongs().at(i.row()).getTitle();
+        }
+    }
+    m_queueListModel->playNext(songs_next);
+}
+
+void MainWindow::on_actionPlay_Songs_from_Queue_Append()
+{
+    QModelIndexList selection = ui->queue_tableView->selectionModel()->selectedRows();
+    QList<Model::Song> songs_append;
+
+    if(ui->comboBox->currentText()=="Queue List"){
+        for(auto i : selection){
+            songs_append.append(m_queueListModel->qSongs().at(i.row()));
+        }
+    } else {
+        for(auto i : selection){
+            songs_append.append(m_historyListModel->hSongs().at(i.row()));
+            qDebug() << m_historyListModel->hSongs().at(i.row()).getTitle();
+        }
+    }
+    m_queueListModel->appendSongs(songs_append);
+}
+
+void MainWindow::on_actionRemove_Songs_Queue_triggered()
+{
+    QModelIndexList selection = ui->queue_tableView->selectionModel()->selectedRows();
+    QList<int> rowIndeces;
+    for(auto select : selection){
+        rowIndeces.append(select.row());
+    }
+    m_queueListModel->removeSongs(rowIndeces);
+}
+
 
 void MainWindow::on_actionPlay_Next_triggered()
 {
@@ -648,6 +711,7 @@ void MainWindow::on_actionAppend_Songs_Queue_triggered()
     // TODO:: SORT andersrum
     m_queueListModel->appendSongs(songs_from_view);
 }
+
 
 void MainWindow::on_artists_tableView_activated(const QModelIndex &index)
 // TODO :  Knan wahtscheinlich weg, weil nicht funzt wo gedacht
@@ -837,7 +901,9 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
 
 void MainWindow::on_insert_search_textChanged(const QString &arg1)
 {
-
+    if(m_displayState != DisplayTitles){
+        on_btn_titles_clicked();
+    }
 
     m_display_song_model = new Model::DisplaySongModel(sppm->search_result(arg1), this);
     ui->songs_tableView->setModel(m_display_song_model);
