@@ -56,13 +56,16 @@ public:
 
 private slots:
 
-    void updateGui(); // :TODO
+    void updateGui(); // :TODO Maybe Catch function
+
+    // trigger context Menus
     void onSongTableContextMenu(const QPoint &point);
+    void onAttributeTableContextMenu(const QPoint &point);
     void onCustomContextMenu_2(const QPoint &point);
+
     void addToPlaylist();
 
-    //musik player
-    void on_btn_play_clicked();
+    //musikplayer
     void on_sldr_progress_sliderMoved(int position);
     void on_sldr_volume_sliderMoved(int volume);
     void on_positionChanged(qint64 position);
@@ -71,25 +74,44 @@ private slots:
     void on_playerstatusChanged(QMediaPlayer::MediaStatus status);
 
     void playSong(Model::Song song_to_play);
+
+    // musikplayer buttons
+    void on_btn_play_clicked();
     void on_btn_for_clicked();
 
     void on_btn_for_released();
+    void on_btn_back_released();
 
-    // actions
+    // actions SongTable
     void on_songs_tableView_doubleClicked();
     void on_actionRemove_Song_triggered();
-    void tableSelectionChanged(const QItemSelection &selected);
     void on_actionEdit_Song_triggered();
     void on_actionPlay_triggered();
-    void on_actionPlay_Next_triggered();
+    void on_actionPlay_Next_triggered();    
+    void on_actionAppend_Queue_triggered();
+
+    // actions AtributeTalble
     void on_artists_tableView_clicked(const QModelIndex &index);
+    void on_artists_tableView_doubleClicked(const QModelIndex &index);
+    void on_artists_tableView_activated(const QModelIndex &index); // TODO:: wann?
+    void on_actionPlay_Songs_triggered();
+    void on_actionPlay_Songs_Next_triggered();
+    void on_actionAppend_Songs_Queue_triggered();
+
+    // actiond view
     void on_actionDarkmode_triggered(bool checked);
+
+    // actions Playlst
     void createNewPlaylist();
     void deletePlaylist();
 
+    void tableSelectionChanged(const QItemSelection &selected);
 
+
+    // search functions
     void on_insert_search_textChanged(const QString &arg1);
 
+    // views get triggert
     void on_btn_titles_clicked();
     void on_btn_artists_clicked();
     void on_btn_albums_clicked();
@@ -97,18 +119,13 @@ private slots:
     // insert new files
     void insertNewPaths(QList<QString> path);
     void on_actionOpen_triggered();
-
-
-    void on_actionAppend_Queue_triggered();
-
     void on_comboBox_activated(const QString &arg1);
-
-    void on_btn_back_released();
-
 
 private:
     Ui::MainWindow *ui;
+
     Management::SoundppManagement *sppm;
+    Model::Song m_current_playing_song;
 
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *e);
@@ -133,6 +150,7 @@ private:
 
     // contex Menus
     QMenu* songTableContextMenu;
+    QMenu* m_attributeTableContextMenu;
     QMenu* songTableHeaderContextMenu;
     QMenu* contextMenu_2;
 
