@@ -22,7 +22,8 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
+    void addPlaylist(Model::Playlist playlist);
+    bool removeRows(int row, int count, const QModelIndex &parent) override;
 private:
     QList<Model::Playlist> m_all_playlists;
 };

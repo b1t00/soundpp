@@ -1,29 +1,28 @@
-#include "playlistdialog.h"
-#include "ui_playlistdialog.h"
-#include "playlist.h"
+#include "dialogplaylist.h"
+#include "ui_dialog.h"
 #include <QDebug>
 #include <QRandomGenerator>
+#include "playlist.h"
 
-playlistdialog::playlistdialog( QWidget *parent) :
+Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::playlistdialog)
+    ui(new Ui::Dialog)
 {
     ui->setupUi(this);
 }
 
-playlistdialog::~playlistdialog()
+Dialog::~Dialog()
 {
     delete ui;
 }
 
-
-Model::Playlist playlistdialog::getPlaylist() const {
+Model::Playlist Dialog::getPlaylist() const
+{
     return m_playlist;
 }
 
 
-
-void playlistdialog::on_buttonBox_accepted()
+void Dialog::on_buttonBox_accepted()
 {
     int random_number = QRandomGenerator::global()->generate();
     if(random_number < 0){
@@ -31,7 +30,4 @@ void playlistdialog::on_buttonBox_accepted()
     }
     m_playlist.setPlaylistName(ui->playlist_name->text());
     m_playlist.setPlaylistID(random_number * -1);
-
-    qInfo() <<"Hallo";
-
 }

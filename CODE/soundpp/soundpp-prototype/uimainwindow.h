@@ -28,6 +28,7 @@
 
 #include "uieditsongdialog.h"
 #include "playlistdialog.h"
+#include "dialogplaylist.h"
 #include "modelqueuelist.h"
 #include "modelhistorylistl.h"
 
@@ -78,6 +79,7 @@ private slots:
     // musikplayer buttons
     void on_btn_play_clicked();
     void on_btn_for_clicked();
+
     void on_btn_for_released();
     void on_btn_back_released();
 
@@ -125,7 +127,6 @@ private slots:
     // insert new files
     void insertNewPaths(QList<QString> path);
     void on_actionOpen_triggered();
-
     void on_comboBox_activated(const QString &arg1);
 
 

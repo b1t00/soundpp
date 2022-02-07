@@ -108,7 +108,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     contextMenu_2 = new QMenu(ui->playlist_tableView);
-    contextMenu_2->addAction("new Playlist..", this, SLOT(createNewPlaylist()));
+    contextMenu_2->addAction("new Playlist..", this, &MainWindow::createNewPlaylist);
     contextMenu_2->addAction("delete Playlist", this, SLOT(deletePlaylist()));
     connect(ui->playlist_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu_2(const QPoint &)));
 
@@ -738,13 +738,20 @@ void MainWindow::on_artists_tableView_activated(const QModelIndex &index)
 
 void MainWindow::createNewPlaylist(){
 
-    playlistdialog playlistdialog;
-    playlistdialog.exec();
+    Dialog dialog(this);
 
-    Model::Playlist newPlaylist = playlistdialog.getPlaylist();
+
+    if(dialog.exec() == QDialog::Accepted){
+
+
+
+
+    Model::Playlist newPlaylist = dialog.getPlaylist();
     qInfo() << newPlaylist.getPlaylistName();
+    m_display_playlist_model->addPlaylist(newPlaylist);
     sppm->new_playlist(newPlaylist);
 
+ }
 }
 
 void MainWindow::deletePlaylist(){
@@ -757,14 +764,14 @@ void MainWindow::deletePlaylist(){
     if(QMessageBox::question(this, "Remove playlist?", deleteMessages,"Yes","No")== 0){
 
             QString playlistName = ui->playlist_tableView->model()->index(indexrow,0).data().toString();
-            qDebug() << playlistName;
             int playlistID = ui->playlist_tableView->model()->index(indexrow,1).data().toInt();
-            qDebug() << playlistID;
 
             ui->statusbar->showMessage("remove " + playlistName + " playlist.", 10000);
 
             if(indexrow >= 0 && indexrow < m_display_playlist_model->rowCount()){
                 bool deleted = sppm->deletePlaylist(playlistID);
+
+
 
                 if(deleted){
                     m_display_playlist_model->removeRow(indexrow);
@@ -835,6 +842,8 @@ void MainWindow::on_actionRemove_Song_triggered()
 }
 
 
+
+
 void MainWindow::on_actionEdit_Song_triggered()
 {
     Model::Song song_to_edit;
@@ -853,7 +862,11 @@ void MainWindow::on_actionEdit_Song_triggered()
     delete selectedSong;
     EditSongDialog editDialog(song_to_edit,this);
 
+
+
     if(editDialog.exec() == QDialog::Accepted){
+
+
         Model::Song song_from_db = sppm->editSong(editDialog.song());
         m_display_song_model->updateSong(rowIndex,song_from_db);
 
