@@ -1,4 +1,8 @@
 # soundpp
+
+![](CODE/soundpp/soundpp-prototype/img/logo_groß.png)
+
+
 Music player implemented in c++ and qt.
 
 the source code is stored in: /soundpp/CODE/soundpp/soundpp-prototype/
