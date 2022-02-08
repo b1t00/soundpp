@@ -491,16 +491,6 @@ min-height: 20px;
                 </item>
                 <item>
                  <property name="text">
-                  <string>o</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>O</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
                   <string>.</string>
                  </property>
                 </item>
@@ -508,25 +498,6 @@ min-height: 20px;
               </item>
               <item>
                <widget class="QPushButton" name="btn_shuffle">
-                <property name="minimumSize">
-                 <size>
-                  <width>30</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>50</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btn_loop">
                 <property name="minimumSize">
                  <size>
                   <width>30</width>

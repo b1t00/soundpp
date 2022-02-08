@@ -32,11 +32,11 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
     crossPlatformFile = songPath.toString();
 //    #elif LINUX // dont work for ubuntu
 //    crossPlatformFile = "file://" + songPath.toString();
-    #else
-    #error "We don't support your system or version yet, sorry..."
+//    #else
+//    #error "We don't support your system or version yet, sorry..."
     #endif
     m_songPath = crossPlatformFile;
-    qDebug() << "songpath: " << crossPlatformFile;
+//    qDebug() << "songpath: " << crossPlatformFile;
     setMedia(QUrl(crossPlatformFile));
 }
 

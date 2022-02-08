@@ -107,7 +107,6 @@ MainWindow::MainWindow(QWidget *parent)
     // -------------- selection change -------------------- //
     // TODO::
     connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::songTableSelectionChanged);
-//    connect(ui->artists_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
 
     //Display & Interact PlaylistModel
     m_display_playlist_model = new Model::DisplayPlaylistModel(sppm->get_all_playlists());
@@ -121,7 +120,7 @@ MainWindow::MainWindow(QWidget *parent)
     contextMenu_2 = new QMenu(ui->playlist_tableView);
     contextMenu_2->addAction("new Playlist..", this, &MainWindow::createNewPlaylist);
     contextMenu_2->addAction("delete Playlist", this, SLOT(deletePlaylist()));
-    connect(ui->playlist_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu_2(const QPoint &)));
+    connect(ui->playlist_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu_2(const QPoint &))); // TODO
 
 
     // ---------------- shortcuts Manuel
@@ -156,8 +155,8 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap shuffle (":img/shuffle.png");
     ui->btn_shuffle->setIcon(shuffle);
 
-    QPixmap loop (":img/loop.png");
-    ui->btn_loop->setIcon(loop);
+//    QPixmap loop (":img/loop.png");
+//    ui->btn_loop->setIcon(loop);
 
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
@@ -179,15 +178,10 @@ QString MainWindow::currentSelectedAttribute() const
 Model::Song MainWindow::currentSlectedSong() const
 {
     Model::Song s = m_display_song_model->songAt(ui->songs_tableView->currentIndex().row());
-//    s.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
-//    s.setTitle(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
-//    s.setArtistName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString());
-//    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
-//    QString artistName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString();
     return s;
 }
 
-QList<Model::Song> MainWindow::currentSlectedSongs() const // TODO
+QList<Model::Song> MainWindow::currentSlectedSongs() const // TODO:: get song from table
 {
     QModelIndexList selection = ui->songs_tableView->selectionModel()->selectedRows();
     QList<Model::Song> songs_selected;
@@ -233,7 +227,7 @@ void MainWindow::songTableSelectionChanged(const QItemSelection &selected)
 {
     bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
 
-    qDebug() << anySelected << "any selected : " <<selected.indexes().size();
+//    qDebug() << anySelected << "any selected : " <<selected.indexes().size();
 //    qDebug() << "wo selected?: " << selected.at(0);
 
         ui->actionRemove_Song->setEnabled(anySelected);
@@ -744,7 +738,6 @@ void MainWindow::on_actionAppend_Songs_Queue_triggered()
 void MainWindow::on_artists_tableView_activated([[maybe_unused]]const QModelIndex &index)
 // TODO :  Knan wahtscheinlich weg, weil nicht funzt wo gedacht
 {
-    qDebug() << "activäääääääääääääääääääääääääääted"; // DELETE
     switch(m_displayState){
     case DisplayArtists :
         m_display_song_model->resetData(sppm->filtered_songs_by_artist(index.data().toString()));
@@ -754,10 +747,8 @@ void MainWindow::on_artists_tableView_activated([[maybe_unused]]const QModelInde
         m_display_song_model->resetData(sppm->filtered_songs_by_album(index.data().toString()));
         break;
     default:
-        qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
         break;
     }
-//    on_artists_tableView_clicked(index);
 }
 
 
@@ -878,7 +869,6 @@ void MainWindow::on_actionRemove_Song_triggered()
             QString songName = ui->songs_tableView->model()->index(indexrow,1).data().toString();
             QString artistName = ui->songs_tableView->model()->index(indexrow,2).data().toString();
             QString albumName = ui->songs_tableView->model()->index(indexrow,3).data().toString();
-//            qDebug() << "album : " << albumName;
                 if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
                     bool removed = sppm->deleteSong(songPath);
                     if(removed){
@@ -924,8 +914,6 @@ void MainWindow::on_actionEdit_Song_triggered()
             ui->statusbar->showMessage("Changed album name: " + song_to_edit.getAlbumName() + " -> " + song_from_db.getAlbumName(), 10000);
             if(m_displayState == DisplayAlbums){
                  m_display_albums_model->resetData(sppm->allAlbums());
-//            DELETE            = new Model::DisplayAlbumsModel(sppm->allAlbums(), this);
-//                 ui->artists_tableView->setModel(m_display_albums_model);
             }
         }
         if(song_to_edit.getAlbumNr() != song_from_db.getAlbumNr())
