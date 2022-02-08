@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
+    connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
     connect(sppm, &Management::SoundppManagement::playerstatusChanged, this, &MainWindow::on_playerstatusChanged);
 
 
@@ -174,10 +175,10 @@ QString MainWindow::currentSelectedAttribute() const
 
 Model::Song MainWindow::currentSlectedSong() const
 {
-    Model::Song s;
-    s.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
-    s.setTitle(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
-    s.setArtistName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString());
+    Model::Song s = m_display_song_model->songAt(ui->songs_tableView->currentIndex().row());
+//    s.setSongPath(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),0).data().toString());
+//    s.setTitle(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString());
+//    s.setArtistName(ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString());
 //    QString songName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),1).data().toString();
 //    QString artistName = ui->songs_tableView->model()->index(ui->songs_tableView->currentIndex().row(),2).data().toString();
     return s;
@@ -468,10 +469,6 @@ void MainWindow::on_songs_tableView_doubleClicked()
 // -- Musikplayer buttons
 void MainWindow::on_btn_play_clicked()
 {
-    qDebug() << "sort";
-    ui->songs_tableView->setSortingEnabled(true);
-    ui->songs_tableView->sortByColumn(4,Qt::AscendingOrder);
-//    m_display_song_model->sort(4,Qt::AscendingOrder);
     if(sppm->isAudioAvailable()){
 
     bool isPlaying = false;
@@ -551,14 +548,15 @@ void MainWindow::on_btn_for_released()
 
 // --- Musikplayer - Sliders and Volume ---
 
-void MainWindow::on_sldr_progress_sliderMoved(int position)
-{
-    sppm->setPosition(position);
-}
 
 void MainWindow::on_sldr_volume_sliderMoved(int volume)
 {
     sppm->setVolume(volume);
+}
+
+void MainWindow::on_sldr_progress_sliderMoved(int position)
+{
+    sppm->setPosition(position);
 }
 
 void MainWindow::on_positionChanged(qint64 position)
@@ -706,6 +704,14 @@ void MainWindow::on_actionAppend_Queue_triggered()
     m_queueListModel->appendSongs(selectedSong);
 }
 
+// ---- Queue control buttons
+
+void MainWindow::on_btn_shuffle_clicked()
+{
+    if(ui->comboBox->currentText() == "Queue List"){
+        m_queueListModel->shuffleSongs();
+    }
+}
 
 // -------------- AttruteTable Actions --
 void MainWindow::on_artists_tableView_doubleClicked(const QModelIndex &index)
@@ -949,20 +955,13 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
 
 }
 
+// ----------------- open Files and Filder ---------------- //
+
 void MainWindow::on_actionOpen_triggered()
 {
-//    QString folderName = QFileDialog::getOpenFileName();
-//    QString openingPath = "C:/Users/Winny/Music";
-    QString openingPath = "C:/Users/Winny/Music/Musik/sppmusik";
-//    QDir directory = QFileDialog::getExistingDirectory(
-//                this,
-//                tr("select directory"),
-//                openingPath,
-////                { "*.mp3" }
-////                "Music Files(*.mp3 ; *.wav ; *.aiff) ;; All Files (*.*)"
-//                );
-//    qDebug() << "dir " << directory;
-//    QFileDialog::setOptions(QFileDialog::ShowDirsOnly);
+//    QString openingPath = "C:/Users/Admin/Music";
+//    QString openingPath = "C:/Users/Winny/Music/Musik/sppmusik";
+    QString openingPath = "./../songs_for_testing";
     QList<QString> fileNames = QFileDialog::getOpenFileNames(
                 this,
                 tr("Open Files"),
@@ -974,8 +973,19 @@ void MainWindow::on_actionOpen_triggered()
         qDebug() << fileNames.at(i);
     }
     insertNewPaths(fileNames);
-
 }
+
+//TODO:: open directory and subdirectories
+
+//    QDir directory = QFileDialog::getExistingDirectory(
+//                this,
+//                tr("select directory"),
+//                openingPath,
+////                { "*.mp3" }
+////                "Music Files(*.mp3 ; *.wav ; *.aiff) ;; All Files (*.*)"
+//                );
+//    qDebug() << "dir " << directory;
+//    QFileDialog::setOptions(QFileDialog::ShowDirsOnly);
 
 void MainWindow::on_actionshow_path_toggled(bool arg1)
 {
@@ -992,9 +1002,3 @@ void MainWindow::on_actionshow_title_toggled(bool arg1)
 
 }
 
-void MainWindow::on_btn_shuffle_clicked()
-{
-    if(ui->comboBox->currentText() == "Queue List"){
-        m_queueListModel->shuffleSongs();
-    }
-}

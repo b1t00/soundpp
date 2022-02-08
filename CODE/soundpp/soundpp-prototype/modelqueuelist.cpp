@@ -58,9 +58,8 @@ void QueueListModel::playNext(Model::Song song_selected)
 
 void QueueListModel::playNext(QList<Song> songs_selection)
 {
-
     beginInsertRows(QModelIndex(),0,songs_selection.size()-1);
-    for(int i = 0; i < songs_selection.size(); i++){
+    for(int i = songs_selection.size()-1 ; i >= 0 ; --i){
         m_qSongs.insert(0, songs_selection.at(i));
     }
     endInsertRows();

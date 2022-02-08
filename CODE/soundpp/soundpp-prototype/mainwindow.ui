@@ -271,6 +271,12 @@ min-height: 20px;
           </item>
           <item>
            <widget class="QTableView" name="playlist_tableView">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>120</width>
@@ -344,7 +350,7 @@ min-height: 20px;
         <widget class="QTableView" name="songs_tableView">
          <property name="minimumSize">
           <size>
-           <width>300</width>
+           <width>340</width>
            <height>0</height>
           </size>
          </property>
@@ -512,7 +518,7 @@ min-height: 20px;
            <widget class="QTableView" name="queue_tableView">
             <property name="maximumSize">
              <size>
-              <width>250</width>
+              <width>500</width>
               <height>16777215</height>
              </size>
             </property>
