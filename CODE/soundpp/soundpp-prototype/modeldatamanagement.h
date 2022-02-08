@@ -40,6 +40,7 @@ public:
     QList<QString> allArtists();
 
     Model::Song randomSong();
+    bool isAnySongAvalaible();
 
     bool deleteSong(QString filePath);
     bool insertSong(Model::Song song_to_add);

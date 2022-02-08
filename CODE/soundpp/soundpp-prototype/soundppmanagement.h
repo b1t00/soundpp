@@ -51,6 +51,8 @@ public:
     void new_playlist(Model::Playlist new_playlist);
     bool deletePlaylist(int playlistID);
 
+    bool isAnySongAvalaible();
+
     //musikplayerqt
     bool pressPlay();
     void stopPlaying();

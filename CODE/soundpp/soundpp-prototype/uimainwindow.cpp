@@ -513,7 +513,15 @@ void MainWindow::on_btn_for_released()
 {
     Model::Song song_next;
     m_historyListModel->resetHistoryIndex();
-    if((ui->comboBox_playingStyle->currentText() == ".") |  (ui->current_song_label->text() == ".")){
+    if(!sppm->isAudioAvailable()){
+        // TODO: is there any song in the data management?
+        if(sppm->isAnySongAvalaible()){
+        playSong(sppm->randomSong());
+         ui->comboBox_playingStyle->setCurrentIndex(1);
+        ui->statusbar->showMessage("Random Auto play active >>", 5000);
+        }
+
+    } else if((ui->comboBox_playingStyle->currentText().compare(".")) |  (ui->current_song_label->text() == ".")){
         /* playing mode: the last song
          * stop playing although there are songs in the queue list
          */
@@ -522,7 +530,7 @@ void MainWindow::on_btn_for_released()
         ui->statusbar->showMessage(".", 5000);
         QPixmap play (":img/Play.png");
         ui->btn_play->setIcon(play);
-    } else if(ui->comboBox_playingStyle->currentText() == ">|"){ // play to the end of queue list
+    } else if(ui->comboBox_playingStyle->currentText().compare(">|")){ // play to the end of queue list
         /* playing mode: to the end
          * play to the end of queue list
          */
@@ -533,10 +541,12 @@ void MainWindow::on_btn_for_released()
             sppm->stopPlaying();
             ui->statusbar->showMessage("Spielt den gleichen song nochmal!!", 5000);
             QPixmap play (":img/Play.png");
+            ui->btn_play->setIcon(play);
         }
-    } else if( ui->comboBox_playingStyle->currentText() == ">>"){ // placeholder for autoplay
+    } else if( ui->comboBox_playingStyle->currentText().compare(">>")){ // placeholder for autoplay
 
         playSong(sppm->randomSong());
+        ui->statusbar->showMessage("Random Auto play active >>", 5000);
 //    } else if( loopOneSong){ // TODO
 //    } else if( LoopQueueList){ // TODO
     } else {
@@ -588,30 +598,29 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
 {
     switch (status) {
     case QMediaPlayer::UnknownMediaStatus:
-        qDebug() << "UnknownMediaStatus";
+        ui->statusbar->showMessage("UnknownMediaStatus", 500);
         break;
     case QMediaPlayer::NoMedia:
-        qDebug() << "NoMedia";
+        ui->statusbar->showMessage("NoMedia", 500);
         break;
     case QMediaPlayer::LoadedMedia:
-         qDebug() << "on_playerstatusChanged loadmedia";
+         ui->statusbar->showMessage("on_playerstatusChanged loadmedia", 500);
         break;
     case QMediaPlayer::LoadingMedia:
-        qDebug() << "on_playerstatusChanged Loading...";
+        ui->statusbar->showMessage("on_playerstatusChanged Loading...", 500);
         break;
     case QMediaPlayer::BufferingMedia:
     case QMediaPlayer::BufferedMedia:
-        qDebug() << "BUFFER...";
+        ui->statusbar->showMessage("buffer song...", 50);
         break;
     case QMediaPlayer::StalledMedia:
-        qDebug() << "STALLED...";
+//        qDebug() << "STALLED...";
         break;
     case QMediaPlayer::EndOfMedia:
-        qDebug() << "EndOfMedia...";
         on_btn_for_released();
         break;
     case QMediaPlayer::InvalidMedia:
-        ui->statusbar->showMessage("spp can not play this song " + m_current_playing_song.getTitle() + " yet", 5000);
+        ui->statusbar->showMessage("spp can not play this song " + m_current_playing_song.getTitle() + " yet", 500);
         on_btn_for_released();
         break;
     }

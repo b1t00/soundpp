@@ -9,7 +9,7 @@
 
 namespace Model {
 
-DataManagement::DataManagement(QObject *parent)
+DataManagement::DataManagement([[maybe_unused]]QObject *parent)
 {
 
 }
@@ -49,14 +49,14 @@ void DataManagement::add_songs_for_playlist(Model::Song song, QString playlistNa
         if(m_all_playlists->at(i).getPlaylistName() == playlistName){
            Playlist playlist = m_all_playlists->at(i);
            playlist.add_song_to_playlist(song);
-           qInfo() << playlist.getSongs_of_playlist().size();
+//           qInfo() << playlist.getSongs_of_playlist().size();
 
         }
     }
 
     for(int i = 0; i < m_all_playlists->size(); i++){
         if(m_all_playlists->at(i).getPlaylistName() == playlistName){
-            qInfo() << m_all_playlists->at(i).getSongs_of_playlist().at(1).getTitle();
+//            qInfo() << m_all_playlists->at(i).getSongs_of_playlist().at(1).getTitle();
         }
 
 
@@ -144,8 +144,12 @@ Song DataManagement::randomSong()
  */
 {
     int randomIndex = std::rand() % m_all_songs->size();
-    qDebug() << "randomIndex" << randomIndex;
     return m_all_songs->at(randomIndex);
+}
+
+bool DataManagement::isAnySongAvalaible()
+{
+    return (m_all_songs->size() > 0 ) ? true : false;
 }
 
 bool DataManagement::deletePlaylist(int playlistID){

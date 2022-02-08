@@ -47,6 +47,11 @@ bool SoundppManagement::deletePlaylist(int playlistID){
 
 }
 
+bool SoundppManagement::isAnySongAvalaible()
+{
+    return dm->isAnySongAvalaible();
+}
+
 void SoundppManagement::songs_for_paylist(QString playlistName, Model::Song song){
      dm->add_songs_for_playlist(song, playlistName);
 }
