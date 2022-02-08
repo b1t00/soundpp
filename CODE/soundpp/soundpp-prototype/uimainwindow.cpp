@@ -1,6 +1,7 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QWidget>
 
@@ -77,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
     songTableContextMenu->addSeparator();
     songTableContextMenu->addAction("edit song...", this,&MainWindow::on_actionEdit_Song_triggered);
     songTableContextMenu->addAction("remove song", this,&MainWindow::on_actionRemove_Song_triggered);
+    songTableContextMenu->addSeparator();
+    songTableContextMenu->addAction("open in explorer", this,&MainWindow::on_actionOpen_in_Explorer_triggered);
     connect(ui->songs_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onSongTableContextMenu);
 //    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)))
 
@@ -299,7 +302,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
             } else if(m_displayState == DisplayAlbums){
                 if(song_to_add.getAlbumName() == currentSelectedAttribute())
                     currentAlbum = true;
-                else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName())){
+                else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName()))
                     newAlbum = true;
             }
         }
@@ -322,6 +325,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
             ui->artists_tableView->setModel(m_display_albums_model);
         }
     }
+
 }
 
 
@@ -528,7 +532,6 @@ void MainWindow::on_btn_for_released()
     }
 }
 
-
 // --- Musikplayer - Sliders and Volume ---
 
 
@@ -602,7 +605,6 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
         on_btn_for_released();
         break;
     }
-
 }
 
 // --------------- Queue and History Actions ---------------//
@@ -991,4 +993,19 @@ void MainWindow::on_actionshow_album_nr_toggled(bool arg1)
     ui->songs_tableView->setColumnHidden(4,!arg1);
     ui->actionshow_album_nr->setChecked(arg1);
     songTableHeaderContextMenu->actions().at(4)->setChecked(arg1);  // synchronise checkboxes
+}
+
+void MainWindow::on_actionOpen_in_Explorer_triggered()
+{
+//    QUrl currentSongPath(currentSlectedSong().getSongPath());
+    QString currentSongPath("file:///" + currentSlectedSong().getSongPath());
+//    QString currentSongPath("file:///"  "C:/Users/Winny/Music/Musik/sppmusik/RSS Disco - VERY 01");
+    QList<QString> removeFile = currentSongPath.split("/");
+
+    qDebug() << "removing   " << removeFile[removeFile.size()-1];
+    currentSongPath.remove(currentSongPath.size()-removeFile[removeFile.size()-1].size(),removeFile[removeFile.size()-1].size()); //removeFile[removeFile.size()-1];
+
+    qDebug() << "currentSongPath   " << currentSongPath;
+//    qDebug() << "currentSongPath cd" << currentSongPath.cdUp();
+    QDesktopServices::openUrl(QUrl(currentSongPath));
 }

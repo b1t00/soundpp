@@ -143,6 +143,8 @@ private slots:
 
     void on_actionshow_album_nr_toggled(bool arg1);
 
+    void on_actionOpen_in_Explorer_triggered();
+
 private:
     Ui::MainWindow *ui;
 

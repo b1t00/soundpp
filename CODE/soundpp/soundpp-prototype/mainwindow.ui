@@ -574,6 +574,8 @@ min-height: 20px;
     <addaction name="actionPlay_Songs"/>
     <addaction name="actionPlay_Songs_Next"/>
     <addaction name="actionAppend_Songs_Queue"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_in_Explorer"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -701,6 +703,11 @@ min-height: 20px;
    </property>
    <property name="text">
     <string>show album nr</string>
+   </property>
+  </action>
+  <action name="actionOpen_in_Explorer">
+   <property name="text">
+    <string>Open in Explorer</string>
    </property>
   </action>
  </widget>
