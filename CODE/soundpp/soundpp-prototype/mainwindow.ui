@@ -187,7 +187,7 @@ min-height: 20px;
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -195,7 +195,7 @@ min-height: 20px;
            <widget class="QPushButton" name="btn_titles">
             <property name="maximumSize">
              <size>
-              <width>146</width>
+              <width>96</width>
               <height>16777215</height>
              </size>
             </property>
@@ -221,7 +221,7 @@ min-height: 20px;
            <widget class="QPushButton" name="btn_artists">
             <property name="maximumSize">
              <size>
-              <width>146</width>
+              <width>96</width>
               <height>16777215</height>
              </size>
             </property>
@@ -247,7 +247,7 @@ min-height: 20px;
            <widget class="QPushButton" name="btn_albums">
             <property name="maximumSize">
              <size>
-              <width>146</width>
+              <width>96</width>
               <height>16777215</height>
              </size>
             </property>
@@ -400,7 +400,7 @@ min-height: 20px;
           <number>10</number>
          </attribute>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
            <number>3</number>
@@ -550,7 +550,7 @@ min-height: 20px;
      <x>0</x>
      <y>0</y>
      <width>871</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

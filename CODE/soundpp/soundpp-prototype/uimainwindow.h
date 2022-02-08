@@ -28,6 +28,7 @@
 
 #include "uieditsongdialog.h"
 #include "playlistdialog.h"
+#include "addtoplaylistdialog.h"
 #include "dialogplaylist.h"
 #include "modelqueuelist.h"
 #include "modelhistorylistl.h"

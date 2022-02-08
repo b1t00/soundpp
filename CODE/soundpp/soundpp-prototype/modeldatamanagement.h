@@ -27,12 +27,13 @@ public:
     explicit DataManagement(QList<Model::Song> *all_songs, QList<Model::Playlist> *all_playlists, QObject *parent = nullptr);
     QStringList* getAllInterprets();
     QList<Model::Song> get_all_songs() const;
-    QList<Model::Playlist> get_all_playlists() const;
+    QList<Model::Playlist> get_all_playlists();
     void setAllSongs(QList<Model::Song> *allSongs);
     QList<Model::Song> songs();
     QList<Model::Song> filtered_songs_by_artist(QString artist);
     QList<Model::Song> filtered_songs_by_album(QString album);
     QList<Model::Song> search_result(QString search);
+    void add_songs_for_playlist(Model::Song song, QString playlistName);
     QList<QString> allAlbums();
     QList<QString> allArtists();
     bool deleteSong(QString filePath);
@@ -41,6 +42,7 @@ public:
     bool insert_playlist(Model::Playlist new_playlist);
     bool containsSongPath(QString songPath);
     bool deletePlaylist(int playlistID);
+
 
 
 

@@ -34,6 +34,7 @@ public:
     QList<Model::Song> filtered_songs_by_artist(QString artist);
     QList<Model::Song> filtered_songs_by_album(QString album);
     QList<Model::Song> search_result(QString search);
+    void songs_for_paylist(QString playlistName, Model::Song song);
 
     // Model
     QList<QString> allArtists();

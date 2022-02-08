@@ -25,7 +25,7 @@ QList<Model::Song> DataManagement::get_all_songs() const
     return all_songs_copy;
 }
 
-QList<Model::Playlist> DataManagement::get_all_playlists() const
+QList<Model::Playlist> DataManagement::get_all_playlists()
 {
     QList<Model::Playlist> all_playlists_copy = *m_all_playlists;
     return all_playlists_copy;
@@ -39,6 +39,32 @@ bool DataManagement::insert_playlist(Model::Playlist new_playlist){
 void DataManagement::setAllSongs(QList<Model::Song> *all_songs)
 {
     m_all_songs = all_songs;
+}
+
+void DataManagement::add_songs_for_playlist(Model::Song song, QString playlistName)
+{
+
+
+    for(int i = 0; i < m_all_playlists->size(); i++){
+        if(m_all_playlists->at(i).getPlaylistName() == playlistName){
+           Playlist playlist = m_all_playlists->at(i);
+           playlist.add_song_to_playlist(song);
+           qInfo() << playlist.getSongs_of_playlist().size();
+
+        }
+    }
+
+    for(int i = 0; i < m_all_playlists->size(); i++){
+        if(m_all_playlists->at(i).getPlaylistName() == playlistName){
+            qInfo() << m_all_playlists->at(i).getSongs_of_playlist().at(1).getTitle();
+        }
+
+
+
+
+}
+
+
 }
 
 
@@ -55,7 +81,7 @@ QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
     return filtered_songs;
 }
 
-QList<Song> DataManagement::filtered_songs_by_album(QString album)
+QList<Model::Song> DataManagement::filtered_songs_by_album(QString album)
 {
     QList<Model::Song> filtered_songs;
 
@@ -103,31 +129,6 @@ QList<QString> DataManagement::allAlbums()
     return allAlbums;
 
 }
-
-
-
-
-//    for(int i =0; i< m_all_songs.size(); ++i) {
-////        for(int j = 0; j < m_all_songs.at(i).getArtistName().size(); ++j){
-
-//             compare  = m_all_songs.at(i).getArtistName().at(search.length() - 1);
-
-//             deineMudda[i].append(compare);
-
-
-
-//             if(compare.toUpper() == search.toUpper()){
-//                 search_result.append(m_all_songs.at(i));
-//              }
-
-
-
-//           }
-
-////            if(m_all_songs.at(i).getArtistName() == search )  {
-////                search_result.append(m_all_songs.at(i));
-
-
 
 
 QList<QString> DataManagement::allArtists()

@@ -323,6 +323,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
         }
     }
 }
+}
 
 
 // ---------------------Button - Views - Enums -------------------------//
@@ -797,8 +798,43 @@ void MainWindow::deletePlaylist(){
 void MainWindow::addToPlaylist(){
 
 
+    Model::Song song_to_playlist;
+    int rowIndex = ui->songs_tableView->currentIndex().row();
+    song_to_playlist.setSongPath(ui->songs_tableView->model()->index(rowIndex,0).data().toString());
+    song_to_playlist.setTitle(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
+    song_to_playlist.setArtistName(ui->songs_tableView->model()->index(rowIndex,2).data().toString());
+    song_to_playlist.setAlbumName(ui->songs_tableView->model()->index(rowIndex,3).data().toString());
+    song_to_playlist.setAlbumNr(ui->songs_tableView->model()->index(rowIndex,4).data().toInt());
+    song_to_playlist.setLabelName(ui->songs_tableView->model()->index(rowIndex,5).data().toString());
+    song_to_playlist.setLabelNr(ui->songs_tableView->model()->index(rowIndex,6).data().toString());
+    song_to_playlist.setAddedTime(ui->songs_tableView->model()->index(rowIndex,7).data().toString());
+    song_to_playlist.setPlayCount(ui->songs_tableView->model()->index(rowIndex,8).data().toInt());
 
-    qInfo() << ui->songs_tableView->currentIndex().row();
+
+    addToPlaylistDialog addToPlaylist(this);
+
+    QString playlistName;
+
+    QList<Model::Song> selectedSongs = currentSlectedSongs();
+
+
+
+
+
+    if(addToPlaylist.exec() == QDialog::Accepted){
+
+       playlistName = addToPlaylist.getPlaylistName();
+
+       qInfo() << playlistName + song_to_playlist.getTitle();
+       sppm->songs_for_paylist(playlistName, song_to_playlist);
+
+
+
+
+
+
+
+                }
 }
 
 

@@ -42,6 +42,10 @@ bool SoundppManagement::deletePlaylist(int playlistID){
 
 }
 
+void SoundppManagement::songs_for_paylist(QString playlistName, Model::Song song){
+     dm->add_songs_for_playlist(song, playlistName);
+}
+
 
 
 QList<Model::Song> SoundppManagement::filtered_songs_by_artist(QString artist){
