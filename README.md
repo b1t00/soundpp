@@ -7,8 +7,6 @@ Music player implemented in c++ and qt.
 
 the source code is stored in: /soundpp/CODE/soundpp/soundpp-prototype/
 
-Requirements:
-
 -- Ubuntu
 
 Our installation process for ubuntu in Virtual Box: 
@@ -43,7 +41,7 @@ Optional install sqllite3 (it works without extra installtion)
 
 Clone the project (Finally!)
 - terminal: https://github.com/b1t00/soundpp.git
-Maybe you will need the Github Token as password:
+Maybe you will need the Github Token as password, then write us
 
 open pro file in the qt creator, compile, drop your favorite songs in mp3 and wav format and listen
 
