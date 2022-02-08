@@ -263,15 +263,15 @@ void MainWindow::dropEvent(QDropEvent *e)
 bool MainWindow::filterFilesByPrefix(QString songPath)
 //      filter for playable filetypes
 {
-    QList<QString> splittingString = songPath.split(".");
-    QString filePrefix = splittingString[splittingString.size()-1].toUpper();
-    if( !( (filePrefix == "MP3") | (filePrefix == "WAV") | ( filePrefix == "AIFF" ) ) ){
-        ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
-        return false;
-    } else if(sppm->containsSongPath(songPath)){
-        ui->statusbar->showMessage(songPath + " is already in the database", 10000);
-        return false;
-    }
+//    QList<QString> splittingString = songPath.split(".");
+//    QString filePrefix = splittingString[splittingString.size()-1].toUpper();
+//    if( !( (filePrefix == "MP3") | (filePrefix == "WAV") | ( filePrefix == "AIFF" ) ) ){
+//        ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
+//        return false;
+//    } else if(sppm->containsSongPath(songPath)){
+//        ui->statusbar->showMessage(songPath + " is already in the database", 10000);
+//        return false;
+//    }
     return true;
 }
 
