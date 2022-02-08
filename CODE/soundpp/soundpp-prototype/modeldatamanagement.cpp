@@ -102,12 +102,7 @@ QList<Model::Song> DataManagement::search_result(QString search){
         || m_all_songs->at(i).getAlbumName().toUpper().contains(search.toUpper())){
 
             search_result.append(m_all_songs->at(i));
-
-
             }
-
-
-
         }
     return search_result;
 }
