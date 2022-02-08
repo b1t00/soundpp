@@ -60,8 +60,6 @@ void DataManagement::add_songs_for_playlist(Model::Song song, QString playlistNa
         }
 
 
-
-
 }
 
 

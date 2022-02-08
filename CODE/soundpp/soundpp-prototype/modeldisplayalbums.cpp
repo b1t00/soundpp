@@ -79,4 +79,12 @@ void DisplayAlbumsModel::reset()
     beginResetModel();
     endResetModel();
 }
+
+void DisplayAlbumsModel::resetData(QList<QString> newAlbums)
+// refresh all albums, because maybe names disapeard or changed
+{
+    beginResetModel();
+    m_allAlbums = newAlbums;
+    endResetModel();
+}
 }

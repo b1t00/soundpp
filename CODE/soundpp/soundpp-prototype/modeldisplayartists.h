@@ -4,6 +4,9 @@
 #include <QAbstractTableModel>
 #include "modelsong.h"
 
+// the Album and Artist Models are very simular, but maybe they will differ in the future
+// Question: maybe inheritance of a superclass would be a better solution for the redundance
+
 namespace Model {
 
 class DisplayArtistsModel : public QAbstractTableModel
@@ -27,6 +30,7 @@ public:
     bool containsArtist(QString artist);
 
     void reset();
+    void resetData(QList<QString> changedArtists);
 
 private:
     QList<QString> m_allArtists;

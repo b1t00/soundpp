@@ -27,6 +27,7 @@ public:
     bool containsAlbum(QString album);
 
     void reset();
+    void resetData(QList<QString> newAlbums);
 
 private:
     QList<QString> m_allAlbums;

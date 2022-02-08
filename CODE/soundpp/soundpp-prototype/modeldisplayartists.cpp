@@ -80,4 +80,12 @@ void DisplayArtistsModel::reset()
     endResetModel();
 }
 
+void DisplayArtistsModel::resetData(QList<QString> changedArtists)
+// refresh all artists, because maybe names disapeard or changed
+{
+    beginResetModel();
+    m_allArtists = changedArtists;
+    endResetModel();
+}
+
 }

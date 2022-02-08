@@ -6,16 +6,10 @@
 
 namespace Model {
 
-DisplaySongModel::DisplaySongModel(QList<Model::Song> songs,QObject *parent)
-    : QAbstractTableModel(parent), m_songs(songs)
-{
-    std::sort(m_songs.begin(),m_songs.end(),compareByAlbumName);
-}
-
 DisplaySongModel::DisplaySongModel(QList<Song> songs, Song *current_playing_song, QObject *parent)
     : QAbstractTableModel(parent),m_songs(songs), m_current_playing_song(current_playing_song)
 {
-
+    std::sort(m_songs.begin(),m_songs.end(),compareByAlbumName);
 }
 
 QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -40,12 +34,12 @@ QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, 
     return QVariant();
 }
 
-int DisplaySongModel::rowCount(const QModelIndex &parent) const
+int DisplaySongModel::rowCount([[maybe_unused]]const QModelIndex &parent) const
 {
    return m_songs.size();
 }
 
-int DisplaySongModel::columnCount(const QModelIndex &parent) const
+int DisplaySongModel::columnCount([[maybe_unused]]const QModelIndex &parent) const
 {
   return 9;
 }
@@ -85,7 +79,7 @@ QVariant DisplaySongModel::data(const QModelIndex &index, int role) const
             case 7: {
                     qint64 epocheTime = song.getAddedTime().toLongLong();
                     QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
-        //            return displayTime.toString("MM dd yyyy");
+        // DELETE           return displayTime.toString("MM dd yyyy");
                     return displayTime.toString("MMM dd yyyy");
             }
             case 8: return song.getPlayCount();
@@ -110,10 +104,11 @@ bool DisplaySongModel::removeRows(int row, int count, const QModelIndex &parent)
 }
 
 void DisplaySongModel::sort(int column, Qt::SortOrder order)
+// the static compare functions are realy bad, an own datastructure would be better?
 {
     switch (column) {
     case 0: {
-        // path comparison is maybe an interesting topic
+        // notice: path comparison is maybe an interesting sorting topic
         break;
     }
     case 1: {
@@ -154,15 +149,18 @@ void DisplaySongModel::sort(int column, Qt::SortOrder order)
     }
 }
 
-void DisplaySongModel::removeSong(Model::Song song)
-{
-}
+//void DisplaySongModel::removeSong(Model::Song song)
+//{
+
+//}
 
 void DisplaySongModel::updateSong(int row, Model::Song song)
 {
+    qDebug() << m_songs.size();
+    if(m_songs.size() > 0 ){
     (m_songs)[row] = song;
-
     emit dataChanged(createIndex(row, 0),createIndex(row, columnCount()-1));
+    }
 }
 
 void DisplaySongModel::updateSong(Song song)
@@ -183,6 +181,7 @@ void DisplaySongModel::addSong(Model::Song song)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_songs.append(song);
     endInsertRows();
+    //DELETE
 //    (m_songs)[0] = song;
 //    qDebug() << "add song " << song.getAlbumName();
 //    emit dataChanged(createIndex(m_songs.size()-1, 0),createIndex(m_songs.size()-1, columnCount()-1));

@@ -196,10 +196,6 @@ void Database::DataBaseConnection::insertSong(Model::Song song)
     qry.bindValue(":addedDate", song.getAddedTime());
     qry.bindValue(":playCount", song.getPlayCount());
     qry.exec();
-
-//    allSongsQueryModel->setQuery(qry);
-//    allSongsQueryModel->
-
 //    if(allSongsQueryModel.exec()){
 //        qInfo() << "data is saved";
 //    }
@@ -212,7 +208,7 @@ Model::Song Database::DataBaseConnection::editSong(Model::Song edited_song)
     this->sqlitedb.open();
     QSqlQuery qry;
     qry.prepare("UPDATE songsTable SET songName = :songName, artistName = :artistName, albumName = :albumName, songNr = :songNr  WHERE songPath = :songPath ");
-    qDebug() << edited_song.getSongPath();
+//    qDebug() << edited_song.getSongPath();
     qry.bindValue(":songName", edited_song.getTitle());
     qry.bindValue(":artistName", edited_song.getArtistName());
     qry.bindValue(":albumName", edited_song.getAlbumName());
@@ -231,7 +227,6 @@ Model::Song Database::DataBaseConnection::editSong(Model::Song edited_song)
         return edited_song;
     };
     allSongsQueryModel->setQuery(qry);
-//    allSongsQueryModel->exe
     Model::Song song_from_db;
     song_from_db.setSongPath(allSongsQueryModel->record(0).value("songPath").toString());
     song_from_db.setTitle(allSongsQueryModel->record(0).value("songName").toString());
@@ -240,7 +235,6 @@ Model::Song Database::DataBaseConnection::editSong(Model::Song edited_song)
     song_from_db.setAlbumNr(allSongsQueryModel->record(0).value("songNr").toInt());
     song_from_db.setAddedTime(allSongsQueryModel->record(0).value("addedDate").toString());
     song_from_db.setPlayCount(allSongsQueryModel->record(0).value("playCount").toInt());
-    qDebug() << "db title " << song_from_db.getTitle();
     this->sqlitedb.close();
     return song_from_db;
 }

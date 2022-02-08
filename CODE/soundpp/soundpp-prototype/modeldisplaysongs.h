@@ -12,7 +12,6 @@ class DisplaySongModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit DisplaySongModel(QList<Model::Song> songs, QObject *parent = nullptr);
     explicit DisplaySongModel(QList<Model::Song> songs, Model::Song *current_playing_song, QObject *parent = nullptr);
 
     // Header:
@@ -28,7 +27,7 @@ public:
 
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-    void removeSong(Model::Song song);
+//    void removeSong(Model::Song song);
     void updateSong(int row, Model::Song song);
     void updateSong(Model::Song song);
     void addSong(Model::Song song);

@@ -117,7 +117,6 @@ private slots:
 
     void songTableSelectionChanged(const QItemSelection &selected);
 
-
     // search functions
     void on_insert_search_textChanged(const QString &arg1);
 
@@ -126,25 +125,22 @@ private slots:
     void on_btn_artists_clicked();
     void on_btn_albums_clicked();
 
-    // insert new files
+    // insert new files open paths
     void insertNewPaths(QList<QString> path);
     void on_actionOpen_triggered();
+    void on_actionOpen_in_Explorer_triggered();
+
+
+    // queue and history tables
     void on_comboBox_activated(const QString &arg1);
-
-    void on_actionshow_path_toggled(bool arg1);
-
-    void on_actionshow_title_toggled(bool arg1);
-
     void on_btn_shuffle_clicked();
 
+    // colums view toggles
+    void on_actionshow_path_toggled(bool arg1);
+    void on_actionshow_title_toggled(bool arg1);
     void on_actionshow_artist_toggled(bool arg1);
-
-
     void on_actionshow_album_toggled(bool arg1);
-
     void on_actionshow_album_nr_toggled(bool arg1);
-
-    void on_actionOpen_in_Explorer_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -178,6 +174,7 @@ private:
     QMenu* m_attributeTableContextMenu;
     QMenu* m_queueTableContextMenu;
     QMenu* m_historyTableContextMenu;
+
     QMenu* songTableHeaderContextMenu;
     QMenu* contextMenu_2;
 
