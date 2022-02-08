@@ -1,6 +1,7 @@
 #include "uimainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QWidget>
 
@@ -77,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
     songTableContextMenu->addSeparator();
     songTableContextMenu->addAction("edit song...", this,&MainWindow::on_actionEdit_Song_triggered);
     songTableContextMenu->addAction("remove song", this,&MainWindow::on_actionRemove_Song_triggered);
+    songTableContextMenu->addSeparator();
+    songTableContextMenu->addAction("open in explorer", this,&MainWindow::on_actionOpen_in_Explorer_triggered);
     connect(ui->songs_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onSongTableContextMenu);
 //    connect(ui->songs_tableView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)))
 
@@ -299,7 +302,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
             } else if(m_displayState == DisplayAlbums){
                 if(song_to_add.getAlbumName() == currentSelectedAttribute())
                     currentAlbum = true;
-                else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName())){
+                else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName()))
                     newAlbum = true;
             }
         }
@@ -322,6 +325,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
             ui->artists_tableView->setModel(m_display_albums_model);
         }
     }
+
 }
 }
 
@@ -529,7 +533,6 @@ void MainWindow::on_btn_for_released()
     }
 }
 
-
 // --- Musikplayer - Sliders and Volume ---
 
 
@@ -603,7 +606,6 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
         on_btn_for_released();
         break;
     }
-
 }
 
 // --------------- Queue and History Actions ---------------//
@@ -691,7 +693,7 @@ void MainWindow::on_btn_shuffle_clicked()
 }
 
 // -------------- AttruteTable Actions --
-void MainWindow::on_artists_tableView_doubleClicked(const QModelIndex &index)
+void MainWindow::on_artists_tableView_doubleClicked([[maybe_unused]]const QModelIndex &index)
 {
     on_actionPlay_Songs_triggered();
 }
@@ -936,7 +938,7 @@ void MainWindow::on_actionEdit_Song_triggered()
 }
 
 
-void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
+void MainWindow::on_artists_tableView_clicked()
 {
     switch(m_displayState){
     case DisplayArtists :
@@ -961,7 +963,7 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
 
 }
 
-// ----------------- open Files and Filder ---------------- //
+// ----------------- open Files and Filder ---------------- // TODO:: outsourcing
 
 void MainWindow::on_actionOpen_triggered()
 {
@@ -981,6 +983,17 @@ void MainWindow::on_actionOpen_triggered()
     insertNewPaths(fileNames);
 }
 
+
+void MainWindow::on_actionOpen_in_Explorer_triggered()
+// remove the file from the path and open in native explorer
+{
+    QString currentSongPath("file:///" + currentSlectedSong().getSongPath());
+    QList<QString> removeFile = currentSongPath.split("/");
+    currentSongPath.remove(currentSongPath.size()-removeFile[removeFile.size()-1].size(),removeFile[removeFile.size()-1].size());
+    QDesktopServices::openUrl(QUrl(currentSongPath));
+}
+
+
 //TODO:: open directory and subdirectories
 
 //    QDir directory = QFileDialog::getExistingDirectory(
@@ -993,17 +1006,19 @@ void MainWindow::on_actionOpen_triggered()
 //    qDebug() << "dir " << directory;
 //    QFileDialog::setOptions(QFileDialog::ShowDirsOnly);
 
+// UI ----------------- show coloumn actions --------------------------
+
 void MainWindow::on_actionshow_path_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(0,!arg1);
-    ui->actionshow_path->setChecked(arg1);
+    ui->actionshow_path->setChecked(arg1); // synchronise checkboxes
     songTableHeaderContextMenu->actions().at(0)->setChecked(arg1);  // synchronise checkboxes
 }
 
 void MainWindow::on_actionshow_title_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(1,!arg1);
-    ui->actionshow_title->setChecked(arg1); // synchronise checkboxes
+    ui->actionshow_title->setChecked(arg1);
     songTableHeaderContextMenu->actions().at(1)->setChecked(arg1);
 
 }
@@ -1026,5 +1041,5 @@ void MainWindow::on_actionshow_album_nr_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(4,!arg1);
     ui->actionshow_album_nr->setChecked(arg1);
-    songTableHeaderContextMenu->actions().at(4)->setChecked(arg1);  // synchronise checkboxes
+    songTableHeaderContextMenu->actions().at(4)->setChecked(arg1);
 }

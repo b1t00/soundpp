@@ -94,7 +94,7 @@ private slots:
     void on_actionAppend_Queue_triggered();
 
     // actions AtributeTalble
-    void on_artists_tableView_clicked(const QModelIndex &index);
+    void on_artists_tableView_clicked();
     void on_artists_tableView_doubleClicked(const QModelIndex &index);
     void on_artists_tableView_activated(const QModelIndex &index); // TODO:: wann?
     void on_actionPlay_Songs_triggered();
@@ -143,6 +143,8 @@ private slots:
     void on_actionshow_album_toggled(bool arg1);
 
     void on_actionshow_album_nr_toggled(bool arg1);
+
+    void on_actionOpen_in_Explorer_triggered();
 
 private:
     Ui::MainWindow *ui;

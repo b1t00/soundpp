@@ -24,12 +24,12 @@ QVariant HistoryListModel::headerData(int section, Qt::Orientation orientation, 
 
 }
 
-int HistoryListModel::rowCount(const QModelIndex &parent) const
+int HistoryListModel::rowCount([[maybe_unused]]const QModelIndex &parent) const
 {
     return m_hSongs.size();
 }
 
-int HistoryListModel::columnCount(const QModelIndex &parent) const
+int HistoryListModel::columnCount([[maybe_unused]]const QModelIndex &parent) const
 {
     return 2;
 }
@@ -60,12 +60,10 @@ QVariant HistoryListModel::data(const QModelIndex &index, int role) const
         case Qt::BackgroundRole:
         {
             if(index.row()==(m_indexHistory+1)){
-               // background for this row,col is blue
 //               return QVariant(QBrush (QColor(Qt::green)));
                return QVariant(QBrush (QColor(102,255,178)));
             }
-            // otherwise background is white
-            return QVariant(QBrush (QColor(Qt::white)));
+            break;
         }
 
         case Qt::DisplayRole:
@@ -113,9 +111,6 @@ void HistoryListModel::removeLastSong()
 
 bool HistoryListModel::incrementIndex()
 {
-    qDebug() << "history size " << m_hSongs.size();
-    qDebug() << "indexHistory" << m_indexHistory;
-
     if(m_indexHistory < m_hSongs.size()-2){
         m_indexHistory++;
         return true;

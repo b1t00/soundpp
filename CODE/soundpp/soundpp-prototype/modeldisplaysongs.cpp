@@ -217,8 +217,6 @@ Song DisplaySongModel::songAt(int index) const
     return m_songs.at(index);
 }
 
-
-
 QList<Model::Song> DisplaySongModel::songs() const
 {
     return m_songs;
