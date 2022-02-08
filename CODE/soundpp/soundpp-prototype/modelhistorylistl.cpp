@@ -54,18 +54,15 @@ QVariant HistoryListModel::data(const QModelIndex &index, int role) const
      if ( !index.isValid() )
          return QVariant();
 
-     int row = index.row();
-     int col = index.column();
-
      switch ( role )
      {
 
         case Qt::BackgroundRole:
         {
-
             if(index.row()==(m_indexHistory+1)){
                // background for this row,col is blue
-               return QVariant(QBrush (QColor(Qt::green)));
+//               return QVariant(QBrush (QColor(Qt::green)));
+               return QVariant(QBrush (QColor(102,255,178)));
             }
             // otherwise background is white
             return QVariant(QBrush (QColor(Qt::white)));

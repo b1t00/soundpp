@@ -1,6 +1,8 @@
 ﻿#include "modeldisplaysongs.h"
 
 #include <QDebug>
+#include <qbrush.h>
+#include <qcolor.h>
 
 namespace Model {
 
@@ -8,6 +10,12 @@ DisplaySongModel::DisplaySongModel(QList<Model::Song> songs,QObject *parent)
     : QAbstractTableModel(parent), m_songs(songs)
 {
     std::sort(m_songs.begin(),m_songs.end(),compareByAlbumName);
+}
+
+DisplaySongModel::DisplaySongModel(QList<Song> songs, Song *current_playing_song, QObject *parent)
+    : QAbstractTableModel(parent),m_songs(songs), m_current_playing_song(current_playing_song)
+{
+
 }
 
 QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -47,7 +55,24 @@ QVariant DisplaySongModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if(role == Qt::DisplayRole){
+    switch ( role )
+    {
+       case Qt::BackgroundRole:
+       {
+//        if(m_current_playing_song != nullptr){
+           if(m_songs.at(index.row()) == m_current_playing_song){
+//               m_current_playing_song_index = index.row();
+//              return QVariant(QBrush (QColor(204,255,229)));
+              return QVariant(QBrush (QColor(102,255,178)));
+           }
+           // otherwise background is white
+//       }
+//        return QVariant(QBrush (QColor(Qt::white)));
+    }
+
+
+    case  Qt::DisplayRole:
+    {
         const Model::Song song = m_songs.at(index.row());
             switch(index.column()){
             case 0: return song.getSongPath();
@@ -64,8 +89,8 @@ QVariant DisplaySongModel::data(const QModelIndex &index, int role) const
                     return displayTime.toString("MMM dd yyyy");
             }
             case 8: return song.getPlayCount();
-            }
-
+        }
+    }
     }
     return QVariant();
 }
@@ -140,6 +165,18 @@ void DisplaySongModel::updateSong(int row, Model::Song song)
     emit dataChanged(createIndex(row, 0),createIndex(row, columnCount()-1));
 }
 
+void DisplaySongModel::updateSong(Song song)
+{
+    if(m_songs.size() > 1){
+        for(int i = 0; i < m_songs.size() ; i++){
+            if(m_songs.at(i).getSongPath() == song.getSongPath()){
+                emit dataChanged(createIndex(i, 0),createIndex(i, columnCount()-1));
+                break;
+            }
+        }
+    }
+}
+
 
 void DisplaySongModel::addSong(Model::Song song)
 {
@@ -170,6 +207,9 @@ void DisplaySongModel::reset()
 {
     beginResetModel();
     endResetModel();
+//    qDebug() << "last index" << m_current_playing_song_index;
+//    m_current_playing_song_index =m_songs.count(*m_current_playing_song);
+//    qDebug() << "now index " << m_current_playing_song_index;
 }
 
 Song DisplaySongModel::songAt(int index) const

@@ -114,7 +114,7 @@ private slots:
     void createNewPlaylist();
     void deletePlaylist();
 
-    void tableSelectionChanged(const QItemSelection &selected);
+    void songTableSelectionChanged(const QItemSelection &selected);
 
 
     // search functions

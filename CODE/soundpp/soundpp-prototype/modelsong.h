@@ -1,6 +1,7 @@
 #ifndef MODELSONG_H
 #define MODELSONG_H
 #include <QString>
+#include <QUrl>
 
 
 
@@ -13,6 +14,7 @@ public:
           int labelNr, QString addedTime, int m_playCount);
     // simple copy of song
     Song( QString songPath, QString title, QString artistName, QString albumName );
+//    Song(Model::Song &copySong);
 
     QString getSongPath() const;
     void setSongPath(const QString &songPath);
@@ -32,6 +34,12 @@ public:
     void setAddedTime(const QString &addedTime);
     int getPlayCount() const;
     void setPlayCount(int playCount);
+
+    inline bool operator==(Model::Song* rhs) const{
+        return QUrl(this->m_songPath) == QUrl(rhs->getSongPath());
+    };
+
+    friend bool operator==(const Model::Song& lhs, const Model::Song& rhs);
 
     friend bool compareBySongTitle(const Model::Song& lhs, const Model::Song& rhs);
     friend bool compareByArtistName(const Model::Song& lhs, const Model::Song& rhs);

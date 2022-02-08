@@ -18,11 +18,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
     connect(sppm, &Management::SoundppManagement::playerstatusChanged, this, &MainWindow::on_playerstatusChanged);
 
+//    m_current_playing_song = Model::Song();
+
 
     // ---------------------- Models -------------------------- //
 
     // -------- SongTable Model -
-    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
+    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(),&m_current_playing_song, this);
     m_displayState = DisplayTitles;
     ui->songs_tableView->setModel(m_display_song_model);
 
@@ -100,8 +102,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // -------------- selection change -------------------- //
     // TODO::
-    connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
-    connect(ui->artists_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
+    connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::songTableSelectionChanged);
+//    connect(ui->artists_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::tableSelectionChanged);
 
     //Display & Interact PlaylistModel
     m_display_playlist_model = new Model::DisplayPlaylistModel(sppm->get_all_playlists());
@@ -153,8 +155,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     QPixmap loop (":img/loop.png");
     ui->btn_loop->setIcon(loop);
-
-
 
 //    QPixmap queue (":img/queue.png");
 //    ui->queue->setPixmap(queue);
@@ -227,11 +227,13 @@ void MainWindow::on_actionDarkmode_triggered(bool checked)
 
 // -------------- selection change -------------------- //
 // TODO:: selection check dont works
-void MainWindow::tableSelectionChanged(const QItemSelection &selected)
+void MainWindow::songTableSelectionChanged(const QItemSelection &selected)
 {
     bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
 
-//    qDebug() << anySelected << "any selected : " <<selected.indexes().size();
+
+
+    qDebug() << anySelected << "any selected : " <<selected.indexes().size();
 //    qDebug() << "wo selected?: " << selected.at(0);
 
         ui->actionRemove_Song->setEnabled(anySelected);
@@ -313,8 +315,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
     if(m_displayState == DisplayArtists){
     // if a new artist is in the dopped file, the atribute table will reload completely because of the sorting
         if (currentArtist){
-            m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
-            ui->songs_tableView->setModel(m_display_song_model);
+            m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
         }
 
         if(newArtist){
@@ -324,8 +325,7 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
     } else if(m_displayState == DisplayAlbums){
         if (currentAlbum){
 //            qDebug()<<  "current album " << currentSelectedAttribute() << newAlbum;
-            m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()));
-            ui->songs_tableView->setModel(m_display_song_model);
+            m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
         }
         if(newAlbum){
             m_display_albums_model = new Model::DisplayAlbumsModel(sppm->allAlbums(),this);
@@ -340,9 +340,8 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
 
 void MainWindow::on_btn_titles_clicked()
 {
-    m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
-    ui->songs_tableView->setModel(m_display_song_model);
-
+    m_display_song_model->resetData(sppm->get_all_songs());
+    connect(ui->songs_tableView->selectionModel(),&QItemSelectionModel::selectionChanged,this, &MainWindow::songTableSelectionChanged);
     ui->artists_tableView->hide();
     m_displayState = DisplayTitles;
 }
@@ -352,15 +351,9 @@ void MainWindow::on_btn_artists_clicked()
 {
     // TODO: REIN ODER RAUS?= ----->>>
     if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
-//        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
-//        qDebug() << "current_selected_artist" << current_selected_artist;
-         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()), this);
-         ui->songs_tableView->setModel(m_display_song_model);
+         m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
     } else {
-//        ui->artists_tableView->selectRow(0);
         m_display_song_model->clear();
-//        ui->songs_tableView->model()->clear();
-//        m_display_song_model->set
     }
 
     // TODO: REIN ODER RAUS?= <...
@@ -375,8 +368,7 @@ void MainWindow::on_btn_albums_clicked()
 
     if(ui->artists_tableView->selectionModel()->selectedIndexes().size() > 0){
 //        QString current_selected_artist = ui->artists_tableView->model()->index(ui->artists_tableView->currentIndex().row(),0).data().toString();
-         m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()), this);
-         ui->songs_tableView->setModel(m_display_song_model);
+         m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
     } else {
         m_display_song_model->clear();
     }
@@ -406,11 +398,9 @@ void MainWindow::onAttributeTableContextMenu(const QPoint &point)
     switch(m_displayState){
     case DisplayArtists :
         m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
-//        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(currentSelectedAttribute()), this);
-//        m_display_song_model->dataChanged(0,0,1);
         break;
     case DisplayAlbums :
-        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(currentSelectedAttribute()), this);
+        m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
         break;
     default:
         qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
@@ -449,7 +439,10 @@ void MainWindow::playSong(Model::Song song_to_play)
     ui->statusbar->showMessage("playing: " + song_to_play.getArtistName(), 3000);
 
     sppm->playSong(song_to_play.getSongPath());
+    Model::Song last_song = m_current_playing_song;
     m_current_playing_song = song_to_play;
+    m_display_song_model->updateSong(last_song);
+    m_display_song_model->updateSong(song_to_play); // TODO:: have to
     m_historyListModel->addSong(song_to_play);
 //    m_queueListModel->playSong(s);
 }
@@ -751,16 +744,15 @@ void MainWindow::on_artists_tableView_activated(const QModelIndex &index)
     qDebug() << "activäääääääääääääääääääääääääääted";
     switch(m_displayState){
     case DisplayArtists :
-        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
+        m_display_song_model->resetData(sppm->filtered_songs_by_artist(index.data().toString()));
         break;
     case DisplayAlbums :
-        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
+        m_display_song_model->resetData(sppm->filtered_songs_by_album(index.data().toString()));
         break;
     default:
         qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
         break;
     }
-    ui->songs_tableView->setModel(m_display_song_model);
 //    on_artists_tableView_clicked(index);
 }
 
@@ -849,7 +841,7 @@ void MainWindow::on_actionRemove_Song_triggered()
             QString songName = ui->songs_tableView->model()->index(indexrow,1).data().toString();
             QString artistName = ui->songs_tableView->model()->index(indexrow,2).data().toString();
             QString albumName = ui->songs_tableView->model()->index(indexrow,3).data().toString();
-            qDebug() << "album : " << albumName;
+//            qDebug() << "album : " << albumName;
                 if(indexrow >= 0 && indexrow < m_display_song_model->rowCount()){
                     bool removed = sppm->deleteSong(songPath);
                     if(removed){
@@ -866,7 +858,6 @@ void MainWindow::on_actionRemove_Song_triggered()
                         } else if(m_displayState == DisplayAlbums){
                             m_display_albums_model->removeAlbum(albumName);
                         }
-
                     }
                 }
             }
@@ -931,17 +922,14 @@ void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
     switch(m_displayState){
     case DisplayArtists :
         m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
-//        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_artist(index.data().toString()), this);
         break;
     case DisplayAlbums :
         m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
-//        m_display_song_model = new Model::DisplaySongModel(sppm->filtered_songs_by_album(index.data().toString()), this);
         break;
     default:
         qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
         break;
     }
-//    ui->songs_tableView->setModel(m_display_song_model);
 }
 
 void MainWindow::on_insert_search_textChanged(const QString &arg1)
@@ -950,8 +938,7 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
         on_btn_titles_clicked();
     }
 
-    m_display_song_model = new Model::DisplaySongModel(sppm->search_result(arg1), this);
-    ui->songs_tableView->setModel(m_display_song_model);
+    m_display_song_model->resetData(sppm->search_result(arg1));
 
 }
 

@@ -11,12 +11,12 @@ SoundppManagement::SoundppManagement(QObject *parent) : QObject(parent)
     mdr = new MetaData::MetaDataFromFile();
     dm = new Model::DataManagement(dbc->get_and_create_all_Songs(), dbc->get_and_create_all_Playlists());
 
-    mpqt->setVolume(75);
 
     //musikplayer connection forwarding
     connect(mpqt, &MusikPlayer::MusikPlayerQt::durationChanged, this, &Management::SoundppManagement::durationChanged);
     connect(mpqt, &MusikPlayer::MusikPlayerQt::positionChanged, this, &Management::SoundppManagement::positionChanged);
     connect(mpqt, &QMediaPlayer::mediaStatusChanged, this, &Management::SoundppManagement::playerstatusChanged);
+    mpqt->setVolume(75);
 
 
 }

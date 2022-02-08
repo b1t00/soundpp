@@ -16,6 +16,11 @@ Song::Song(QString songPath, QString title, QString artistName, QString albumNam
 
 }
 
+//Song::Song(Song &copySong):
+//     m_songPath(copySong.getSongPath()), m_title(copySong.getTitle()), m_artistName(copySong.getArtistName()), m_albumName(copySong.getAlbumName()), m_albumNr(copySong.getAlbumNr()), m_addedTime(copySong.getAddedTime()), m_playCount(copySong.getPlayCount())
+//{
+//}
+
 
 QString Song::getTitle() const
 {
