@@ -7,7 +7,7 @@ Requirements:
 
 -- Ubuntu
 
-Our installation prozess for ubuntu in Virtual Box: 
+Our installation process for ubuntu in Virtual Box: 
 - terminal: sudo apt-get update && sudo apt-get upgrade
 
 Installing guest additions (just for vm propose)
@@ -20,7 +20,7 @@ Install qt MultiMedia:
 - terminal: sudo apt-get install qtmultimedia5-dev
 
 Install Multimedia Plugins:
-- termianl: sudo apt-get install libqt5multimedia5-plugins
+- terminal: sudo apt-get install libqt5multimedia5-plugins
 
 Install the LibTag library (its for getting meta-data from musicfiles)
 - terminal: sudo apt-get install libtag1-dev
@@ -37,11 +37,11 @@ Install git-lfs (for some example songs)
 Optional install sqllite3 (it works without extra installtion)
 - terminal: sudo apt install sqlite3
 
-Clone the project (Finaly!)
+Clone the project (Finally!)
 - terminal: https://github.com/b1t00/soundpp.git
 Maybe you will need the Github Token as password:
 TODO:: ******
-(please dont be silly with it)
+(please be responsible with it)
 
 open pro file in the qt creator, compile, drop your favorite songs in mp3 and wav format and listen
 
@@ -59,15 +59,15 @@ otherwise it should work
 
 Soundpp is a desktop musikplayer for your offline musiklibrary
 
-functionalities and !verhalten:
+functionalities and behaviour:
 
--- loading you songfiles
+-- loading your songfiles
 use the open... action in the menubar file->open... or 
-Drag and Drop musikfiles (we work on dropping folders)
-accapted formats are mp3, wav, aiff. Maybe more are possible. It also depends on installed audio-codes (we think so).
+Drag and Drop musikfiles (we working on dropping folders)
+accapted formats are mp3, wav, aiff. Maybe more are possible. It also depends on installed audio-codes (we suspecting).
 (we work to add more file formats, by substitute our library of the QTMusikplayer-class)
 -BUG:: not every mp3 file works, there are also different formats for mp3
--Notise:: wav files have no meta data header for artist, album etc.. so you will see Unknown Artist,but you can allways editing the song meta data
+-Notice:: wav files have no meta data header for artist, album etc.. so you will see Unknown Artist,but you can allways editing the song meta data
 
 -- Playing songs
 you can double click every song to play directly
@@ -89,13 +89,14 @@ you can order songs by clicking on table headers,
 for example the playcount sorting shows your favorite songs or adding date for your newest songs
 
 -- View
-you can toggle between a bright or dark mode in the menu bar -> view -> dark mode
+you can switch between a bright or dark mode in the menu bar -> view -> dark mode
 you can hide or show columns of the song table in the menu bar, or the context menu (right click on songtable header)
 you can rezise tables (in some settings it looks a bit buggy, we working on the right settings for that)
 
-We hope you have fun with musicpp and have a nice listening experience :) 
 
-Plesae tell us any surgestions or improvements. In coding or usability.
+Have fun with soundpp and listen to some nice music :) 
+
+Please tell us any suggestions or improvements. In coding or usability.
 
 Simon & Tobi 
 
