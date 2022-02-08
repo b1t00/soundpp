@@ -63,32 +63,6 @@ Database::DataBaseConnection::DataBaseConnection()
 }
 
 
-
-QSqlQueryModel* Database::DataBaseConnection::getQueryModel_all()
-{
-    bool open_success;
-    open_success = sqlitedb.open();
-//    QSqlQueryModel *qm = new QSqlQueryModel();
-//    AllSongsSqlModel *qm = new AllSongsSqlModel();
-
-    qInfo() << "db get query connected: " << open_success;
-    QSqlQuery qry;
-    qry.prepare("SELECT * FROM songsTable");
-    qry.exec();
-    allSongsQueryModel->setQuery(qry);
-    sqlitedb.close();
-
-//   for(int i = 0; i < qm->rowCount(); i++){
-//       if(qm->record(i).value("artistName") == "Blumentopf"){
-//        qInfo() << qm->record(i).value("artistName");
-//           qDebug() << qm->record(i).value("songName").toString();
-//    }
-
-//   }
-        return allSongsQueryModel;
-
-}
-
 QList<Model::Song>* Database::DataBaseConnection::get_and_create_all_Songs(){
     bool open_success;
     open_success = sqlitedb.open();
@@ -137,28 +111,6 @@ QList<Model::Playlist>* Database::DataBaseConnection::get_and_create_all_Playlis
 
     return m_all_playlists;
 
-}
-
-void Database::DataBaseConnection::insertQuery(QSqlQuery qry) // TODO:: currently no functionality
-{
-//    this->sqlitedb.open();
-//    QSqlQuery qry;
-//    QString bla("testi224rewrew22");
-//    QString bla2("testi2");
-//    char numma = 41;
-//    QString sqerystring = "insert into songsTable (songPath, songName, songNr) values ('"+bla+"','"+bla2+"','"+numma+"')";
-//     QSqlQuery query;
-//    query.prepare("INSERT INTO songsTable (songPath, songName, songNr) "
-//                  "VALUES (:id, :name, :salary)");
-
-//    query.bindValue(":id", 1001);
-//    query.bindValue(":name", "Thad Beaumont");
-//    query.bindValue(":salary", numma);
-//        if(query.exec()){
-//            qInfo() << "data is saved";
-//        }
-////    }
-//        this->sqlitedb.close();
 }
 
 void Database::DataBaseConnection::insertPlaylist(Model::Playlist playlist){

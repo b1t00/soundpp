@@ -521,7 +521,7 @@ void MainWindow::on_btn_for_released()
         ui->statusbar->showMessage("Random Auto play active >>", 5000);
         }
 
-    } else if((ui->comboBox_playingStyle->currentText().compare(".")) |  (ui->current_song_label->text() == ".")){
+    } else if((ui->comboBox_playingStyle->currentText() == (".")) |  (ui->current_song_label->text() == ".")){
         /* playing mode: the last song
          * stop playing although there are songs in the queue list
          */
@@ -530,7 +530,7 @@ void MainWindow::on_btn_for_released()
         ui->statusbar->showMessage(".", 5000);
         QPixmap play (":img/Play.png");
         ui->btn_play->setIcon(play);
-    } else if(ui->comboBox_playingStyle->currentText().compare(">|")){ // play to the end of queue list
+    } else if(ui->comboBox_playingStyle->currentText() == (">|")){ // play to the end of queue list
         /* playing mode: to the end
          * play to the end of queue list
          */
@@ -543,10 +543,14 @@ void MainWindow::on_btn_for_released()
             QPixmap play (":img/Play.png");
             ui->btn_play->setIcon(play);
         }
-    } else if( ui->comboBox_playingStyle->currentText().compare(">>")){ // placeholder for autoplay
-
-        playSong(sppm->randomSong());
-        ui->statusbar->showMessage("Random Auto play active >>", 5000);
+    } else if( ui->comboBox_playingStyle->currentText() == (">>")){ // placeholder for autoplay
+        if(m_queueListModel->hasSongs()){
+            song_next = m_queueListModel->nextSong();
+            playSong(song_next);
+        } else {
+            playSong(sppm->randomSong());
+            ui->statusbar->showMessage("Random Auto play active >>", 5000);
+        }
 //    } else if( loopOneSong){ // TODO
 //    } else if( LoopQueueList){ // TODO
     } else {
