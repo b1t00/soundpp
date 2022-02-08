@@ -25,12 +25,15 @@ public:
 
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+
     void removeSong(Model::Song song);
     void updateSong(int row, Model::Song song);
     void addSong(Model::Song song);
     void clear();
 
-    void resetData( QList<Model::Song> newSongs);
+    void resetData(QList<Song> otherSongs);
+    void reset();
 
     Model::Song songAt(int index) const;
 

@@ -7,6 +7,7 @@ namespace Model {
 DisplaySongModel::DisplaySongModel(QList<Model::Song> songs,QObject *parent)
     : QAbstractTableModel(parent), m_songs(songs)
 {
+//    std::sort(m_songs.begin(),m_songs.end(),albumNr_compare);
 }
 
 QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -84,6 +85,50 @@ bool DisplaySongModel::removeRows(int row, int count, const QModelIndex &parent)
     return true;
 }
 
+void DisplaySongModel::sort(int column, Qt::SortOrder order)
+{
+    switch (column) {
+    case 0: {
+
+        break;
+    }
+    case 1: {
+
+        break;
+    }
+    case 2: {
+
+        break;
+    }
+    case 3: {
+
+        break;
+    }
+    case 4: {
+        order == Qt::AscendingOrder ?
+                    std::sort(m_songs.begin(),m_songs.end(),compareByAlbumNr)  :
+                    std::sort(m_songs.rbegin(),m_songs.rend(),compareByAlbumNr);
+        reset();
+        break;
+    }
+    case 5: {
+
+        break;
+    }
+    }
+}
+
+//    qDebug() << "sort columnn" << column;
+//   std::sort(m_songs.rbegin(), m_songs.rend(), compareByAlbumNr);
+//   if(column == 1){
+////   reset();
+//   }
+//    qDebug() << "sort--------";
+//    for(Model::Song s : m_songs){
+//        qDebug() << s.getAlbumNr() <<" -" <<s.getTitle();
+//    }
+//    m_songs.at(0).getAddedTime();
+
 void DisplaySongModel::removeSong(Model::Song song)
 {
 
@@ -120,6 +165,12 @@ void DisplaySongModel::resetData(QList<Song> otherSongs)
 {
     beginResetModel();
     m_songs = otherSongs;
+    endResetModel();
+}
+
+void DisplaySongModel::reset()
+{
+    beginResetModel();
     endResetModel();
 }
 

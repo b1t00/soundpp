@@ -5,7 +5,6 @@
 
 
 namespace Model {
-
 class Song
 {
 public:
@@ -34,6 +33,8 @@ public:
     int getPlayCount() const;
     void setPlayCount(int playCount);
 
+    friend bool compareByAlbumNr(const Model::Song& lhs, const Model::Song& rhs);
+
 
 private:
 
@@ -48,6 +49,13 @@ private:
     int m_playCount;
 
 };
+
+//using namespace albumNr_compare
+static bool compareByAlbumNr(const Model::Song& lhs, Model::Song& rhs) // func for sorting by pages count
+{
+    return lhs.getAlbumNr() < rhs.getAlbumNr();
+}
 }
 
 #endif // MODELSONG_H
+

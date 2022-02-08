@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_display_song_model = new Model::DisplaySongModel(sppm->get_all_songs(), this);
     m_displayState = DisplayTitles;
     ui->songs_tableView->setModel(m_display_song_model);
+
     ui->songs_tableView->setColumnHidden(0,true); // hide path column
     ui->songs_tableView->setColumnHidden(5,true);
     ui->songs_tableView->setColumnHidden(6,true);
@@ -457,6 +458,10 @@ void MainWindow::on_songs_tableView_doubleClicked()
 // -- Musikplayer buttons
 void MainWindow::on_btn_play_clicked()
 {
+    qDebug() << "sort";
+    ui->songs_tableView->setSortingEnabled(true);
+    ui->songs_tableView->sortByColumn(4,Qt::AscendingOrder);
+//    m_display_song_model->sort(4,Qt::AscendingOrder);
     if(sppm->isAudioAvailable()){
 
     bool isPlaying = false;
@@ -508,7 +513,7 @@ void MainWindow::on_btn_back_released()
 
 void MainWindow::on_btn_for_clicked()
 {
-    //maybe load song?
+    //TODO:: maybe load song?
 }
 
 void MainWindow::on_btn_for_released()
@@ -600,7 +605,10 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
         break;
     case QMediaPlayer::InvalidMedia:
 //        displayErrorMessage();
+        ui->statusbar->showMessage("spp can not play this song " + m_current_playing_song.getTitle() + " yet", 5000);
+        on_btn_for_released();
         qDebug() << "on_playerstatusChanged EEROORS";
+        on_btn_for_released();
         break;
     }
 
