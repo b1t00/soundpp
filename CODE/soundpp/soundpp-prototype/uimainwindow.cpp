@@ -15,11 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sppm, &Management::SoundppManagement::durationChanged, this, &MainWindow::on_durationChanged);
     connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
-    connect(sppm, &Management::SoundppManagement::positionChanged, this, &MainWindow::on_positionChanged);
     connect(sppm, &Management::SoundppManagement::playerstatusChanged, this, &MainWindow::on_playerstatusChanged);
 
 //    m_current_playing_song = Model::Song();
-
 
     // ---------------------- Models -------------------------- //
 
@@ -28,9 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_displayState = DisplayTitles;
     ui->songs_tableView->setModel(m_display_song_model);
 
-    ui->songs_tableView->setColumnHidden(0,true); // hide path column
-    ui->songs_tableView->setColumnHidden(5,true);
-    ui->songs_tableView->setColumnHidden(6,true);
     ui->songs_tableView->clearSelection();
 //    ui->songs_tableView->horizontalHeader()-> ->width();
 
@@ -49,13 +44,22 @@ MainWindow::MainWindow(QWidget *parent)
     // ------------------- Context Menus --------------------- //
 
     // -- Context Menus Song Table Header-
-
-    // TODO: Coloms hide and show
+    // - hide and check colums for gui start up
     ui->songs_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     songTableHeaderContextMenu = new QMenu(ui->songs_tableView->horizontalHeader());
     songTableHeaderContextMenu->addAction("show path", this, &MainWindow::on_actionshow_path_toggled)->setCheckable(true);
+    ui->songs_tableView->setColumnHidden(0,true); // hide path column
     songTableHeaderContextMenu->addAction("show title", this, &MainWindow::on_actionshow_title_toggled)->setCheckable(true);
     songTableHeaderContextMenu->actions().at(1)->setChecked(true);
+    songTableHeaderContextMenu->addAction("show artist", this, &MainWindow::on_actionshow_artist_toggled)->setCheckable(true);
+    songTableHeaderContextMenu->actions().at(2)->setChecked(true);
+    songTableHeaderContextMenu->addAction("show album", this, &MainWindow::on_actionshow_album_toggled)->setCheckable(true);
+    songTableHeaderContextMenu->actions().at(3)->setChecked(true);
+    songTableHeaderContextMenu->addAction("show album number", this, &MainWindow::on_actionshow_album_nr_toggled)->setCheckable(true);
+    songTableHeaderContextMenu->actions().at(4)->setChecked(true);
+    ui->songs_tableView->setColumnHidden(5,true);
+    ui->songs_tableView->setColumnHidden(6,true);
+
     connect( ui->songs_tableView->horizontalHeader(), &QWidget::customContextMenuRequested, this, &MainWindow::onSongTableHeaderContextMenu);
     ui->actionshow_title->setChecked(true);
 
@@ -79,7 +83,6 @@ MainWindow::MainWindow(QWidget *parent)
     // --- Context Menu Attribute Table --
     ui->artists_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     m_attributeTableContextMenu = new QMenu(ui->artists_tableView);
-//    m_attributeTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
     m_attributeTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_Next_triggered);
     m_attributeTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionAppend_Songs_Queue_triggered);
 
@@ -88,17 +91,15 @@ MainWindow::MainWindow(QWidget *parent)
     // --- Context Menu Queue Table --
     ui->queue_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     m_queueTableContextMenu = new QMenu(ui->queue_tableView);
-//    m_queueTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
-    m_queueTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered);
-    m_queueTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionPlay_Songs_from_Queue_Append);
-    m_queueTableContextMenu->addAction("Remove", this, &MainWindow::on_actionRemove_Songs_Queue_triggered);
+    m_queueTableContextMenu->addAction("play songs next", this, &MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered);
+    m_queueTableContextMenu->addAction("append songs queue", this, &MainWindow::on_actionPlay_Songs_from_Queue_Append);
+    m_queueTableContextMenu->addAction("remove from queue", this, &MainWindow::on_actionRemove_Songs_Queue_triggered);
     connect(ui->queue_tableView, &QWidget::customContextMenuRequested, this, &MainWindow::onQueueTableContextMenu);
 
     // --- Context Menu History Table --
     m_historyTableContextMenu = new QMenu(ui->queue_tableView);
-//    m_historyTableContextMenu->addAction("Play Songs", this, &MainWindow::on_actionPlay_Songs_triggered);
-    m_historyTableContextMenu->addAction("Play Songs Next", this, &MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered);
-    m_historyTableContextMenu->addAction("Append Songs Queue", this, &MainWindow::on_actionPlay_Songs_from_Queue_Append);
+    m_historyTableContextMenu->addAction("play songs next", this, &MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered);
+    m_historyTableContextMenu->addAction("append songs queue", this, &MainWindow::on_actionPlay_Songs_from_Queue_Append);
 
     // -------------- selection change -------------------- //
     // TODO::
@@ -114,7 +115,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->playlist_tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->playlist_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
-
     contextMenu_2 = new QMenu(ui->playlist_tableView);
     contextMenu_2->addAction("new Playlist..", this, &MainWindow::createNewPlaylist);
     contextMenu_2->addAction("delete Playlist", this, SLOT(deletePlaylist()));
@@ -125,19 +125,19 @@ MainWindow::MainWindow(QWidget *parent)
    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
 
-
    // uiui ----------- ui start settings ----------
-   //  ----------splitter starting positions
 
+   //  ---splitter starting positions --
    ui->splitter->setSizes(QList<int>() << 1000 << 40);
    ui->splitter_3->setSizes(QList<int>() << 50 << 700);
 
-   ui->songs_tableView->horizontalHeader()->resizeSection(1,200);
-   ui->songs_tableView->horizontalHeader()->resizeSection(2,150);
+   //---- header coloum sizes --
+   ui->songs_tableView->horizontalHeader()->resizeSection(1,140);
+   ui->songs_tableView->horizontalHeader()->resizeSection(2,120);
    ui->songs_tableView->horizontalHeader()->resizeSection(4,30);
+   ui->songs_tableView->horizontalHeader()->resizeSection(8,70);
 
-    //----------------Icons
-
+    //----------------Icons -----
     QPixmap logo (":img/logo.png");
     ui->logo->setPixmap(logo);
 
@@ -201,7 +201,6 @@ QList<Model::Song> MainWindow::currentSlectedSongs() const
 }
 
 
-
 void MainWindow::updateGui() //TODO::
 {
 
@@ -231,8 +230,6 @@ void MainWindow::songTableSelectionChanged(const QItemSelection &selected)
 {
     bool anySelected = selected.indexes().size() > 0; // TODO:: nur blau selected??
 
-
-
     qDebug() << anySelected << "any selected : " <<selected.indexes().size();
 //    qDebug() << "wo selected?: " << selected.at(0);
 
@@ -255,17 +252,17 @@ void MainWindow::dropEvent(QDropEvent *e)
 {
     QList<QUrl> file_urls = e->mimeData()->urls();
     QList<QString> file_paths;
-    foreach(QUrl url, file_urls){
-        file_paths.append(url.toLocalFile());
-    }
+    foreach(QUrl url, file_urls) file_paths.append(url.toLocalFile());
+
     insertNewPaths(file_paths);
 }
 
 bool MainWindow::filterFilesByPrefix(QString songPath)
+//      filter for playable filetypes
 {
     QList<QString> splittingString = songPath.split(".");
     QString filePrefix = splittingString[splittingString.size()-1].toUpper();
-    if(!(filePrefix == "MP3" | filePrefix == "WAV" | filePrefix == "AIFF") ){
+    if( !( (filePrefix == "MP3") | (filePrefix == "WAV") | ( filePrefix == "AIFF" ) ) ){
         ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
         return false;
     } else if(sppm->containsSongPath(songPath)){
@@ -283,50 +280,43 @@ void MainWindow::insertNewPaths(QList<QString> filePaths)
 {
     bool newArtist, currentArtist = false;
     bool newAlbum, currentAlbum = false;
+
     foreach (const QString &filePath, filePaths) {
-//        QString filePath (url.toLocalFile());
+
         if(filterFilesByPrefix(filePath)){
 
             ui->statusbar->showMessage(filePath + " dropped", 3000);
             Model::Song song_to_add = sppm->droppedFile(filePath);
             if(m_displayState == DisplayTitles){
                 m_display_song_model->addSong(song_to_add);
-
             } else if(m_displayState == DisplayArtists){
 
-                if(song_to_add.getArtistName() == currentSelectedAttribute()){
+                if(song_to_add.getArtistName() == currentSelectedAttribute())
                     currentArtist = true;
-                } else if(!m_display_artist_model->containsArtist(song_to_add.getArtistName())){
+                else if(!m_display_artist_model->containsArtist(song_to_add.getArtistName()))
                     newArtist = true;
-                }
 
             } else if(m_displayState == DisplayAlbums){
-                qDebug() << currentSelectedAttribute();
-                if(song_to_add.getAlbumName() == currentSelectedAttribute()){
+                if(song_to_add.getAlbumName() == currentSelectedAttribute())
                     currentAlbum = true;
-                } else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName())){
+                else if(!m_display_albums_model->containsAlbum(song_to_add.getAlbumName())){
                     newAlbum = true;
-                    qDebug() << song_to_add.getAlbumName() << "newAlbum? " << newAlbum;
-                }
             }
-
         }
     }
+
     if(m_displayState == DisplayArtists){
     // if a new artist is in the dopped file, the atribute table will reload completely because of the sorting
-        if (currentArtist){
-            m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
-        }
+        if (currentArtist) m_display_song_model->resetData(sppm->filtered_songs_by_artist(currentSelectedAttribute()));
 
         if(newArtist){
             m_display_artist_model = new Model::DisplayArtistsModel(sppm->allArtists(),this);
             ui->artists_tableView->setModel(m_display_artist_model);
         }
+
     } else if(m_displayState == DisplayAlbums){
-        if (currentAlbum){
-//            qDebug()<<  "current album " << currentSelectedAttribute() << newAlbum;
-            m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
-        }
+        if (currentAlbum) m_display_song_model->resetData(sppm->filtered_songs_by_album(currentSelectedAttribute()));
+
         if(newAlbum){
             m_display_albums_model = new Model::DisplayAlbumsModel(sppm->allAlbums(),this);
             ui->artists_tableView->setModel(m_display_albums_model);
@@ -661,27 +651,20 @@ void MainWindow::on_actionPlay_Songs_from_Queue_Append()
     QModelIndexList selection = ui->queue_tableView->selectionModel()->selectedRows();
     QList<Model::Song> songs_append;
 
-    if(ui->comboBox->currentText()=="Queue List"){
-        for(auto i : selection){
-            songs_append.append(m_queueListModel->qSongs().at(i.row()));
-        }
-    } else {
-        for(auto i : selection){
-            songs_append.append(m_historyListModel->hSongs().at(i.row()));
-            qDebug() << m_historyListModel->hSongs().at(i.row()).getTitle();
-        }
-    }
+    if(ui->comboBox->currentText()=="Queue List")
+        for(auto i : selection) songs_append.append(m_queueListModel->qSongs().at(i.row()));
+    else
+        for(auto i : selection) songs_append.append(m_historyListModel->hSongs().at(i.row()));
+
     m_queueListModel->appendSongs(songs_append);
 }
 
 void MainWindow::on_actionRemove_Songs_Queue_triggered()
 {
     QModelIndexList selection = ui->queue_tableView->selectionModel()->selectedRows();
-    QList<int> rowIndeces;
-    for(auto select : selection){
-        rowIndeces.append(select.row());
-    }
-    m_queueListModel->removeSongs(rowIndeces);
+    QList<int> rowIndices;
+    for(auto select : selection) rowIndices.append(select.row());
+    m_queueListModel->removeSongs(rowIndices);
 }
 
 
@@ -985,7 +968,27 @@ void MainWindow::on_actionshow_title_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(1,!arg1);
     ui->actionshow_title->setChecked(arg1); // synchronise checkboxes
-    songTableHeaderContextMenu->actions().at(1)->setChecked(arg1);  // synchronise checkboxes
+    songTableHeaderContextMenu->actions().at(1)->setChecked(arg1);
 
 }
 
+void MainWindow::on_actionshow_artist_toggled(bool arg1)
+{
+    ui->songs_tableView->setColumnHidden(2,!arg1);
+    ui->actionshow_artist->setChecked(arg1);
+    songTableHeaderContextMenu->actions().at(2)->setChecked(arg1);
+}
+
+void MainWindow::on_actionshow_album_toggled(bool arg1)
+{
+    ui->songs_tableView->setColumnHidden(3,!arg1);
+    ui->actionshow_album->setChecked(arg1);
+    songTableHeaderContextMenu->actions().at(3)->setChecked(arg1);
+}
+
+void MainWindow::on_actionshow_album_nr_toggled(bool arg1)
+{
+    ui->songs_tableView->setColumnHidden(4,!arg1);
+    ui->actionshow_album_nr->setChecked(arg1);
+    songTableHeaderContextMenu->actions().at(4)->setChecked(arg1);  // synchronise checkboxes
+}

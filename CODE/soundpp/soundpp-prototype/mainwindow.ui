@@ -449,11 +449,6 @@ min-height: 20px;
               </property>
               <item>
                <property name="text">
-                <string>.</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
                 <string>&gt;|</string>
                </property>
               </item>
@@ -470,6 +465,11 @@ min-height: 20px;
               <item>
                <property name="text">
                 <string>O</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>.</string>
                </property>
               </item>
              </widget>
@@ -584,6 +584,9 @@ min-height: 20px;
     <addaction name="separator"/>
     <addaction name="actionshow_path"/>
     <addaction name="actionshow_title"/>
+    <addaction name="actionshow_artist"/>
+    <addaction name="actionshow_album"/>
+    <addaction name="actionshow_album_nr"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuItem"/>
@@ -674,6 +677,30 @@ min-height: 20px;
    </property>
    <property name="text">
     <string>show title</string>
+   </property>
+  </action>
+  <action name="actionshow_artist">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>show artist</string>
+   </property>
+  </action>
+  <action name="actionshow_album">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>show album</string>
+   </property>
+  </action>
+  <action name="actionshow_album_nr">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>show album nr</string>
    </property>
   </action>
  </widget>

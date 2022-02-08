@@ -136,6 +136,13 @@ private slots:
 
     void on_btn_shuffle_clicked();
 
+    void on_actionshow_artist_toggled(bool arg1);
+
+
+    void on_actionshow_album_toggled(bool arg1);
+
+    void on_actionshow_album_nr_toggled(bool arg1);
+
 private:
     Ui::MainWindow *ui;
 
