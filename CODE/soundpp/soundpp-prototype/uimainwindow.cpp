@@ -692,7 +692,7 @@ void MainWindow::on_btn_shuffle_clicked()
 }
 
 // -------------- AttruteTable Actions --
-void MainWindow::on_artists_tableView_doubleClicked(const QModelIndex &index)
+void MainWindow::on_artists_tableView_doubleClicked([[maybe_unused]]const QModelIndex &index)
 {
     on_actionPlay_Songs_triggered();
 }
@@ -902,7 +902,7 @@ void MainWindow::on_actionEdit_Song_triggered()
 }
 
 
-void MainWindow::on_artists_tableView_clicked(const QModelIndex &index)
+void MainWindow::on_artists_tableView_clicked()
 {
     switch(m_displayState){
     case DisplayArtists :
@@ -927,7 +927,7 @@ void MainWindow::on_insert_search_textChanged(const QString &arg1)
 
 }
 
-// ----------------- open Files and Filder ---------------- //
+// ----------------- open Files and Filder ---------------- // TODO:: outsourcing
 
 void MainWindow::on_actionOpen_triggered()
 {
@@ -947,6 +947,17 @@ void MainWindow::on_actionOpen_triggered()
     insertNewPaths(fileNames);
 }
 
+
+void MainWindow::on_actionOpen_in_Explorer_triggered()
+// remove the file from the path and open in native explorer
+{
+    QString currentSongPath("file:///" + currentSlectedSong().getSongPath());
+    QList<QString> removeFile = currentSongPath.split("/");
+    currentSongPath.remove(currentSongPath.size()-removeFile[removeFile.size()-1].size(),removeFile[removeFile.size()-1].size());
+    QDesktopServices::openUrl(QUrl(currentSongPath));
+}
+
+
 //TODO:: open directory and subdirectories
 
 //    QDir directory = QFileDialog::getExistingDirectory(
@@ -959,17 +970,19 @@ void MainWindow::on_actionOpen_triggered()
 //    qDebug() << "dir " << directory;
 //    QFileDialog::setOptions(QFileDialog::ShowDirsOnly);
 
+// UI ----------------- show coloumn actions --------------------------
+
 void MainWindow::on_actionshow_path_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(0,!arg1);
-    ui->actionshow_path->setChecked(arg1);
+    ui->actionshow_path->setChecked(arg1); // synchronise checkboxes
     songTableHeaderContextMenu->actions().at(0)->setChecked(arg1);  // synchronise checkboxes
 }
 
 void MainWindow::on_actionshow_title_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(1,!arg1);
-    ui->actionshow_title->setChecked(arg1); // synchronise checkboxes
+    ui->actionshow_title->setChecked(arg1);
     songTableHeaderContextMenu->actions().at(1)->setChecked(arg1);
 
 }
@@ -992,20 +1005,5 @@ void MainWindow::on_actionshow_album_nr_toggled(bool arg1)
 {
     ui->songs_tableView->setColumnHidden(4,!arg1);
     ui->actionshow_album_nr->setChecked(arg1);
-    songTableHeaderContextMenu->actions().at(4)->setChecked(arg1);  // synchronise checkboxes
-}
-
-void MainWindow::on_actionOpen_in_Explorer_triggered()
-{
-//    QUrl currentSongPath(currentSlectedSong().getSongPath());
-    QString currentSongPath("file:///" + currentSlectedSong().getSongPath());
-//    QString currentSongPath("file:///"  "C:/Users/Winny/Music/Musik/sppmusik/RSS Disco - VERY 01");
-    QList<QString> removeFile = currentSongPath.split("/");
-
-    qDebug() << "removing   " << removeFile[removeFile.size()-1];
-    currentSongPath.remove(currentSongPath.size()-removeFile[removeFile.size()-1].size(),removeFile[removeFile.size()-1].size()); //removeFile[removeFile.size()-1];
-
-    qDebug() << "currentSongPath   " << currentSongPath;
-//    qDebug() << "currentSongPath cd" << currentSongPath.cdUp();
-    QDesktopServices::openUrl(QUrl(currentSongPath));
+    songTableHeaderContextMenu->actions().at(4)->setChecked(arg1);
 }
