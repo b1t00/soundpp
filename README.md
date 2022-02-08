@@ -102,7 +102,7 @@ Have fun with soundpp and listen to some nice music :)
 
 Please tell us any suggestions or improvements. In coding or usability.
 
-Simon & Tobi 
+Simon 5017489 & Tobi 
 
 In the future:
 we have a lot of ideas 
