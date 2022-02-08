@@ -44,14 +44,11 @@ Optional install sqllite3 (it works without extra installtion)
 Clone the project (Finally!)
 - terminal: https://github.com/b1t00/soundpp.git
 Maybe you will need the Github Token as password:
-TODO:: ******
-(please be responsible with it)
 
 open pro file in the qt creator, compile, drop your favorite songs in mp3 and wav format and listen
 
 These settings worked for us, please tell us, if something dont work proper
 We tested it most of the time in windows 10.
-
 
 in windows:
 you have to use the MinGW64 compiler in QTCreator, because of the TagLib dll files. Maybe you have to compile the tagLib dll files for you self
@@ -102,7 +99,7 @@ Have fun with soundpp and listen to some nice music :)
 
 Please tell us any suggestions or improvements. In coding or usability.
 
-Simon 5017489 & Tobi 
+Simon Dannemann 5017489 & Tobi Schmitt 5052509
 
 In the future:
 we have a lot of ideas 
