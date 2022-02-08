@@ -46,6 +46,19 @@ QVariant DisplayAlbumsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+void DisplayAlbumsModel::sort(int column, Qt::SortOrder order)
+{
+    switch (column) {
+    case 0: {
+        order == Qt::AscendingOrder ?
+                    std::sort(m_allAlbums.rbegin(),m_allAlbums.rend()):
+                    std::sort(m_allAlbums.begin(),m_allAlbums.end())  ;
+        reset();
+        break;
+    }
+    }
+}
+
 void DisplayAlbumsModel::removeAlbum(QString album_to_remove)
 {
     for(int i = 0; i < m_allAlbums.size(); i++){
@@ -58,6 +71,12 @@ void DisplayAlbumsModel::removeAlbum(QString album_to_remove)
 
 bool DisplayAlbumsModel::containsAlbum(QString album)
 {
-        return (m_allAlbums.contains(album)) ? true : false;
+    return (m_allAlbums.contains(album)) ? true : false;
+}
+
+void DisplayAlbumsModel::reset()
+{
+    beginResetModel();
+    endResetModel();
 }
 }

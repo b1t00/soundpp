@@ -33,7 +33,11 @@ public:
     int getPlayCount() const;
     void setPlayCount(int playCount);
 
+    friend bool compareBySongTitle(const Model::Song& lhs, const Model::Song& rhs);
+    friend bool compareByArtistName(const Model::Song& lhs, const Model::Song& rhs);
+    friend bool compareByAlbumName(const Model::Song& lhs, const Model::Song& rhs);
     friend bool compareByAlbumNr(const Model::Song& lhs, const Model::Song& rhs);
+    friend bool compareByPlayCount(const Model::Song& lhs, const Model::Song& rhs);
 
 
 private:
@@ -50,12 +54,35 @@ private:
 
 };
 
-//using namespace albumNr_compare
-static bool compareByAlbumNr(const Model::Song& lhs, Model::Song& rhs) // func for sorting by pages count
+// it's very bad practise, i know. But it workt and there was no time to use own Templates or ProxySearchModel or so
+static bool compareBySongTitle(const Model::Song& lhs, Model::Song& rhs)
+{
+    return lhs.getTitle() < rhs.getTitle();
+}
+
+static bool compareByArtistName(const Model::Song& lhs, Model::Song& rhs)
+{
+    return lhs.getArtistName() < rhs.getArtistName();
+}
+
+static bool compareByAlbumName(const Model::Song& lhs, Model::Song& rhs)
+{
+    return lhs.getArtistName() < rhs.getArtistName();
+}
+
+static bool compareByAlbumNr(const Model::Song& lhs, Model::Song& rhs)
 {
     return lhs.getAlbumNr() < rhs.getAlbumNr();
 }
+
+static bool compareByPlayCount(const Model::Song& lhs, Model::Song& rhs)
+{
+    return lhs.getPlayCount() < rhs.getPlayCount();
 }
+
+
+}
+
 
 #endif // MODELSONG_H
 

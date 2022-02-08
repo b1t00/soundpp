@@ -21,9 +21,12 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
     void removeAlbum(QString album);
     bool containsAlbum(QString album);
+
+    void reset();
 
 private:
     QList<QString> m_allAlbums;

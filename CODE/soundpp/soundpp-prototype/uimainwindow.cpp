@@ -42,9 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->queue_tableView->setModel(m_queueListModel);
 
 //    m_display_artist_model->headerData(2,Qt::Orientation::Horizontal)
-    // ui ----------splitter starting positions
-    ui->splitter->setSizes(QList<int>() << 1000 << 40);
-    ui->splitter_3->setSizes(QList<int>() << 50 << 700);
+
     // ------------------- Context Menus --------------------- //
 
     // -- Context Menus Song Table Header-
@@ -123,6 +121,17 @@ MainWindow::MainWindow(QWidget *parent)
     // ---------------- shortcuts Manuel
    QShortcut *sc_playPause = new QShortcut(Qt::Key_Space, this);
    connect(sc_playPause, &QShortcut::activated, this, &MainWindow::on_btn_play_clicked);
+
+
+   // uiui ----------- ui start settings ----------
+   //  ----------splitter starting positions
+
+   ui->splitter->setSizes(QList<int>() << 1000 << 40);
+   ui->splitter_3->setSizes(QList<int>() << 50 << 700);
+
+   ui->songs_tableView->horizontalHeader()->resizeSection(1,200);
+   ui->songs_tableView->horizontalHeader()->resizeSection(2,150);
+   ui->songs_tableView->horizontalHeader()->resizeSection(4,30);
 
     //----------------Icons
 

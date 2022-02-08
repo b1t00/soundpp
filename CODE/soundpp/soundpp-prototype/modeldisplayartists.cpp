@@ -43,8 +43,20 @@ QVariant DisplayArtistsModel::data(const QModelIndex &index, int role) const
             }
 
     }
-
     return QVariant();
+}
+
+void DisplayArtistsModel::sort(int column, Qt::SortOrder order)
+{
+    switch (column) {
+    case 0: {
+        order == Qt::AscendingOrder ?
+                    std::sort(m_allArtists.rbegin(),m_allArtists.rend()):
+                    std::sort(m_allArtists.begin(),m_allArtists.end())  ;
+        reset();
+        break;
+    }
+    }
 }
 
 void DisplayArtistsModel::removeArtist(QString artist_to_remove)
@@ -60,6 +72,12 @@ void DisplayArtistsModel::removeArtist(QString artist_to_remove)
 bool DisplayArtistsModel::containsArtist(QString artist)
 {
     return (m_allArtists.contains(artist)) ? true : false;
+}
+
+void DisplayArtistsModel::reset()
+{
+    beginResetModel();
+    endResetModel();
 }
 
 }

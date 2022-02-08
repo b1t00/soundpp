@@ -7,7 +7,7 @@ namespace Model {
 DisplaySongModel::DisplaySongModel(QList<Model::Song> songs,QObject *parent)
     : QAbstractTableModel(parent), m_songs(songs)
 {
-//    std::sort(m_songs.begin(),m_songs.end(),albumNr_compare);
+    std::sort(m_songs.begin(),m_songs.end(),compareByAlbumName);
 }
 
 QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -58,11 +58,10 @@ QVariant DisplaySongModel::data(const QModelIndex &index, int role) const
             case 5: return song.getLabelName();
             case 6: return song.getLabelNr();
             case 7: {
-//                        qDebug() << "albumName?? " << song.getAlbumName();
-                qint64 epocheTime = song.getAddedTime().toLongLong();
-                QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
-//            return displayTime.toString("MM dd yyyy");
-            return displayTime.toString("MMM dd yyyy");
+                    qint64 epocheTime = song.getAddedTime().toLongLong();
+                    QDateTime displayTime = QDateTime::fromMSecsSinceEpoch( epocheTime );
+        //            return displayTime.toString("MM dd yyyy");
+                    return displayTime.toString("MMM dd yyyy");
             }
             case 8: return song.getPlayCount();
             }
@@ -89,19 +88,28 @@ void DisplaySongModel::sort(int column, Qt::SortOrder order)
 {
     switch (column) {
     case 0: {
-
+        // path comparison is maybe an interesting topic
         break;
     }
     case 1: {
-
+        order == Qt::AscendingOrder ?
+                    std::sort(m_songs.begin(),m_songs.end(),compareBySongTitle)  :
+                    std::sort(m_songs.rbegin(),m_songs.rend(),compareBySongTitle);
+        reset();
         break;
     }
     case 2: {
-
+        order == Qt::AscendingOrder ?
+                    std::sort(m_songs.begin(),m_songs.end(),compareByArtistName)  :
+                    std::sort(m_songs.rbegin(),m_songs.rend(),compareByArtistName);
+        reset();
         break;
     }
     case 3: {
-
+        order == Qt::AscendingOrder ?
+                    std::sort(m_songs.begin(),m_songs.end(),compareByAlbumName)  :
+                    std::sort(m_songs.rbegin(),m_songs.rend(),compareByAlbumName);
+        reset();
         break;
     }
     case 4: {
@@ -111,27 +119,18 @@ void DisplaySongModel::sort(int column, Qt::SortOrder order)
         reset();
         break;
     }
-    case 5: {
-
+    case 8: {
+        order == Qt::AscendingOrder ?
+                    std::sort(m_songs.begin(),m_songs.end(),compareByPlayCount)  :
+                    std::sort(m_songs.rbegin(),m_songs.rend(),compareByPlayCount);
+        reset();
         break;
     }
     }
 }
 
-//    qDebug() << "sort columnn" << column;
-//   std::sort(m_songs.rbegin(), m_songs.rend(), compareByAlbumNr);
-//   if(column == 1){
-////   reset();
-//   }
-//    qDebug() << "sort--------";
-//    for(Model::Song s : m_songs){
-//        qDebug() << s.getAlbumNr() <<" -" <<s.getTitle();
-//    }
-//    m_songs.at(0).getAddedTime();
-
 void DisplaySongModel::removeSong(Model::Song song)
 {
-
 }
 
 void DisplaySongModel::updateSong(int row, Model::Song song)
@@ -158,7 +157,6 @@ void DisplaySongModel::clear()
     beginResetModel();
     m_songs.clear();
     endResetModel();
-    //    qDebug() << "blub blub clear";
 }
 
 void DisplaySongModel::resetData(QList<Song> otherSongs)

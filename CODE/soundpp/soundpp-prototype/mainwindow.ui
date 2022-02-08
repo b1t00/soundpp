@@ -411,7 +411,7 @@ min-height: 20px;
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>200</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -437,7 +437,7 @@ min-height: 20px;
               </property>
               <property name="maximumSize">
                <size>
-                <width>40</width>
+                <width>100</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -478,7 +478,7 @@ min-height: 20px;
               </property>
               <property name="maximumSize">
                <size>
-                <width>40</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -497,7 +497,7 @@ min-height: 20px;
               </property>
               <property name="maximumSize">
                <size>
-                <width>40</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
               </property>
