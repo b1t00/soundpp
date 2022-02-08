@@ -1,7 +1,6 @@
 #include "playlist.h"
 namespace Model {
 
-
 Playlist::Playlist(){}
 
 Playlist::Playlist(QString name):
@@ -9,8 +8,6 @@ Playlist::Playlist(QString name):
 {
 
 }
-
-
 
 int Playlist::getPlaylistID() const
 {

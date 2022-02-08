@@ -29,6 +29,11 @@ QList<Model::Playlist> SoundppManagement::get_all_playlists(){
     return dm->get_all_playlists();
 }
 
+Model::Song SoundppManagement::randomSong()
+{
+    return dm->randomSong();
+}
+
 void SoundppManagement::new_playlist(Model::Playlist new_playlist){
      dbc->insertPlaylist(new_playlist);
      dm->insert_playlist(new_playlist);
@@ -85,12 +90,15 @@ bool SoundppManagement::containsSongPath(QString songPath)
     return dm->containsSongPath(songPath);
 }
 
-void SoundppManagement::incrementPlayCount(QString songPath)
+Model::Song SoundppManagement::incrementPlayCount(Model::Song song_to_increment)
 {
     if(!mpqt->playedOnce()){
-//        QString songPath = mpqt->songPath().toString();  // TODO::
-        dbc->incrementPlayCount(songPath);
+        int playCountFromDbc = dbc->incrementPlayCount(song_to_increment.getSongPath());
+        song_to_increment.setPlayCount(playCountFromDbc);
+        if(dm->editSong(song_to_increment))
+            return song_to_increment;
     }
+    return song_to_increment;
 }
 
 bool SoundppManagement::deleteSong(QString filePath)
@@ -124,6 +132,7 @@ bool SoundppManagement::pressPlay()
     return mpqt->pressPlay();
 }
 
+// NOTE: alse clearMedia would be nice for QMediaplayer-> stop() dont work for that
 void SoundppManagement::stopPlaying()
 {
     mpqt->stop();
@@ -134,7 +143,6 @@ void SoundppManagement::playSong(QString songPath)
     mpqt->setSongPath(songPath);
     mpqt->setIsPlayling(true);
     mpqt->play();
-//    pressPlay();
 }
 
 

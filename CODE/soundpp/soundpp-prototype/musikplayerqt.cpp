@@ -8,7 +8,6 @@ MusikPlayer::MusikPlayerQt::MusikPlayerQt()
 //    m_playlist->setPlaybackMode(QMediaPlaylist::AutoPla);
     this->setPlaylist(m_playlist);
     setIsPlayling(false);
-//    playlist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 }
 
 
@@ -31,12 +30,10 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
     crossPlatformFile = "file://" + songPath.toString();
     #ifdef WIN32
     crossPlatformFile = songPath.toString();
-    qDebug() << "Windows filepath:" << crossPlatformFile;
-//    #elif LINUX
+//    #elif LINUX // dont work for ubuntu
 //    crossPlatformFile = "file://" + songPath.toString();
-//    qDebug() << "Ubuntu filepath:" << crossPlatformFile;
-//    #else
-//    #error "We don't support your system or version yet, sorry..."
+    #else
+    #error "We don't support your system or version yet, sorry..."
     #endif
     m_songPath = crossPlatformFile;
     qDebug() << "songpath: " << crossPlatformFile;
@@ -45,8 +42,6 @@ void MusikPlayerQt::setSongPath(const QUrl &songPath)
 
 void MusikPlayerQt::addToQueue(QUrl url)
 {
-    qDebug() << "add media " << url;
-//    playlist()->addMedia(url);
     m_playlist->addMedia(url);
     setPlaylist(m_playlist);
 
@@ -55,9 +50,7 @@ void MusikPlayerQt::addToQueue(QUrl url)
 bool MusikPlayerQt::pressPlay()
 {
     if(!m_playedOnce) m_playedOnce = true;
-
     setIsPlayling(!isPlayling());
-    qDebug() << "playing" << isPlayling();
     isPlayling() ? play() : pause();
     return m_isPlayling;
 }

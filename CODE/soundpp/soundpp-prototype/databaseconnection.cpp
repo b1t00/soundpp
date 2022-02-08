@@ -253,7 +253,7 @@ void Database::DataBaseConnection::updateAllPlaylistsModel()
     sqlitedb.close();
 }
 
-void Database::DataBaseConnection::incrementPlayCount(QString filePath)
+int Database::DataBaseConnection::incrementPlayCount(QString filePath)
 {
     this->sqlitedb.open();
     QSqlQuery qry;
@@ -266,7 +266,6 @@ void Database::DataBaseConnection::incrementPlayCount(QString filePath)
            playCount = qry.value(0).toInt();
        }
     }
-//    playCount++;
     if(playCount > -99){
         qry.prepare("UPDATE songsTable SET playCount = (:playCount) WHERE songPath = (:songPath)");
         qry.bindValue(":playCount", ++playCount);
@@ -276,7 +275,17 @@ void Database::DataBaseConnection::incrementPlayCount(QString filePath)
             qDebug() << "NOT incemented playcound";
         }
     }
+    qry.prepare("SELECT playCount FROM songsTable WHERE songPath = (:songPath)");
+    qry.bindValue(":songPath", filePath);
+    int newPlayCount = -99;
+    if (qry.exec()){
+       if (qry.next()){
+//           qDebug() << "qry value " << qry.value(0).toInt();
+           newPlayCount = qry.value(0).toInt();
+       }
+    }
     this->sqlitedb.close();
+    return newPlayCount;
 }
 
 bool Database::DataBaseConnection::deleteSong(QString filePath)

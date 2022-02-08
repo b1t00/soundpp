@@ -26,7 +26,7 @@ public:
     Model::Song editSong(Model::Song edited_song);
     void updateAllSongsModel();
     void updateAllPlaylistsModel();
-    void incrementPlayCount(QString filePath);
+    int incrementPlayCount(QString filePath);
     bool deleteSong(QString filePath);
     bool deletePlaylist(int playlistID);
 

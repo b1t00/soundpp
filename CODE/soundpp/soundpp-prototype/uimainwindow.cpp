@@ -263,15 +263,15 @@ void MainWindow::dropEvent(QDropEvent *e)
 bool MainWindow::filterFilesByPrefix(QString songPath)
 //      filter for playable filetypes
 {
-//    QList<QString> splittingString = songPath.split(".");
-//    QString filePrefix = splittingString[splittingString.size()-1].toUpper();
-//    if( !( (filePrefix == "MP3") | (filePrefix == "WAV") | ( filePrefix == "AIFF" ) ) ){
-//        ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
-//        return false;
-//    } else if(sppm->containsSongPath(songPath)){
-//        ui->statusbar->showMessage(songPath + " is already in the database", 10000);
-//        return false;
-//    }
+    QList<QString> splittingString = songPath.split(".");
+    QString filePrefix = splittingString[splittingString.size()-1].toUpper();
+    if( !( (filePrefix == "MP3") | (filePrefix == "WAV") | ( filePrefix == "AIFF" ) | ( filePrefix == "FLAC" ) ) ){
+        ui->statusbar->showMessage(filePrefix + " files are not playable, sorry", 10000);
+        return false;
+    } else if(sppm->containsSongPath(songPath)){
+        ui->statusbar->showMessage(songPath + " is already in the database", 10000);
+        return false;
+    }
     return true;
 }
 
@@ -429,15 +429,14 @@ void MainWindow::playSong(Model::Song song_to_play)
     ui->statusbar->showMessage("playing: " + song_to_play.getArtistName(), 3000);
 
     sppm->playSong(song_to_play.getSongPath());
-    Model::Song last_song = m_current_playing_song;
-    m_current_playing_song = song_to_play;
+    Model::Song last_song(m_current_playing_song);
 
-    sppm->incrementPlayCount(song_to_play.getSongPath());
-
-    m_display_song_model->updateSong(last_song);
-    m_display_song_model->updateSong(song_to_play); // TODO:: test
+    /* ** updating all nescassary rows for color and playcount changes ** */
+    m_current_playing_song = sppm->incrementPlayCount(song_to_play);
+    m_display_song_model->emitSongDataChanged(last_song);
+    m_display_song_model->updateSong(m_current_playing_song);
     m_historyListModel->addSong(song_to_play);
-//    m_queueListModel->playSong(s);
+//    m_queueListModel->emitSongDataChanged(song); // could be possible
 }
 
 
@@ -455,26 +454,23 @@ void MainWindow::on_songs_tableView_doubleClicked()
 // -- Musikplayer buttons
 void MainWindow::on_btn_play_clicked()
 {
-    if(sppm->isAudioAvailable()){
+    if(sppm->isAudioAvailable()){ // if any song is loadet and playable
 
     bool isPlaying = false;
 
     isPlaying = sppm->pressPlay();
-//    QString sppm->songName(); //TODO::
-//    sppm->incrementPlayCount();
 
-    isPlaying ? ui->statusbar->showMessage("playing song", 3000) : ui->statusbar->showMessage("pause song", 3000);
-    //set_songs_tableView(); // TODO:: Schlau direkt aus tableView zu holen
-
+    isPlaying ? ui->statusbar->showMessage("continue " + m_current_playing_song.getTitle(), 3000)
+              : ui->statusbar->showMessage("pause " + m_current_playing_song.getTitle(), 3000);
     if (isPlaying){
-        QPixmap pause (":img/pause.png");
-        ui->btn_play->setIcon(pause);
+        ui->btn_play->setIcon(QPixmap(":img/pause.png"));
     } else {
-        QPixmap play (":img/Play.png");
-        ui->btn_play->setIcon(play);
+        ui->btn_play->setIcon(QPixmap(":img/Play.png"));
     }
+    } else if(m_queueListModel->hasSongs()){
+        // play from queue
+        on_btn_for_released();
     } else {
-//        if(ui->songs_tableView->selectionModel()->selectedRows())
         if(ui->songs_tableView->selectionModel()->hasSelection()){
             on_actionPlay_triggered();
         } else {
@@ -506,7 +502,7 @@ void MainWindow::on_btn_back_released()
 
 void MainWindow::on_btn_for_clicked()
 {
-    //TODO:: maybe load song?
+    //NOTE:: maybe load song?
 }
 
 void MainWindow::on_btn_for_released()
@@ -517,14 +513,35 @@ void MainWindow::on_btn_for_released()
 {
     Model::Song song_next;
     m_historyListModel->resetHistoryIndex();
-    if(m_queueListModel->hasSongs()){
-        song_next = m_queueListModel->nextSong();
-        playSong(song_next);
-//    } else if( loopQueueList){ // TODO
-//    } else if( autoPlay){ // TODO
+    if((ui->comboBox_playingStyle->currentText() == ".") |  (ui->current_song_label->text() == ".")){
+        /* playing mode: the last song
+         * stop playing although there are songs in the queue list
+         */
+        sppm->stopPlaying();
+        ui->current_song_label->setText(" . ");
+        ui->statusbar->showMessage(".", 5000);
+        QPixmap play (":img/Play.png");
+        ui->btn_play->setIcon(play);
+    } else if(ui->comboBox_playingStyle->currentText() == ">|"){ // play to the end of queue list
+        /* playing mode: to the end
+         * play to the end of queue list
+         */
+        if(m_queueListModel->hasSongs()){
+            song_next = m_queueListModel->nextSong();
+            playSong(song_next);
+        } else {
+            sppm->stopPlaying();
+            ui->statusbar->showMessage("Spielt den gleichen song nochmal!!", 5000);
+            QPixmap play (":img/Play.png");
+        }
+    } else if( ui->comboBox_playingStyle->currentText() == ">>"){ // placeholder for autoplay
+
+        playSong(sppm->randomSong());
+//    } else if( loopOneSong){ // TODO
+//    } else if( LoopQueueList){ // TODO
     } else {
         sppm->stopPlaying();
-        ui->current_song_label->setText(" --- ");
+//        sppm->clearMedia
         ui->statusbar->showMessage("No songs in the queue list", 5000);
         QPixmap play (":img/Play.png");
         ui->btn_play->setIcon(play);
@@ -572,35 +589,29 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
     switch (status) {
     case QMediaPlayer::UnknownMediaStatus:
         qDebug() << "UnknownMediaStatus";
+        break;
     case QMediaPlayer::NoMedia:
         qDebug() << "NoMedia";
+        break;
     case QMediaPlayer::LoadedMedia:
-//        setStatusInfo(QString());
          qDebug() << "on_playerstatusChanged loadmedia";
         break;
     case QMediaPlayer::LoadingMedia:
         qDebug() << "on_playerstatusChanged Loading...";
         break;
     case QMediaPlayer::BufferingMedia:
-//        qDebug() << "BufferingMedia";
     case QMediaPlayer::BufferedMedia:
         qDebug() << "BUFFER...";
-//        setStatusInfo(tr("Buffering %1%").arg(m_player->bufferStatus()));
         break;
     case QMediaPlayer::StalledMedia:
         qDebug() << "STALLED...";
-//        setStatusInfo(tr("Stalled %1%").arg(m_player->bufferStatus()));
         break;
     case QMediaPlayer::EndOfMedia:
         qDebug() << "EndOfMedia...";
         on_btn_for_released();
-//        QApplication::alert(this);
         break;
     case QMediaPlayer::InvalidMedia:
-//        displayErrorMessage();
         ui->statusbar->showMessage("spp can not play this song " + m_current_playing_song.getTitle() + " yet", 5000);
-        on_btn_for_released();
-        qDebug() << "on_playerstatusChanged EEROORS";
         on_btn_for_released();
         break;
     }
@@ -609,24 +620,19 @@ void MainWindow::on_playerstatusChanged(QMediaPlayer::MediaStatus status)
 // --------------- Queue and History Actions ---------------//
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
-    if(arg1 == "Queue List"){
+    if(arg1 == "Queue List")
         ui->queue_tableView->setModel(m_queueListModel);
-//        ui->queue_tableView->setRowHidden(0,false);
-    } else {
+    else
         ui->queue_tableView->setModel(m_historyListModel);
-//        ui->queue_tableView->setRowHidden(0,true);
-    }
 }
 
 
 void MainWindow::on_queue_tableView_doubleClicked(const QModelIndex &index)
 {
-    if(ui->comboBox->currentText()=="Queue List"){
+    if(ui->comboBox->currentText()=="Queue List")
         playSong(m_queueListModel->qSongs().at(index.row()));
-//        qDebug() << index.row();
-    } else {
+    else
         playSong(m_historyListModel->hSongs().at(index.row()));
-    }
 }
 
 void MainWindow::on_actionPlay_Songs_from_Queue_Next_triggered()
@@ -722,22 +728,22 @@ void MainWindow::on_actionAppend_Songs_Queue_triggered()
 }
 
 
-void MainWindow::on_artists_tableView_activated(const QModelIndex &index)
+void MainWindow::on_artists_tableView_activated([[maybe_unused]]const QModelIndex &index)
 // TODO :  Knan wahtscheinlich weg, weil nicht funzt wo gedacht
 {
-//    qDebug() << "activäääääääääääääääääääääääääääted";
-//    switch(m_displayState){
-//    case DisplayArtists :
-//        m_display_song_model->resetData(sppm->filtered_songs_by_artist(index.data().toString()));
-//        break;
-//    case DisplayAlbums :
+    qDebug() << "activäääääääääääääääääääääääääääted"; // DELETE
+    switch(m_displayState){
+    case DisplayArtists :
+        m_display_song_model->resetData(sppm->filtered_songs_by_artist(index.data().toString()));
+        break;
+    case DisplayAlbums :
 
-//        m_display_song_model->resetData(sppm->filtered_songs_by_album(index.data().toString()));
-//        break;
-//    default:
-//        qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
-//        break;
-//    }
+        m_display_song_model->resetData(sppm->filtered_songs_by_album(index.data().toString()));
+        break;
+    default:
+        qDebug() << "WARNING, some undefined Enum state"; // TODO:: dont have to
+        break;
+    }
 //    on_artists_tableView_clicked(index);
 }
 
@@ -887,31 +893,17 @@ void MainWindow::on_actionRemove_Song_triggered()
 
 void MainWindow::on_actionEdit_Song_triggered()
 {
-    Model::Song song_to_edit;
-//    QAbstractItemModel* selectedSong = ui->songs_tableView->model(); //TODO
-
+    Model::Song song_to_edit = currentSlectedSong();
     int rowIndex = ui->songs_tableView->currentIndex().row();
-    song_to_edit.setSongPath(ui->songs_tableView->model()->index(rowIndex,0).data().toString());
-    song_to_edit.setTitle(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
-    song_to_edit.setArtistName(ui->songs_tableView->model()->index(rowIndex,2).data().toString());
-    song_to_edit.setAlbumName(ui->songs_tableView->model()->index(rowIndex,3).data().toString());
-    song_to_edit.setAlbumNr(ui->songs_tableView->model()->index(rowIndex,4).data().toInt());
-    song_to_edit.setLabelName(ui->songs_tableView->model()->index(rowIndex,5).data().toString());
-    song_to_edit.setLabelNr(ui->songs_tableView->model()->index(rowIndex,6).data().toString());
-    song_to_edit.setAddedTime(ui->songs_tableView->model()->index(rowIndex,7).data().toString());
-    song_to_edit.setPlayCount(ui->songs_tableView->model()->index(rowIndex,8).data().toInt());
-//    song_to_edit.se(ui->songs_tableView->model()->index(rowIndex,1).data().toString());
-//    delete selectedSong;
+
     EditSongDialog editDialog(song_to_edit,this);
 
-
-
     if(editDialog.exec() == QDialog::Accepted){
-
 
         Model::Song song_from_db = sppm->editSong(editDialog.song());
         m_display_song_model->updateSong(rowIndex,song_from_db);
 
+        // what data changed show menu
         // QUESTION: Wäre ein Switchcase hierfür geeigneter?
         if(song_to_edit.getTitle() != song_from_db.getTitle())
             ui->statusbar->showMessage("Changed song title: " + song_to_edit.getTitle() + " -> " + song_from_db.getTitle(), 10000);
@@ -919,7 +911,7 @@ void MainWindow::on_actionEdit_Song_triggered()
             ui->statusbar->showMessage("Changed album name: " + song_to_edit.getAlbumName() + " -> " + song_from_db.getAlbumName(), 10000);
             if(m_displayState == DisplayAlbums){
                  m_display_albums_model->resetData(sppm->allAlbums());
-//                         = new Model::DisplayAlbumsModel(sppm->allAlbums(), this);
+//            DELETE            = new Model::DisplayAlbumsModel(sppm->allAlbums(), this);
 //                 ui->artists_tableView->setModel(m_display_albums_model);
             }
         }
@@ -969,12 +961,13 @@ void MainWindow::on_actionOpen_triggered()
 {
 //    QString openingPath = "C:/Users/Admin/Music";
 //    QString openingPath = "C:/Users/Winny/Music/Musik/sppmusik";
-    QString openingPath = "./../songs_for_testing";
+//    QString openingPath = "./../songs_for_testing";
+    QUrl openingPath("./../songs_for_testing");
     QList<QString> fileNames = QFileDialog::getOpenFileNames(
                 this,
                 tr("Open Files"),
-                openingPath,
-                "Music Files(*.mp3 ; *.wav ; *.aiff) ;; All Files (*.*)"
+                openingPath.toString(),
+                "Music Files(*.mp3 ; *.wav ; *.aiff ; *.flac) ;; All Files (*.*)"
 //                QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks,
                 );
     for(int i = 0; i < fileNames.size(); i++){

@@ -5,7 +5,11 @@
 #include <QMediaPlaylist>
 
 namespace MusikPlayer {
-
+/*
+* we want to substitute the QMediaPlayer
+* by other libaries like Essentia in the future
+* to be able to implement more functionalities
+*/
 
 class MusikPlayerQt : public QMediaPlayer
 {
@@ -13,6 +17,11 @@ private:
     bool m_isPlayling;
     bool m_playedOnce;
     QUrl m_songPath;
+    /*
+     * m_playlist is not in use
+     * we decided for implementing it on our own
+     * to be independet from QMediaPlayer
+     */
     QMediaPlaylist *m_playlist = nullptr;
 
 public:

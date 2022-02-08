@@ -34,6 +34,7 @@ QVariant DisplaySongModel::headerData(int section, Qt::Orientation orientation, 
     return QVariant();
 }
 
+
 int DisplaySongModel::rowCount([[maybe_unused]]const QModelIndex &parent) const
 {
    return m_songs.size();
@@ -163,11 +164,26 @@ void DisplaySongModel::updateSong(int row, Model::Song song)
     }
 }
 
+
 void DisplaySongModel::updateSong(Song song)
 {
-    if(m_songs.size() > 1){
-        for(int i = 0; i < m_songs.size() ; i++){
+    if(m_songs.size() > 0){
+        for(int i = 0; i < m_songs.size() ; ++i){
             if(m_songs.at(i).getSongPath() == song.getSongPath()){
+                m_songs[i] = song;
+                emit dataChanged(createIndex(i, 0),createIndex(i, columnCount()-1));
+                break;
+            }
+        }
+    }
+}
+
+void DisplaySongModel::emitSongDataChanged(Song song)
+{
+    if(m_songs.size() > 0){
+        for(int i = 0; i < m_songs.size() ; ++i){
+            if(m_songs.at(i).getSongPath() == song.getSongPath()){
+
                 emit dataChanged(createIndex(i, 0),createIndex(i, columnCount()-1));
                 break;
             }

@@ -29,7 +29,8 @@ public:
     QList<Model::Song> get_all_songs();
     QList<Model::Playlist> get_all_playlists();
 //    QSqlQueryModel get_all_artists();
-    QStringList* get_all_Interprets();
+    Model::Song randomSong();
+    QStringList* get_allArtists();
     QList<Model::Song> create_and_get_songs();
     QList<Model::Song> filtered_songs_by_artist(QString artist);
     QList<Model::Song> filtered_songs_by_album(QString album);
@@ -44,7 +45,7 @@ public:
 
     Model::Song droppedFile(QString filePath);
     bool containsSongPath(QString songPath);
-    void incrementPlayCount(QString songPath);
+    Model::Song incrementPlayCount(Model::Song song_to_increment);
     bool deleteSong(QString filePath);
     Model::Song editSong(Model::Song edited_song);
     void new_playlist(Model::Playlist new_playlist);

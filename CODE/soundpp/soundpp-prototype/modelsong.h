@@ -63,27 +63,27 @@ private:
 };
 
 // it's very bad practise, i know. But it workt and there was no time to use own Templates or ProxySearchModel or so
-static bool compareBySongTitle(const Model::Song& lhs, Model::Song& rhs)
+[[maybe_unused]]static bool compareBySongTitle(const Model::Song& lhs, Model::Song& rhs)
 {
     return lhs.getTitle() < rhs.getTitle();
 }
 
-static bool compareByArtistName(const Model::Song& lhs, Model::Song& rhs)
+[[maybe_unused]]static bool compareByArtistName(const Model::Song& lhs, Model::Song& rhs)
 {
     return lhs.getArtistName() < rhs.getArtistName();
 }
 
-static bool compareByAlbumName(const Model::Song& lhs, Model::Song& rhs)
+[[maybe_unused]]static bool compareByAlbumName(const Model::Song& lhs, Model::Song& rhs)
 {
     return lhs.getArtistName() < rhs.getArtistName();
 }
 
-static bool compareByAlbumNr(const Model::Song& lhs, Model::Song& rhs)
+[[maybe_unused]]static bool compareByAlbumNr(const Model::Song& lhs, Model::Song& rhs)
 {
     return lhs.getAlbumNr() < rhs.getAlbumNr();
 }
 
-static bool compareByPlayCount(const Model::Song& lhs, Model::Song& rhs)
+[[maybe_unused]]static bool compareByPlayCount(const Model::Song& lhs, Model::Song& rhs)
 {
     return lhs.getPlayCount() < rhs.getPlayCount();
 }

@@ -65,8 +65,6 @@ void DataManagement::add_songs_for_playlist(Model::Song song, QString playlistNa
 
 }
 
-
-
 QList<Model::Song> DataManagement::filtered_songs_by_artist(QString artist){
 
     QList<Model::Song> filtered_songs;
@@ -141,6 +139,18 @@ QList<QString> DataManagement::allArtists()
     }
     std::sort(allArtists.begin(), allArtists.end());
     return allArtists;
+}
+
+Song DataManagement::randomSong()
+/*
+ * Method for autoPlay random song
+ * in the future we could use an algorithm to
+ * get a good next song
+ */
+{
+    int randomIndex = std::rand() % m_all_songs->size();
+    qDebug() << "randomIndex" << randomIndex;
+    return m_all_songs->at(randomIndex);
 }
 
 bool DataManagement::deletePlaylist(int playlistID){

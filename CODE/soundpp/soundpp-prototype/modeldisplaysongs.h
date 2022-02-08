@@ -30,6 +30,7 @@ public:
 //    void removeSong(Model::Song song);
     void updateSong(int row, Model::Song song);
     void updateSong(Model::Song song);
+    void emitSongDataChanged(Model::Song song);
     void addSong(Model::Song song);
     void clear();
 
