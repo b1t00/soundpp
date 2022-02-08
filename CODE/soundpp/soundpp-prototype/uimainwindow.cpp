@@ -42,8 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->queue_tableView->setModel(m_queueListModel);
 
 //    m_display_artist_model->headerData(2,Qt::Orientation::Horizontal)
-
-
+    // ui ----------splitter starting positions
+    ui->splitter->setSizes(QList<int>() << 1000 << 40);
+    ui->splitter_3->setSizes(QList<int>() << 50 << 700);
     // ------------------- Context Menus --------------------- //
 
     // -- Context Menus Song Table Header-
@@ -980,4 +981,11 @@ void MainWindow::on_actionshow_title_toggled(bool arg1)
     ui->actionshow_title->setChecked(arg1); // synchronise checkboxes
     songTableHeaderContextMenu->actions().at(1)->setChecked(arg1);  // synchronise checkboxes
 
+}
+
+void MainWindow::on_btn_shuffle_clicked()
+{
+    if(ui->comboBox->currentText() == "Queue List"){
+        m_queueListModel->shuffleSongs();
+    }
 }

@@ -33,6 +33,9 @@ public:
     bool hasSongs();
     Model::Song nextSong();
 
+    void shuffleSongs();
+    void reset();
+
 
     QList<Model::Song> qSongs() const;
     void setQSongs(const QList<Model::Song> &qSongs);

@@ -134,6 +134,8 @@ private slots:
 
     void on_actionshow_title_toggled(bool arg1);
 
+    void on_btn_shuffle_clicked();
+
 private:
     Ui::MainWindow *ui;
 

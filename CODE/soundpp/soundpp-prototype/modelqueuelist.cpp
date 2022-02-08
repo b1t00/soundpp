@@ -106,6 +106,18 @@ Song QueueListModel::nextSong()
     return song_next;
 }
 
+void QueueListModel::shuffleSongs()
+{
+    std::random_shuffle(m_qSongs.begin(),m_qSongs.end());
+    reset();
+}
+
+void QueueListModel::reset()
+{
+    beginResetModel();
+    endResetModel();
+}
+
 QList<Model::Song> QueueListModel::qSongs() const
 {
     return m_qSongs;
